@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "BlazorBase"
+		},
+		{
+			"path": "BlazorBaseApi"
+		},
+		{
+			"path": "BlazorBaseModel"
+		}
+	],
+	"settings": {}
+}

@@ -1,0 +1,22 @@
+using BlazorBase.Service;
+using Microsoft.AspNetCore.Components;
+using BlazorBaseModel;
+
+namespace BlazorBase.Pages
+{
+    public partial class FetchDataPage : ComponentBase
+    {
+        private string PageTitle { get; set; } = "Fetch Data";
+        
+        [Inject]
+        protected WeatherForecastService ForecastService { get; set; } = default!;
+
+        private IEnumerable<WeatherForecast> forecasts { get ; set; } = default!;
+
+        protected override async Task OnInitializedAsync()
+        {
+            forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+        }
+    }
+}
+
