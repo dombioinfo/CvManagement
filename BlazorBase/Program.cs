@@ -7,6 +7,20 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+builder.Services.AddHttpClient();
+builder.Services.AddScoped<HttpClient>(httpClient => new HttpClient()
+{
+    BaseAddress = new Uri("http://localhost:5070/")
+});
+builder.Services.AddHttpClient("HttpClientWithSSLUntrusted").ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+{
+    ClientCertificateOptions = ClientCertificateOption.Manual,
+    ServerCertificateCustomValidationCallback =
+            (httpRequestMessage, cert, cetChain, policyErrors) =>
+            {
+                return true;
+            }
+});
 
 builder.Services.AddSingleton<WeatherForecastService>();
 
