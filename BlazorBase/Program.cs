@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using BlazorBase.Service;
+using Microsoft.AspNetCore.ResponseCompression;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,9 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddHttpClient();
-builder.Services.AddScoped<HttpClient>(httpClient => new HttpClient()
+builder.Services.AddSingleton<HttpClient>(httpClient => new HttpClient()
 {
-    BaseAddress = new Uri("http://localhost:5070/")
+    BaseAddress = new Uri("http://localhost:7031/")
 });
 builder.Services.AddHttpClient("HttpClientWithSSLUntrusted").ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
 {

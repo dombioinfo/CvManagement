@@ -28,5 +28,19 @@
     </div>
 
     <script src="_framework/blazor.server.js"></script>
+    @* <script>
+        Blazor.start({
+            configureSignalR: function (builder) {
+                let c = builder.build();
+                c.serverTimeoutInMilliseconds = 30000;
+                c.keepAliveIntervalInMilliseconds = 15000;
+                builder.build = () => {
+                    return c;
+                };
+            }
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.0/signalr.min.js"></script>
+    <script src="/js/apphub.js"></script> *@
 </body>
 </html>

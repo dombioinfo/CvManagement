@@ -19,6 +19,34 @@ namespace BlazorBase.Service
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
+        public async Task<WeatherForecast> GetForecastByIdAsync(int id)
+        {
+            var result = new List<WeatherForecast>();
+
+            var url = $"https://localhost:7031/api/app/GetObject/getWeatherForecast/{id}";
+
+            var request = new HttpRequestMessage(HttpMethod.Get, url);
+            request.Headers.Add("Accept", "application/json");
+
+            HttpClient client = _clientFactory.CreateClient("HttpClientWithSSLUntrusted");
+
+            var response = await client.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var stringResponse = await response.Content.ReadAsStringAsync();
+
+                result = JsonSerializer.Deserialize<List<WeatherForecast>>(stringResponse,
+                    new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+            }
+            else
+            {
+                result = Array.Empty<WeatherForecast>().ToList();
+            }
+
+            return result == null ? new WeatherForecast() : result.First();
+        }
+
         public async Task<WeatherForecast[]> GetForecastAsync(DateTime startDate)
         {
             // WeatherForecastList = await this._clientFactory.GetFromJsonAsync<List<WeatherForecast>>("/api/weatherforecast/getweatherlist");
@@ -38,7 +66,7 @@ namespace BlazorBase.Service
             var request = new HttpRequestMessage(HttpMethod.Get, url);
             request.Headers.Add("Accept", "application/json");
 
-            var client = _clientFactory.CreateClient("HttpClientWithSSLUntrusted");
+            HttpClient client = _clientFactory.CreateClient("HttpClientWithSSLUntrusted");
 
             var response = await client.SendAsync(request);
 

@@ -12,10 +12,12 @@ namespace BlazorBase.Pages
         protected WeatherForecastService ForecastService { get; set; } = default!;
 
         private IEnumerable<WeatherForecast> forecasts { get ; set; } = default!;
+        private WeatherForecast forecast { get ; set; } = default!;
 
         protected override async Task OnInitializedAsync()
         {
             forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+            forecast = await ForecastService.GetForecastByIdAsync(1);
         }
     }
 }
