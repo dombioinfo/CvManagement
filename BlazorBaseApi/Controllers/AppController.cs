@@ -1,3 +1,4 @@
+using System.Reflection;
 using BlazorBaseApi.Hubs;
 using BlazorBaseModel;
 using Microsoft.AspNetCore.Mvc;
@@ -33,6 +34,25 @@ namespace BlazorBaseApi.Controllers
         }
 
         [Route("{objClassName}")]
+        [HttpGet]
+        public IActionResult GetObjectList(string objClassName)
+        {
+            List<Object> objResultList = new List<object>();
+            try
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    objResultList.Add(GetInstance(objClassName));
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            return Ok(objResultList);
+        }
+
+        [Route("{objClassName}")]
         [HttpPost]
         public IActionResult PostObject(string objClassName, Object objToSave)
         {
@@ -53,12 +73,16 @@ namespace BlazorBaseApi.Controllers
                 if (type != null)
                     return Activator.CreateInstance(type);
 
-
-                foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
+                IEnumerable<Assembly> assemblyList = AppDomain.CurrentDomain.GetAssemblies();
+                strFullyQualifiedName = string.Concat("BlazorBaseModel", ".", strFullyQualifiedName);
+                foreach (var asm in assemblyList)
                 {
                     type = asm.GetType(strFullyQualifiedName);
                     if (type != null)
+                    {
                         result = Activator.CreateInstance(type);
+                        break;
+                    }
                 }
             }
             catch (Exception e)

@@ -21,9 +21,9 @@ namespace BlazorBase.Service
 
         public async Task<WeatherForecast> GetForecastByIdAsync(int id)
         {
-            var result = new List<WeatherForecast>();
+            var result = new WeatherForecast();
 
-            var url = $"https://localhost:7031/api/app/GetObject/getWeatherForecast/{id}";
+            var url = $"https://localhost:7031/api/app/GetObject/WeatherForecast/{id}";
 
             var request = new HttpRequestMessage(HttpMethod.Get, url);
             request.Headers.Add("Accept", "application/json");
@@ -36,32 +36,18 @@ namespace BlazorBase.Service
             {
                 var stringResponse = await response.Content.ReadAsStringAsync();
 
-                result = JsonSerializer.Deserialize<List<WeatherForecast>>(stringResponse,
+                result = JsonSerializer.Deserialize<WeatherForecast>(stringResponse,
                     new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
             }
-            else
-            {
-                result = Array.Empty<WeatherForecast>().ToList();
-            }
 
-            return result == null ? new WeatherForecast() : result.First();
+            return result == null ? new WeatherForecast() : result;
         }
 
         public async Task<WeatherForecast[]> GetForecastAsync(DateTime startDate)
         {
-            // WeatherForecastList = await this._clientFactory.GetFromJsonAsync<List<WeatherForecast>>("/api/weatherforecast/getweatherlist");
-            // return WeatherForecastList;
-
-            // return Task.FromResult(Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            // {
-            //     Date = startDate.AddDays(index),
-            //     TemperatureC = Random.Shared.Next(-20, 55),
-            //     Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            // }).ToArray());
-
             var result = new List<WeatherForecast>();
 
-            var url = $"https://localhost:7031/api/weatherforecast/getweatherlist";
+            var url = $"https://localhost:7031/api/app/GetObjectList/WeatherForecast";
 
             var request = new HttpRequestMessage(HttpMethod.Get, url);
             request.Headers.Add("Accept", "application/json");
@@ -73,7 +59,10 @@ namespace BlazorBase.Service
             if (response.IsSuccessStatusCode)
             {
                 var stringResponse = await response.Content.ReadAsStringAsync();
-
+                if (string.IsNullOrEmpty(stringResponse))
+                {
+                    throw new Exception("La réponse ne doit pas être un objet vide");
+                }
                 result = JsonSerializer.Deserialize<List<WeatherForecast>>(stringResponse,
                     new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
             }
