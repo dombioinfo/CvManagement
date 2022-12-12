@@ -1,8 +1,11 @@
 using System.Reflection;
+using System.Linq;
+using BlazorBaseApi;
 using BlazorBaseApi.Hubs;
 using BlazorBaseModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlazorBaseApi.Controllers
 {
@@ -10,12 +13,14 @@ namespace BlazorBaseApi.Controllers
     [Route("api/[controller]/[action]")]
     public class AppController : ControllerBase
     {
+        private MysqlDbContext _dbContext;
         //private readonly IHubContext<AppHub> _hubContext = default!;
 
-        // public AppController(IHubContext<AppHub> hubContext)
-        // {
-        //     _hubContext = hubContext;
-        // }
+        public AppController(MysqlDbContext dbContext/*, IHubContext<AppHub> hubContext*/)
+        {
+            _dbContext = dbContext;
+            // _hubContext = hubContext;
+        }
 
         [Route("{objClassName}/{id}")]
         [HttpGet]
@@ -24,6 +29,7 @@ namespace BlazorBaseApi.Controllers
             dynamic objResult;
             try
             {
+                this._dbContext.WeatherForecast.Include(x => x.Id == 1).FirstOrDefault();
                 objResult = GetInstance(objClassName);
             }
             catch (Exception e)

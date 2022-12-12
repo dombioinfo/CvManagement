@@ -1,5 +1,6 @@
 using System.Text.Json;
 using BlazorBaseModel;
+using BlazorBaseModel.Db;
 using Microsoft.AspNetCore.Components;
 
 namespace BlazorBase.Service

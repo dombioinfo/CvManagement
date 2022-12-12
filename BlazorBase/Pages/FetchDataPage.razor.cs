@@ -1,6 +1,7 @@
 using BlazorBase.Service;
 using Microsoft.AspNetCore.Components;
 using BlazorBaseModel;
+using BlazorBaseModel.Db;
 
 namespace BlazorBase.Pages
 {

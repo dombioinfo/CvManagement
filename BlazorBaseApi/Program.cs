@@ -1,9 +1,15 @@
+using BlazorBaseApi;
 using BlazorBaseApi.Hubs;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Services.AddDbContext<MysqlDbContext>(options =>
+    {
+        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+        options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+    });
 builder.Services.AddCors(policy =>
     {
         policy.AddPolicy("CorsPolicy", opt => opt
@@ -28,5 +34,5 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
-//app.MapHub<AppHub>();
+// app.MapHub<AppHub>();
 app.Run();
