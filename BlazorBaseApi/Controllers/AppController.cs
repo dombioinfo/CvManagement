@@ -26,7 +26,7 @@ namespace BlazorBaseApi.Controllers
         [HttpGet]
         public IActionResult GetObject(string objClassName, int id)
         {
-            dynamic objResult;
+            dynamic? objResult;
             try
             {
                 this._dbContext.WeatherForecast.Include(x => x.Id == 1).FirstOrDefault();
@@ -34,7 +34,7 @@ namespace BlazorBaseApi.Controllers
             }
             catch (Exception e)
             {
-                throw e;
+                throw new Exception(e.Message);
             }
             return Ok(objResult);
         }
@@ -43,18 +43,34 @@ namespace BlazorBaseApi.Controllers
         [HttpGet]
         public IActionResult GetObjectList(string objClassName)
         {
-            List<Object> objResultList = new List<object>();
-            try
+            //var entityType = this._dbContext.Model.GetEntityTypes();
+            var objResultList = new List<Object>();
+            var type = Type.GetType("BlazorBaseApi.MysqlDbContext");
+            if (type != null)
             {
-                for (int i = 0; i < 10; i++)
+                List<FieldInfo> list = this._dbContext.GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic).ToList();
+                IEntityType entityType = this?_dbContext.Model.FindEntityType(typeof(TEntity));
+                FieldInfo? field = list.Where(f => f.Name.Contains(objClassName)).FirstOrDefault();
+                if (field != null)
                 {
-                    objResultList.Add(GetInstance(objClassName));
+                    MethodInfo? method = this._dbContext.GetType().GetMethod(objClassName, new Type[] { });
+                    if (method != null)
+                    {
+                        var result = method.Invoke(this._dbContext, null);
+                    }
                 }
             }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            // try
+            // {
+            //     for (int i = 0; i < 10; i++)
+            //     {
+            //         objResultList.Add(GetInstance(objClassName));
+            //     }
+            // }
+            // catch (Exception e)
+            // {
+            //     throw new Exception(e.Message);
+            // }
             return Ok(objResultList);
         }
 
@@ -75,7 +91,7 @@ namespace BlazorBaseApi.Controllers
                 if (string.IsNullOrEmpty(strFullyQualifiedName))
                     throw new Exception("strFullyQualifiedName cannot be null");
 
-                Type type = Type.GetType(strFullyQualifiedName);
+                Type? type = Type.GetType(strFullyQualifiedName);
                 if (type != null)
                     return Activator.CreateInstance(type);
 

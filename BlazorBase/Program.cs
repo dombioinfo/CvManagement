@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using BlazorBase.Service;
 using Microsoft.AspNetCore.ResponseCompression;
+using BlazorBaseModel.Model;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,7 +24,10 @@ builder.Services.AddHttpClient("HttpClientWithSSLUntrusted").ConfigurePrimaryHtt
             }
 });
 
-builder.Services.AddSingleton<WeatherForecastService>();
+// builder.Services.AddSingleton<WeatherForecastService>();
+builder.Services.AddSingleton<GenericObjectService<User>>();
+builder.Services.AddSingleton<GenericObjectService<Profil>>();
+builder.Services.AddSingleton<GenericObjectService<WeatherForecast>>();
 
 var app = builder.Build();
 
