@@ -11,8 +11,12 @@ namespace BlazorBaseModel.Db
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
 
-        public DateTime DateUpdate{ get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public DateTime DateUpdate { get; set; }
 
+        /// <summary>
+        /// Ce champ est alimenté par une valeur par défaut définit dans <object>MysqlDbContext</object>.<method>OnModelCreating</method>
+        /// </summary>
         public DateTime DateCreation { get; set; }
 
         public int UpdateUserId { get; set; }

@@ -17,6 +17,14 @@ namespace BlazorBaseApi
             base.OnModelCreating(modelBuilder);
             // var entitiesAssembly = typeof(GenericObject).Assembly;
             // modelBuilder.RegisterAllEntities<GenericObject>(entitiesAssembly);
+
+            modelBuilder.Entity<GenericObject>()
+                .Property(o => o.DateCreation)
+                .HasDefaultValueSql("getdate()");
+
+            modelBuilder.Entity<GenericObject>()
+                .Property(o => o.DateUpdate)
+                .HasComputedColumnSql("", stored: true);
         }
     }
 }
