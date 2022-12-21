@@ -50,8 +50,9 @@ namespace BlazorBaseApi.Controllers
             if (type != null)
             {
                 List<FieldInfo> list = this._dbContext.GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic).ToList();
-                IEntityType entityType = this._dbContext.Model.FindEntityType(typeof(TEntity));
+                IEntityType entityType = this._dbContext.Model.FindEntityType(objClassName);
                 FieldInfo? field = list.Where(f => f.Name.Contains(objClassName)).FirstOrDefault();
+                
                 if (field != null)
                 {
                     MethodInfo? method = this._dbContext.GetType().GetMethod(objClassName, new Type[] { });

@@ -16,7 +16,8 @@ namespace BlazorBaseModel.Db
 
         public int Age { get; set; } = 0;
 
-        [ForeignKey("ProfilId")]
+        // [ForeignKey("Profil")]
+        public long ProfilId { get; set; } = default!;
         public virtual Profil Profil { get; set; } = default!;
     }
 }

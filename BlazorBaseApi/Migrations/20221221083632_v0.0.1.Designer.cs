@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlazorBaseApi.Migrations
 {
     [DbContext(typeof(MysqlDbContext))]
-    [Migration("20221212154038_InitialeCreate")]
-    partial class InitialeCreate
+    [Migration("20221221083632_v0.0.1")]
+    partial class v001
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -130,12 +130,17 @@ namespace BlazorBaseApi.Migrations
             modelBuilder.Entity("BlazorBaseModel.Db.User", b =>
                 {
                     b.HasOne("BlazorBaseModel.Db.Profil", "Profil")
-                        .WithMany()
+                        .WithMany("Users")
                         .HasForeignKey("ProfilId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Profil");
+                });
+
+            modelBuilder.Entity("BlazorBaseModel.Db.Profil", b =>
+                {
+                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

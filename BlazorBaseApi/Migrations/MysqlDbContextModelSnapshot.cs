@@ -128,12 +128,17 @@ namespace BlazorBaseApi.Migrations
             modelBuilder.Entity("BlazorBaseModel.Db.User", b =>
                 {
                     b.HasOne("BlazorBaseModel.Db.Profil", "Profil")
-                        .WithMany()
+                        .WithMany("Users")
                         .HasForeignKey("ProfilId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Profil");
+                });
+
+            modelBuilder.Entity("BlazorBaseModel.Db.Profil", b =>
+                {
+                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }
