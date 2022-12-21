@@ -6,5 +6,6 @@ namespace BlazorBaseModel.Db
 
         public string Libelle { get; set; } = "";
 
+        // public virtual ICollection<User> Users { get; set; }
     }
 }
