@@ -19,7 +19,7 @@ namespace BlazorBase.Service
             var result = new T();
             try
             {
-                var url = $"https://localhost:7031/api/app/GetObjectList/{nameof(T)}";
+                var url = $"https://172.26.0.2:7031/api/app/GetObjectList/{nameof(T)}";
 
                 var request = new HttpRequestMessage(HttpMethod.Get, url);
                 request.Headers.Add("Accept", "application/json");
@@ -48,7 +48,7 @@ namespace BlazorBase.Service
         {
             var result = new List<T>();
 
-            var url = $"https://localhost:7031/api/app/GetObjectList/{nameof(T)}";
+            var url = $"https://172.26.0.2:7031/api/app/GetObjectList/{nameof(T)}";
 
             var request = new HttpRequestMessage(HttpMethod.Get, url);
             request.Headers.Add("Accept", "application/json");
