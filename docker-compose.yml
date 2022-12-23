@@ -6,13 +6,13 @@ services:
       context: .
       dockerfile: ./BlazorBaseApi/Dockerfile
     ports:
-      - "127.0.0.1:7031:7031"
+      - "7031:7031"
 
   front:
     build:
       context: .
       dockerfile: ./BlazorBase/Dockerfile
     ports:
-      - "127.0.0.1:8080:8080"
+      - "8080:5000"
     depends_on:
       - api

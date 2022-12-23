@@ -48,7 +48,7 @@ namespace BlazorBase.Service
         {
             var result = new List<WeatherForecast>();
 
-            var url = $"https://172.26.0.2:7031/api/app/GetObjectList/WeatherForecast";
+            var url = $"http://api:7031/api/app/GetObjectList/WeatherForecast";
 
             var request = new HttpRequestMessage(HttpMethod.Get, url);
             request.Headers.Add("Accept", "application/json");

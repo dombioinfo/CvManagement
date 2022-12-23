@@ -9,4 +9,5 @@ FROM mcr.microsoft.com/dotnet/aspnet:6.0
 WORKDIR /app
 EXPOSE 7031
 COPY --from=build-env ./app/publish .
+ENV ASPNETCORE_URLS=http://+:7031
 ENTRYPOINT ["dotnet", "BlazorBaseApi.dll"]

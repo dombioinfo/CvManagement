@@ -12,7 +12,7 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddHttpClient();
 builder.Services.AddSingleton<HttpClient>(httpClient => new HttpClient()
 {
-    BaseAddress = new Uri("http://localhost:7031/")
+    BaseAddress = new Uri("http://api:7031/")
 });
 builder.Services.AddHttpClient("HttpClientWithSSLUntrusted").ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
 {
@@ -39,7 +39,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 
