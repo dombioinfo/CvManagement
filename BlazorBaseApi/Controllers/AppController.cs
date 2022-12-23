@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using AutoMapper;
 
 namespace BlazorBaseApi.Controllers
 {
@@ -15,11 +16,13 @@ namespace BlazorBaseApi.Controllers
     public class AppController : ControllerBase
     {
         private MysqlDbContext _dbContext;
+        private readonly IMapper _mapper;
         //private readonly IHubContext<AppHub> _hubContext = default!;
 
-        public AppController(MysqlDbContext dbContext/*, IHubContext<AppHub> hubContext*/)
+        public AppController(MysqlDbContext dbContext, IMapper mapper/*, IHubContext<AppHub> hubContext*/)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
             // _hubContext = hubContext;
         }
 
