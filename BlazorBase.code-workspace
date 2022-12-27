@@ -8,6 +8,12 @@
 		},
 		{
 			"path": "BlazorBaseModel"
+		},
+		{
+			"path": "ApiClientGenerator"
+		},
+		{
+			"path": "blazorbase-app"
 		}
 	],
 	"settings": {}

@@ -2,6 +2,7 @@ using AutoMapper;
 using BlazorBaseApi;
 using BlazorBaseApi.Hubs;
 using Microsoft.EntityFrameworkCore;
+using BlazorBaseModel;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,12 +20,12 @@ builder.Services.AddCors(policy =>
             .AllowAnyMethod());
     });
 // Auto Mapper Configurations
-var mapperConfig = new MapperConfiguration(mc =>
-{
-    mc.AddUser(new BlazorModel.User());
-});
-IMapper mapper = mapperConfig.CreateMapper();
-builder.Services.AddSingleton(mapper);
+// var mapperConfig = new MapperConfiguration(mc =>
+// {
+//     mc.AddUser(new BlazorBaseModel.Model.User());
+// });
+// IMapper mapper = mapperConfig.CreateMapper();
+// builder.Services.AddSingleton(mapper);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

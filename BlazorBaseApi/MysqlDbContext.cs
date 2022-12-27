@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using BlazorBaseModel.Db;
+using System.Reflection;
 
 namespace BlazorBaseApi
 {
@@ -24,7 +25,18 @@ namespace BlazorBaseApi
 
             modelBuilder.Entity<GenericObject>()
                 .Property(o => o.DateUpdate)
-                .HasComputedColumnSql("", stored: true);
+                .HasComputedColumnSql("NOW()", stored: true);
         }
+        // public DbSet<GenericObject> CreateDbSet(Type myType)
+        // {
+        //     Type dbSetGenericType = typeof(DbSet<>);
+
+        //     Type dbSet = dbSetGenericType.MakeGenericType(myType);
+
+        //     ConstructorInfo ci = dbSet.GetConstructor(new Type[] { });
+
+        //     List<int> listInt = (List<int>)ci.Invoke(new object[] { });
+        //     return listInt
+        // }
     }
 }

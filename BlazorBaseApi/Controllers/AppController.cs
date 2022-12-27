@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using AutoMapper;
+using BlazorBaseModel.Db;
 
 namespace BlazorBaseApi.Controllers
 {
@@ -16,13 +17,17 @@ namespace BlazorBaseApi.Controllers
     public class AppController : ControllerBase
     {
         private MysqlDbContext _dbContext;
-        private readonly IMapper _mapper;
+        private readonly IMapper? _mapper;
         //private readonly IHubContext<AppHub> _hubContext = default!;
 
-        public AppController(MysqlDbContext dbContext, IMapper mapper/*, IHubContext<AppHub> hubContext*/)
+        public AppController(
+            MysqlDbContext dbContext
+        /*, IMapper mapper*/
+        /*, IHubContext<AppHub> hubContext*/
+        )
         {
             _dbContext = dbContext;
-            _mapper = mapper;
+            // _mapper = mapper;
             // _hubContext = hubContext;
         }
 
@@ -47,36 +52,29 @@ namespace BlazorBaseApi.Controllers
         [HttpGet]
         public IActionResult GetObjectList(string objClassName)
         {
-            //var entityType = this._dbContext.Model.GetEntityTypes();
-            var objResultList = new List<Object>();
-            var type = Type.GetType("BlazorBaseApi.MysqlDbContext");
-            if (type != null)
+            var types = this._dbContext.GetType().GetProperties();
+
+            // Check if property is really a DbSet<TEntity>
+            var filteredTypes = types.Where(x => x.PropertyType.IsGenericType
+                                                && x.PropertyType.GetGenericTypeDefinition() == typeof(DbSet<>));
+
+            // foreach (var typeFilter in filteredTypes)
+            // {
+            //     Console.WriteLine($"{typeFilter.Name}");
+            //     // var dbSet = (IEnumerable<dynamic>)typeFilter.GetValue(this._dbContext);
+            //     // var entities = dbSet.ToList();
+            // }
+            PropertyInfo propertyInfo = filteredTypes.Where(t => t.Name == objClassName).First();
+            if (propertyInfo != null)
             {
-                List<FieldInfo> list = this._dbContext.GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic).ToList();
-                IEntityType entityType = this._dbContext.Model.FindEntityType(objClassName);
-                FieldInfo? field = list.Where(f => f.Name.Contains(objClassName)).FirstOrDefault();
-                
-                if (field != null)
+                var dbSet = (IEnumerable<dynamic>)propertyInfo.GetValue(this._dbContext);
+                if (dbSet != null)
                 {
-                    MethodInfo? method = this._dbContext.GetType().GetMethod(objClassName, new Type[] { });
-                    if (method != null)
-                    {
-                        var result = method.Invoke(this._dbContext, null);
-                    }
+                    var entities = dbSet.ToList();
+                    Ok(entities);
                 }
             }
-            // try
-            // {
-            //     for (int i = 0; i < 10; i++)
-            //     {
-            //         objResultList.Add(GetInstance(objClassName));
-            //     }
-            // }
-            // catch (Exception e)
-            // {
-            //     throw new Exception(e.Message);
-            // }
-            return Ok(objResultList);
+            return Ok();
         }
 
         [Route("{objClassName}")]
