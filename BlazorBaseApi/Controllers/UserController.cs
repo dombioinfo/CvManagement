@@ -26,9 +26,9 @@ namespace BlazorBaseApi.Controllers
 
         [Route("")]
         [HttpGet()]
-        public IEnumerable<User> GetUsers()
+        public IEnumerable<UserDto> GetUsers()
         {
-            return Enumerable.Range(1, 5).Select(index => new User
+            return Enumerable.Range(1, 5).Select(index => new UserDto
             {
                 Id = Random.Shared.Next(1, 8),
                 Nom = NomList[Random.Shared.Next(NomList.Length)],
@@ -40,9 +40,9 @@ namespace BlazorBaseApi.Controllers
 
         [Route("{id}")]
         [HttpGet()]
-        public IEnumerable<User> GetUser(int id)
+        public IEnumerable<UserDto> GetUser(int id)
         {
-            return Enumerable.Range(1, 1).Select(index => new User
+            return Enumerable.Range(1, 1).Select(index => new UserDto
             {
                 Id = id,
                 Nom = NomList[Random.Shared.Next(NomList.Length)],

@@ -1,30 +1,30 @@
 using System.Text.Json;
 using BlazorBaseModel;
-using BlazorBaseModel.Db;
+using BlazorBaseModel.Model;
 using Microsoft.AspNetCore.Components;
 
 namespace BlazorBase.Service
 {
-    public class WeatherForecastService
+    public class CandidatureDtoService
     {
         private readonly IHttpClientFactory _clientFactory;
 
-        public WeatherForecastService(IHttpClientFactory clientFactory)
+        public CandidatureDtoService(IHttpClientFactory clientFactory)
         {
             _clientFactory = clientFactory;
         }
-        private List<WeatherForecast> WeatherForecastList { get; set; } = new List<WeatherForecast>();
+        private List<CandidatureDto> CandidatureDtoList { get; set; } = new List<CandidatureDto>();
 
         private static readonly string[] Summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
-        public async Task<WeatherForecast> GetForecastByIdAsync(int id)
+        public async Task<CandidatureDto> GetForecastByIdAsync(int id)
         {
-            var result = new WeatherForecast();
+            var result = new CandidatureDto();
 
-            var url = $"https://172.26.0.2:7031/api/app/GetObject/WeatherForecast/{id}";
+            var url = $"https://172.26.0.2:7031/api/app/GetObject/CandidatureDto/{id}";
 
             var request = new HttpRequestMessage(HttpMethod.Get, url);
             request.Headers.Add("Accept", "application/json");
@@ -37,18 +37,18 @@ namespace BlazorBase.Service
             {
                 var stringResponse = await response.Content.ReadAsStringAsync();
 
-                result = JsonSerializer.Deserialize<WeatherForecast>(stringResponse,
+                result = JsonSerializer.Deserialize<CandidatureDto>(stringResponse,
                     new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
             }
 
-            return result == null ? new WeatherForecast() : result;
+            return result == null ? new CandidatureDto() : result;
         }
 
-        public async Task<WeatherForecast[]> GetForecastAsync(DateTime startDate)
+        public async Task<CandidatureDto[]> GetForecastAsync(DateTime startDate)
         {
-            var result = new List<WeatherForecast>();
+            var result = new List<CandidatureDto>();
 
-            var url = $"http://api:7031/api/app/GetObjectList/WeatherForecast";
+            var url = $"http://api:7031/api/app/GetObjectList/CandidatureDto";
 
             var request = new HttpRequestMessage(HttpMethod.Get, url);
             request.Headers.Add("Accept", "application/json");
@@ -64,15 +64,15 @@ namespace BlazorBase.Service
                 {
                     throw new Exception("La réponse ne doit pas être un objet vide");
                 }
-                result = JsonSerializer.Deserialize<List<WeatherForecast>>(stringResponse,
+                result = JsonSerializer.Deserialize<List<CandidatureDto>>(stringResponse,
                     new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
             }
             else
             {
-                result = Array.Empty<WeatherForecast>().ToList();
+                result = Array.Empty<CandidatureDto>().ToList();
             }
 
-            return result == null ? Array.Empty<WeatherForecast>() : result.ToArray();
+            return result == null ? Array.Empty<CandidatureDto>() : result.ToArray();
         }
     }
 }

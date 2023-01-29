@@ -2,9 +2,9 @@ using BlazorBaseModel.Db;
 
 namespace BlazorBaseModel.Model
 {
-    public class Profil : GenericObject
+    public class ProfilDto : GenericObject
     {
-        public Profil() : base() { }
+        public ProfilDto() : base() { }
 
         public string Libelle { get; set; } = "";
 

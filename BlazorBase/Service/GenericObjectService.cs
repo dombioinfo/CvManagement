@@ -47,9 +47,9 @@ namespace BlazorBase.Service
         public async Task<T[]> GetGenericObjectListAsync()
         {
             var result = new List<T>();
-
-            var url = $"http://api:7031/api/app/GetObjectList/{nameof(T)}";
-
+            
+            var url = $"http://api:7031/api/app/GetObjectList/{nameof(T).Replace("Dto", "")}";
+            Console.WriteLine($"URL : {url}");
             var request = new HttpRequestMessage(HttpMethod.Get, url);
             request.Headers.Add("Accept", "application/json");
 

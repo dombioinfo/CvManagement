@@ -25,9 +25,11 @@ builder.Services.AddHttpClient("HttpClientWithSSLUntrusted").ConfigurePrimaryHtt
 });
 
 // builder.Services.AddSingleton<WeatherForecastService>();
-builder.Services.AddSingleton<GenericObjectService<User>>();
-builder.Services.AddSingleton<GenericObjectService<Profil>>();
-builder.Services.AddSingleton<GenericObjectService<WeatherForecast>>();
+builder.Services.AddSingleton<GenericObjectService<UserDto>>();
+builder.Services.AddSingleton<GenericObjectService<ProfilDto>>();
+builder.Services.AddSingleton<GenericObjectService<AdresseDto>>();
+builder.Services.AddSingleton<GenericObjectService<PersonneDto>>();
+builder.Services.AddSingleton<GenericObjectService<CandidatureDto>>();
 
 var app = builder.Build();
 

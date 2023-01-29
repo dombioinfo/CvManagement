@@ -7,17 +7,20 @@ namespace BlazorBaseApi
     public class MysqlDbContext : DbContext
     {
         // Remplacé par la surcharge OnModelCreating
-        public DbSet<WeatherForecast> WeatherForecast { get; set; } = default!;
         public DbSet<User> User { get; set; } = default!;
         public DbSet<Profil> Profil { get; set; } = default!;
+        public DbSet<Candidature> Candidature { get; set; } = default!;
+        public DbSet<Personne> Personne { get; set; } = default!;
+        public DbSet<Adresse> Adresse { get; set; } = default!;
 
         public MysqlDbContext(DbContextOptions<MysqlDbContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            // var entitiesAssembly = typeof(GenericObject).Assembly;
-            // modelBuilder.RegisterAllEntities<GenericObject>(entitiesAssembly);
+            var entitiesAssembly = typeof(GenericObject).Assembly;
+            Console.WriteLine($"{entitiesAssembly}");
+            modelBuilder.RegisterAllEntities<GenericObject>(entitiesAssembly);
 
             modelBuilder.Entity<GenericObject>()
                 .Property(o => o.DateCreation)
@@ -27,16 +30,5 @@ namespace BlazorBaseApi
                 .Property(o => o.DateUpdate)
                 .HasComputedColumnSql("NOW()", stored: true);
         }
-        // public DbSet<GenericObject> CreateDbSet(Type myType)
-        // {
-        //     Type dbSetGenericType = typeof(DbSet<>);
-
-        //     Type dbSet = dbSetGenericType.MakeGenericType(myType);
-
-        //     ConstructorInfo ci = dbSet.GetConstructor(new Type[] { });
-
-        //     List<int> listInt = (List<int>)ci.Invoke(new object[] { });
-        //     return listInt
-        // }
     }
 }

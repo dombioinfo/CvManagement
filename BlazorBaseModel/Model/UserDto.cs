@@ -2,9 +2,9 @@ using BlazorBaseModel.Db;
 
 namespace BlazorBaseModel.Model
 {
-    public class User : GenericObject
+    public class UserDto : GenericObject
     {
-        public User() : base() { }
+        public UserDto() : base() { }
 
         public string Login { get; set; } = "";
 

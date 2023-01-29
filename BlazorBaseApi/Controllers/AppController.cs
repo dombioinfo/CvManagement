@@ -38,7 +38,7 @@ namespace BlazorBaseApi.Controllers
             dynamic? objResult;
             try
             {
-                this._dbContext.WeatherForecast.Include(x => x.Id == 1).FirstOrDefault();
+                this._dbContext.User.Include(x => x.Id == id).FirstOrDefault();
                 objResult = GetInstance(objClassName);
             }
             catch (Exception e)

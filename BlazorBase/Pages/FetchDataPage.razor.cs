@@ -9,16 +9,12 @@ namespace BlazorBase.Pages
     {
         private string PageTitle { get; set; } = "Fetch Data";
 
-        // [Inject]
-        // protected WeatherForecastService ForecastService { get; set; } = default!;
-        // private IEnumerable<WeatherForecast> forecasts { get; set; } = default!;
-
         [Inject]
-        protected GenericObjectService<User> UserService { get; set; } = default!;
-        private IEnumerable<User> users { get; set; } = default!;
+        protected GenericObjectService<UserDto> UserService { get; set; } = default!;
+        private IEnumerable<UserDto> users { get; set; } = default!;
 
 
-        private WeatherForecast forecast { get; set; } = default!;
+        // private WeatherForecast forecast { get; set; } = default!;
 
         protected override async Task OnInitializedAsync()
         {
