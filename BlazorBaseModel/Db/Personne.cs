@@ -3,11 +3,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BlazorBaseModel.Db
 {
-    [Table("Personne")]
     public class Personne : GenericObject
     {
-        public Personne() : base() { }
 
+        public Personne() : base() { }
+        
         [Required]
         [Column("Nom")]
         public string Nom { get; set; } = "";

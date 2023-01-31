@@ -1,5 +1,3 @@
-using BlazorBaseModel.Db;
-
 namespace BlazorBaseModel.Model
 {
     public class PersonneDto : GenericObject
@@ -16,6 +14,6 @@ namespace BlazorBaseModel.Model
 
         public string? Tel { get; set; } = default!;
 
-        public virtual Adresse Adresse { get; set; } = default!;
+        public virtual AdresseDto Adresse { get; set; } = default!;
     }
 }

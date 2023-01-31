@@ -6,20 +6,11 @@ namespace BlazorBaseApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class UserController : ControllerBase
+    public class UserController : AppController
     {
-        private static readonly string[] NomList = new[]
-        {
-            "Jeannin", "Albanese"
-        };
-        private static readonly string[] PrenomList = new[]
-        {
-            "Dominique", "Virginie", "Dorian", "Béryl"
-        };
-
         private readonly ILogger<UserController> _logger;
 
-        public UserController(ILogger<UserController> logger)
+        public UserController(ILogger<UserController> logger, MysqlDbContext dbContext) : base(dbContext)
         {
             _logger = logger;
         }
@@ -28,28 +19,14 @@ namespace BlazorBaseApi.Controllers
         [HttpGet()]
         public IEnumerable<UserDto> GetUsers()
         {
-            return Enumerable.Range(1, 5).Select(index => new UserDto
-            {
-                Id = Random.Shared.Next(1, 8),
-                Nom = NomList[Random.Shared.Next(NomList.Length)],
-                Prenom = PrenomList[Random.Shared.Next(PrenomList.Length)],
-                Age = Random.Shared.Next(3, 42)
-            })
-            .ToArray();
+            return new List<UserDto>();
         }
 
         [Route("{id}")]
         [HttpGet()]
-        public IEnumerable<UserDto> GetUser(int id)
+        public UserDto GetUser(int id)
         {
-            return Enumerable.Range(1, 1).Select(index => new UserDto
-            {
-                Id = id,
-                Nom = NomList[Random.Shared.Next(NomList.Length)],
-                Prenom = PrenomList[Random.Shared.Next(PrenomList.Length)],
-                Age = Random.Shared.Next(3, 42)
-            })
-            .ToArray();
+            return null; //this._dbContext.Users.FirstOrDefault(u => u.Id == id) ?? new UserDto();
         }
     }
 }

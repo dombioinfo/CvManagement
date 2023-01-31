@@ -1,5 +1,3 @@
-using BlazorBaseModel.Db;
-
 namespace BlazorBaseModel.Model
 {
     public class AdresseDto : GenericObject

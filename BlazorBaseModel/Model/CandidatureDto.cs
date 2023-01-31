@@ -1,5 +1,3 @@
-using BlazorBaseModel.Db;
-
 namespace BlazorBaseModel.Model
 {
     public class CandidatureDto : GenericObject
@@ -10,6 +8,6 @@ namespace BlazorBaseModel.Model
 
         public string Annotation { get; set; } = "";
 
-        public virtual Personne Personne { get; set; } = default!;
+        public virtual PersonneDto Personne { get; set; } = default!;
     }
 }

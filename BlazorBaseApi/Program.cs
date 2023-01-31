@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddDbContext<MysqlDbContext>(options =>
     {
-        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? "";
         options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
     });
 builder.Services.AddCors(policy =>

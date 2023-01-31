@@ -16,8 +16,8 @@ namespace BlazorBaseApi.Controllers
     [Route("api/[controller]/[action]")]
     public class AppController : ControllerBase
     {
-        private MysqlDbContext _dbContext;
-        private readonly IMapper? _mapper;
+        protected MysqlDbContext _dbContext;
+        protected readonly IMapper? _mapper;
         //private readonly IHubContext<AppHub> _hubContext = default!;
 
         public AppController(
@@ -38,7 +38,7 @@ namespace BlazorBaseApi.Controllers
             dynamic? objResult;
             try
             {
-                this._dbContext.User.Include(x => x.Id == id).FirstOrDefault();
+                this._dbContext.Users.Include(x => x.Id == id).FirstOrDefault();
                 objResult = GetInstance(objClassName);
             }
             catch (Exception e)

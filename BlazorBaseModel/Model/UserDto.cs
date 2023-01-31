@@ -1,5 +1,3 @@
-using BlazorBaseModel.Db;
-
 namespace BlazorBaseModel.Model
 {
     public class UserDto : GenericObject
@@ -14,6 +12,6 @@ namespace BlazorBaseModel.Model
 
         public int Age { get; set; } = 0;
 
-        public virtual Profil Profil { get; set; } = default!;
+        public virtual ProfilDto Profil { get; set; } = default!;
     }
 }
