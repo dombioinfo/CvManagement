@@ -21,5 +21,11 @@ namespace BlazorBaseModel.Db
 
         [Column("CodePostal")]
         public long CodePostal { get; set; } = default!;
+
+        [Column("PersonneId")]
+        public long PersonneId { get; set; } = default!;
+
+        [ForeignKey("PersonneId")]
+        public virtual Personne? Personne { get; set; } = default!;
     }
 }

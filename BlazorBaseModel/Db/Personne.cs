@@ -6,8 +6,11 @@ namespace BlazorBaseModel.Db
     public class Personne : GenericObject
     {
 
-        public Personne() : base() { }
-        
+        public Personne() : base()
+        {
+            this.Adresses = new HashSet<Adresse>();
+        }
+
         [Required]
         [Column("Nom")]
         public string Nom { get; set; } = "";
@@ -24,11 +27,7 @@ namespace BlazorBaseModel.Db
 
         [Column("Tel")]
         public string? Tel { get; set; } = default!;
-
-        [Column("AdresseId")]
-        public long AdresseId { get; set; } = default!;
-
-        [ForeignKey("AdresseId")]
-        public virtual Adresse Adresse { get; set; } = default!;
+        
+        public virtual ICollection<Adresse> Adresses { get; set; } = default!;
     }
 }

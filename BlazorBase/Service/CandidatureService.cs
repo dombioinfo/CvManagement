@@ -5,22 +5,17 @@ using Microsoft.AspNetCore.Components;
 
 namespace BlazorBase.Service
 {
-    public class CandidatureDtoService
+    public class CandidatureService
     {
         private readonly IHttpClientFactory _clientFactory;
 
-        public CandidatureDtoService(IHttpClientFactory clientFactory)
+        public CandidatureService(IHttpClientFactory clientFactory)
         {
             _clientFactory = clientFactory;
         }
         private List<CandidatureDto> CandidatureDtoList { get; set; } = new List<CandidatureDto>();
 
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
-        public async Task<CandidatureDto> GetForecastByIdAsync(int id)
+        public async Task<CandidatureDto> GetCandidatureByIdAsync(int id)
         {
             var result = new CandidatureDto();
 
@@ -44,7 +39,7 @@ namespace BlazorBase.Service
             return result == null ? new CandidatureDto() : result;
         }
 
-        public async Task<CandidatureDto[]> GetForecastAsync(DateTime startDate)
+        public async Task<CandidatureDto[]> GetCandidatureAsync(DateTime startDate)
         {
             var result = new List<CandidatureDto>();
 

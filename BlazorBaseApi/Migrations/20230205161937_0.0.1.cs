@@ -14,18 +14,20 @@ namespace BlazorBaseApi.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Adresse",
+                name: "Personnes",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Rue = table.Column<string>(type: "longtext", nullable: false)
+                    Nom = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Complement = table.Column<string>(type: "longtext", nullable: false)
+                    Prenom = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Ville = table.Column<string>(type: "longtext", nullable: false)
+                    DateNaissance = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    Email = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    CodePostal = table.Column<long>(type: "bigint", nullable: false),
+                    Tel = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     DateUpdate = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.ComputedColumn),
                     DateCreation = table.Column<DateTime>(type: "datetime(6)", nullable: false),
@@ -34,7 +36,7 @@ namespace BlazorBaseApi.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Adresse", x => x.Id);
+                    table.PrimaryKey("PK_Personnes", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -59,21 +61,19 @@ namespace BlazorBaseApi.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Personnes",
+                name: "Adresse",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Nom = table.Column<string>(type: "longtext", nullable: false)
+                    Rue = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Prenom = table.Column<string>(type: "longtext", nullable: false)
+                    Complement = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    DateNaissance = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    Email = table.Column<string>(type: "longtext", nullable: true)
+                    Ville = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Tel = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    AdresseId = table.Column<long>(type: "bigint", nullable: false),
+                    CodePostal = table.Column<long>(type: "bigint", nullable: false),
+                    PersonneId = table.Column<long>(type: "bigint", nullable: false),
                     DateUpdate = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.ComputedColumn),
                     DateCreation = table.Column<DateTime>(type: "datetime(6)", nullable: false),
@@ -82,11 +82,39 @@ namespace BlazorBaseApi.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Personnes", x => x.Id);
+                    table.PrimaryKey("PK_Adresse", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Personnes_Adresse_AdresseId",
-                        column: x => x.AdresseId,
-                        principalTable: "Adresse",
+                        name: "FK_Adresse_Personnes_PersonneId",
+                        column: x => x.PersonneId,
+                        principalTable: "Personnes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Candidature",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    DateCandidature = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Annotation = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    PersonneId = table.Column<long>(type: "bigint", nullable: false),
+                    DateUpdate = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.ComputedColumn),
+                    DateCreation = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    UpdateUserId = table.Column<int>(type: "int", nullable: false),
+                    CreateUserId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Candidature", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Candidature_Personnes_PersonneId",
+                        column: x => x.PersonneId,
+                        principalTable: "Personnes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -126,43 +154,15 @@ namespace BlazorBaseApi.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
-            migrationBuilder.CreateTable(
-                name: "Candidature",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    DateCandidature = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Annotation = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    PersonneId = table.Column<long>(type: "bigint", nullable: false),
-                    DateUpdate = table.Column<DateTime>(type: "datetime(6)", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.ComputedColumn),
-                    DateCreation = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    UpdateUserId = table.Column<int>(type: "int", nullable: false),
-                    CreateUserId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Candidature", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Candidature_Personnes_PersonneId",
-                        column: x => x.PersonneId,
-                        principalTable: "Personnes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+            migrationBuilder.CreateIndex(
+                name: "IX_Adresse_PersonneId",
+                table: "Adresse",
+                column: "PersonneId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Candidature_PersonneId",
                 table: "Candidature",
                 column: "PersonneId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Personnes_AdresseId",
-                table: "Personnes",
-                column: "AdresseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_User_ProfilId",
@@ -172,6 +172,9 @@ namespace BlazorBaseApi.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Adresse");
+
             migrationBuilder.DropTable(
                 name: "Candidature");
 
@@ -183,9 +186,6 @@ namespace BlazorBaseApi.Migrations
 
             migrationBuilder.DropTable(
                 name: "Profil");
-
-            migrationBuilder.DropTable(
-                name: "Adresse");
         }
     }
 }

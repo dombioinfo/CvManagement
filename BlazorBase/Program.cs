@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Components.Web;
 using BlazorBase.Service;
 using Microsoft.AspNetCore.ResponseCompression;
 using BlazorBaseModel.Model;
+using AutoMapper;
+using BlazorBaseModel.Db;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,13 +25,22 @@ builder.Services.AddHttpClient("HttpClientWithSSLUntrusted").ConfigurePrimaryHtt
                 return true;
             }
 });
+// var mapperConfig = new MapperConfiguration(mc =>
+// {
+//     mc.CreateMap<User, UserDto>();
+//     mc.CreateMap<Profil, ProfilDto>();
+//     mc.CreateMap<Personne, PersonneDto>();
+//     mc.CreateMap<Candidature, CandidatureDto>();
+//     mc.CreateMap<Adresse, AdresseDto>();
+// });
+// IMapper mapper = mapperConfig.CreateMapper();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 // builder.Services.AddSingleton<WeatherForecastService>();
-builder.Services.AddSingleton<GenericObjectService<UserDto>>();
-builder.Services.AddSingleton<GenericObjectService<ProfilDto>>();
-builder.Services.AddSingleton<GenericObjectService<AdresseDto>>();
-builder.Services.AddSingleton<GenericObjectService<PersonneDto>>();
-builder.Services.AddSingleton<GenericObjectService<CandidatureDto>>();
+//builder.Services.AddSingleton<GenericObjectService<ProfilDto>>();
+builder.Services.AddSingleton<PersonneService>();
+builder.Services.AddSingleton<AdresseService>();
+builder.Services.AddSingleton<CandidatureService>();
 
 var app = builder.Build();
 

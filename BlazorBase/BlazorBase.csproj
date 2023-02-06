@@ -4,8 +4,18 @@
     <ProjectReference Include="..\BlazorBaseModel\BlazorBaseModel.csproj" />
   </ItemGroup>
 
+  <!--
+    <ItemGroup>
+    <Using Include="AutoMapper" />
+    <Using Include="BlazorBaseModel.Db" />
+    <Using Include="BlazorBaseModel.Model" />
+    <Using Include="System.Text.Json" />
+  </ItemGroup>
+-->
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.0" />
+    <PackageReference Include="automapper" Version="12.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
   </ItemGroup>
 
   <PropertyGroup>

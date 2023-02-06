@@ -17,12 +17,12 @@ namespace BlazorBaseApi.Controllers
     public class AppController : ControllerBase
     {
         protected MysqlDbContext _dbContext;
-        protected readonly IMapper? _mapper;
+        // protected readonly IMapper? _mapper;
         //private readonly IHubContext<AppHub> _hubContext = default!;
 
         public AppController(
             MysqlDbContext dbContext
-        /*, IMapper mapper*/
+            // , IMapper mapper
         /*, IHubContext<AppHub> hubContext*/
         )
         {
@@ -31,6 +31,7 @@ namespace BlazorBaseApi.Controllers
             // _hubContext = hubContext;
         }
 
+/*
         [Route("{objClassName}/{id}")]
         [HttpGet]
         public IActionResult GetObject(string objClassName, int id)
@@ -85,7 +86,7 @@ namespace BlazorBaseApi.Controllers
 
             return Ok(objectResult);
         }
-
+*/
         private dynamic? GetInstance(string strFullyQualifiedName)
         {
             object? result = null;

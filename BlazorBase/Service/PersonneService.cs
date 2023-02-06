@@ -1,78 +1,38 @@
 using System.Text.Json;
 using BlazorBaseModel;
 using BlazorBaseModel.Model;
+using BlazorBaseModel.Db;
 using Microsoft.AspNetCore.Components;
+using AutoMapper;
 
 namespace BlazorBase.Service
 {
-    public class PersonneDtoService
+    public class PersonneService : GenericObjectService<Personne>
     {
-        private readonly IHttpClientFactory _clientFactory;
+        private readonly AdresseService _adresseService;
 
-        public PersonneDtoService(IHttpClientFactory clientFactory)
+        public PersonneService(
+            IHttpClientFactory clientFactory, IMapper mapper,
+            AdresseService adresseService
+            ) : base(clientFactory, mapper)
         {
-            _clientFactory = clientFactory;
+            _adresseService = adresseService;
         }
-        private List<PersonneDto> PersonneDtoList { get; set; } = new List<PersonneDto>();
+        public List<PersonneDto> PersonneDtoList { get; set; } = new List<PersonneDto>();
 
-        private static readonly string[] Summaries = new[]
+        public async Task<PersonneDto[]> GetPersonnesAsync()
         {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
-        public async Task<PersonneDto> GetForecastByIdAsync(int id)
-        {
-            var result = new PersonneDto();
-
-            var url = $"https://api:7031/api/app/GetObject/PersonneDto/{id}";
-
-            var request = new HttpRequestMessage(HttpMethod.Get, url);
-            request.Headers.Add("Accept", "application/json");
-
-            HttpClient client = _clientFactory.CreateClient("HttpClientWithSSLUntrusted");
-
-            var response = await client.SendAsync(request);
-
-            if (response.IsSuccessStatusCode)
+            Personne[] personnes = await this.GetGenericObjectListAsync();
+            AdresseDto[] adresseDtos = await _adresseService.GetAdresseAsync();
+            List<PersonneDto> personneDtos = new List<PersonneDto>();
+            foreach (Personne personne in personnes)
             {
-                var stringResponse = await response.Content.ReadAsStringAsync();
-
-                result = JsonSerializer.Deserialize<PersonneDto>(stringResponse,
-                    new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+                PersonneDto personneDto = _mapper.Map<PersonneDto>(personne);
+                AdresseDto? adresseDto = adresseDtos.FirstOrDefault(a => a.PersonneDto.Id == personneDto.Id);
+                personneDto.AdresseDto = adresseDto != null ? adresseDto : new AdresseDto();
+                personneDtos.Add(personneDto);
             }
-
-            return result == null ? new PersonneDto() : result;
-        }
-
-        public async Task<PersonneDto[]> GetForecastAsync(DateTime startDate)
-        {
-            var result = new List<PersonneDto>();
-
-            var url = $"http://api:7031/api/app/GetObjectList/PersonneDto";
-
-            var request = new HttpRequestMessage(HttpMethod.Get, url);
-            request.Headers.Add("Accept", "application/json");
-
-            HttpClient client = _clientFactory.CreateClient("HttpClientWithSSLUntrusted");
-
-            var response = await client.SendAsync(request);
-
-            if (response.IsSuccessStatusCode)
-            {
-                var stringResponse = await response.Content.ReadAsStringAsync();
-                if (string.IsNullOrEmpty(stringResponse))
-                {
-                    throw new Exception("La réponse ne doit pas être un objet vide");
-                }
-                result = JsonSerializer.Deserialize<List<PersonneDto>>(stringResponse,
-                    new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
-            }
-            else
-            {
-                result = Array.Empty<PersonneDto>().ToList();
-            }
-
-            return result == null ? Array.Empty<PersonneDto>() : result.ToArray();
+            return personneDtos.ToArray();
         }
     }
 }

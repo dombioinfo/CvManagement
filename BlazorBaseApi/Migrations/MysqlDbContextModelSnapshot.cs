@@ -44,6 +44,9 @@ namespace BlazorBaseApi.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime(6)");
 
+                    b.Property<long>("PersonneId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Rue")
                         .IsRequired()
                         .HasColumnType("longtext")
@@ -58,6 +61,8 @@ namespace BlazorBaseApi.Migrations
                         .HasColumnName("Ville");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PersonneId");
 
                     b.ToTable("Adresse");
                 });
@@ -107,10 +112,6 @@ namespace BlazorBaseApi.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    b.Property<long>("AdresseId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("AdresseId");
-
                     b.Property<int>("CreateUserId")
                         .HasColumnType("int");
 
@@ -147,8 +148,6 @@ namespace BlazorBaseApi.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AdresseId");
 
                     b.ToTable("Personnes");
                 });
@@ -237,6 +236,17 @@ namespace BlazorBaseApi.Migrations
                     b.ToTable("User");
                 });
 
+            modelBuilder.Entity("BlazorBaseModel.Db.Adresse", b =>
+                {
+                    b.HasOne("BlazorBaseModel.Db.Personne", "Personne")
+                        .WithMany("Adresses")
+                        .HasForeignKey("PersonneId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Personne");
+                });
+
             modelBuilder.Entity("BlazorBaseModel.Db.Candidature", b =>
                 {
                     b.HasOne("BlazorBaseModel.Db.Personne", "Personne")
@@ -248,17 +258,6 @@ namespace BlazorBaseApi.Migrations
                     b.Navigation("Personne");
                 });
 
-            modelBuilder.Entity("BlazorBaseModel.Db.Personne", b =>
-                {
-                    b.HasOne("BlazorBaseModel.Db.Adresse", "Adresse")
-                        .WithMany()
-                        .HasForeignKey("AdresseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Adresse");
-                });
-
             modelBuilder.Entity("BlazorBaseModel.Db.User", b =>
                 {
                     b.HasOne("BlazorBaseModel.Db.Profil", "Profil")
@@ -268,6 +267,11 @@ namespace BlazorBaseApi.Migrations
                         .IsRequired();
 
                     b.Navigation("Profil");
+                });
+
+            modelBuilder.Entity("BlazorBaseModel.Db.Personne", b =>
+                {
+                    b.Navigation("Adresses");
                 });
 #pragma warning restore 612, 618
         }

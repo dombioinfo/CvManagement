@@ -2,7 +2,6 @@ using AutoMapper;
 using BlazorBaseApi;
 using BlazorBaseApi.Hubs;
 using Microsoft.EntityFrameworkCore;
-using BlazorBaseModel;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +21,11 @@ builder.Services.AddCors(policy =>
 // Auto Mapper Configurations
 // var mapperConfig = new MapperConfiguration(mc =>
 // {
-//     mc.AddUser(new BlazorBaseModel.Model.User());
+//     mc.CreateMap<User, UserDto>();
+//     mc.CreateMap<Profil, ProfilDto>();
+//     mc.CreateMap<Personne, PersonneDto>();
+//     mc.CreateMap<Candidature, CandidatureDto>();
+//     mc.CreateMap<Adresse, AdresseDto>();
 // });
 // IMapper mapper = mapperConfig.CreateMapper();
 // builder.Services.AddSingleton(mapper);

@@ -1,0 +1,32 @@
+﻿@page "/personnes"
+
+<PageTitle>@PageTitle</PageTitle>
+
+@if (personnes == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Adresse</th>
+                <th>Date naissance</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var personneDto in personnes)
+            {
+                <tr>
+                    <td>@personneDto.Nom</td>
+                    <td>@personneDto.Nom</td>
+                    <td>@personneDto.AdresseDto.Ville - @personneDto.AdresseDto.CodePostal</td>
+                    <td>@personneDto.DateNaissance</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

@@ -1,25 +1,26 @@
 using System.Text.Json;
-using BlazorBaseModel;
-using Microsoft.AspNetCore.Components;
+using AutoMapper;
 
 namespace BlazorBase.Service
 {
     public class GenericObjectService<T> where T : new()
     {
-        private readonly IHttpClientFactory _clientFactory;
-
-        public GenericObjectService(IHttpClientFactory clientFactory)
+        protected readonly IHttpClientFactory _clientFactory;
+        protected readonly IMapper _mapper;
+        public GenericObjectService(IHttpClientFactory clientFactory, IMapper mapper)
         {
             _clientFactory = clientFactory;
+            _mapper = mapper;
         }
-        private List<T> GenericObjectList { get; set; } = new List<T>();
 
-        public async Task<T> GetGenericObjectByIdAsync(int id)
+        protected async Task<T> GetGenericObjectByIdAsync(int id)
         {
             var result = new T();
             try
             {
-                var url = $"http://api:7031/api/app/GetObjectList/{nameof(T)}";
+                string typeOfObject = typeof(T).Name;//.Replace("Dto", "");
+                // var url = $"https://api:7031/api/app/GetObjectList/{typeOfObject}";
+                var url = $"https://api:7031/api/{typeOfObject}";
 
                 var request = new HttpRequestMessage(HttpMethod.Get, url);
                 request.Headers.Add("Accept", "application/json");
@@ -41,14 +42,16 @@ namespace BlazorBase.Service
                 Console.Error.WriteLine($"Exception: {e.Message}");
                 throw e;
             }
-            return result;
+            return (result == null) ? new T() : result;
         }
 
-        public async Task<T[]> GetGenericObjectListAsync()
+        protected async Task<T[]> GetGenericObjectListAsync()
         {
             var result = new List<T>();
-            
-            var url = $"http://api:7031/api/app/GetObjectList/{nameof(T).Replace("Dto", "")}";
+
+            string typeOfObject = typeof(T).Name;//.Replace("Dto", "");
+            // var url = $"https://api:7031/api/app/GetObjectList/{typeOfObject}";
+            var url = $"https://api:7031/api/{typeOfObject}";
             Console.WriteLine($"URL : {url}");
             var request = new HttpRequestMessage(HttpMethod.Get, url);
             request.Headers.Add("Accept", "application/json");

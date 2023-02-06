@@ -11,5 +11,7 @@ namespace BlazorBaseModel.Model
         public string Ville { get; set; } = "";
 
         public long CodePostal { get; set; } = default!;
+
+        public virtual PersonneDto PersonneDto { get; set; } = default!;
     }
 }
