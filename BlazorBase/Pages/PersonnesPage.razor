@@ -15,21 +15,19 @@ else
             @bind-SelectedRow="@selectedPersonne"
             ReadData="@OnReadData"
             TotalItems="@totalPersonnes"
+            EditMode="DataGridEditMode.Popup"
             PageSize="20"
             ShowPager
             Editable
             Responsive>
         <DataGridCommandColumn Caption="Action">
             <NewCommandTemplate>
-                <!--<Button Color="Color.Success" Clicked="@context.Clicked">Créer</Button>-->
                 <Icon Name="IconName.Add" Clicked="@context.Clicked" Margin="Margin.Is3.FromEnd" />
             </NewCommandTemplate>
             <EditCommandTemplate>
-                <!--<Button Color="Color.Primary" Clicked="@context.Clicked">Modifier</Button>-->
                 <Icon Name="IconName.Edit" Clicked="@context.Clicked" Margin="Margin.Is3.FromEnd" />
             </EditCommandTemplate>
             <DeleteCommandTemplate>
-                <!--<Button Color="Color.Danger" Clicked="@context.Clicked">Suppression</Button>-->
                 <Icon Name="IconName.Delete" Clicked="@context.Clicked" Margin="Margin.Is3.FromEnd" />
             </DeleteCommandTemplate>
         </DataGridCommandColumn>
