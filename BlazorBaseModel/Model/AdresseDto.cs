@@ -12,6 +12,8 @@ namespace BlazorBaseModel.Model
 
         public long CodePostal { get; set; } = default!;
 
+        public long PersonneId { get; set; } = default!;
+
         public virtual PersonneDto PersonneDto { get; set; } = default!;
     }
 }

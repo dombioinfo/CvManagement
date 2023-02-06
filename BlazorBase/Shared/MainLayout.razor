@@ -1,7 +1,26 @@
-﻿@inherits LayoutComponentBase
+﻿@using Blazorise
+@inherits LayoutComponentBase
 
-<PageTitle>BlazorBase</PageTitle>
+<PageTitle>Gestion des CV</PageTitle>
 
+<Layout>
+    <LayoutHeader Fixed>
+        Gestion des CV
+    </LayoutHeader>
+    <Layout Sider>
+        <LayoutSider>
+            <LayoutSiderContent>
+                <NavMenu2 />
+            </LayoutSiderContent>
+        </LayoutSider>
+        <Layout>
+            <LayoutContent>
+                @Body
+            </LayoutContent>
+        </Layout>
+    </Layout>
+</Layout>
+<!--
 <div class="page">
     <div class="sidebar">
         <NavMenu />
@@ -17,3 +36,4 @@
         </article>
     </main>
 </div>
+-->

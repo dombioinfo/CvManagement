@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.ResponseCompression;
 using BlazorBaseModel.Model;
 using AutoMapper;
 using BlazorBaseModel.Db;
+using Blazorise;
+using Blazorise.Bootstrap;
+using Blazorise.Icons.FontAwesome;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +17,7 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddHttpClient();
 builder.Services.AddSingleton<HttpClient>(httpClient => new HttpClient()
 {
-    BaseAddress = new Uri("http://api:7031/")
+    BaseAddress = new Uri("https://api:7031/")
 });
 builder.Services.AddHttpClient("HttpClientWithSSLUntrusted").ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
 {
@@ -25,16 +28,14 @@ builder.Services.AddHttpClient("HttpClientWithSSLUntrusted").ConfigurePrimaryHtt
                 return true;
             }
 });
-// var mapperConfig = new MapperConfiguration(mc =>
-// {
-//     mc.CreateMap<User, UserDto>();
-//     mc.CreateMap<Profil, ProfilDto>();
-//     mc.CreateMap<Personne, PersonneDto>();
-//     mc.CreateMap<Candidature, CandidatureDto>();
-//     mc.CreateMap<Adresse, AdresseDto>();
-// });
-// IMapper mapper = mapperConfig.CreateMapper();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services
+    .AddBlazorise(options =>
+    {
+        options.Immediate = true;
+    })
+    .AddBootstrapProviders()
+    .AddFontAwesomeIcons();
 
 // builder.Services.AddSingleton<WeatherForecastService>();
 //builder.Services.AddSingleton<GenericObjectService<ProfilDto>>();

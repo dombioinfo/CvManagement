@@ -8,13 +8,13 @@ namespace BlazorBaseApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class PersonnesController : AppController
+    public class PersonneController : AppController
     {
-        private readonly ILogger<PersonnesController> _logger;
+        private readonly ILogger<PersonneController> _logger;
 
-        public PersonnesController(
+        public PersonneController(
             MysqlDbContext dbContext
-            , ILogger<PersonnesController> logger) : base(dbContext)
+            , ILogger<PersonneController> logger) : base(dbContext)
         {
             _logger = logger;
         }

@@ -8,25 +8,46 @@
 }
 else
 {
+    <!--
     <table class="table">
         <thead>
             <tr>
                 <th>Nom</th>
                 <th>Prénom</th>
-                <th>Adresse</th>
                 <th>Date naissance</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var personneDto in personnes)
+            @* @foreach (var personneDto in personnes)
             {
                 <tr>
                     <td>@personneDto.Nom</td>
-                    <td>@personneDto.Nom</td>
-                    <td>@personneDto.AdresseDto.Ville - @personneDto.AdresseDto.CodePostal</td>
+                    <td>@personneDto.Prenom</td>
                     <td>@personneDto.DateNaissance</td>
                 </tr>
-            }
+            } *@
         </tbody>
     </table>
+    -->
 }
+<DataGrid TItem="PersonneDto"
+          Data="@personnes"
+          @bind-SelectedRow="@selectedPersonne"
+          Responsive>
+    <DataGridCommandColumn Caption="Action" />
+    <DataGridNumericColumn Field="@nameof(PersonneDto.Nom)" Caption="Nom" Editable></DataGridNumericColumn>
+    <DataGridNumericColumn Field="@nameof(PersonneDto.Prenom)" Caption="Prénom" Editable></DataGridNumericColumn>
+    <DataGridNumericColumn Field="@nameof(PersonneDto.DateNaissance)" Caption="Date de naissance" Editable>
+        <DisplayTemplate>
+        @{
+            var date = ( context as PersonneDto )?.DateNaissance;
+
+            if ( date != null )
+            {
+                @($"{date.Value.ToShortDateString()} | Age: {( DateTime.Now.Year - date.Value.Year )}")
+            }
+        }
+        </DisplayTemplate>
+    </DataGridNumericColumn>
+    <DataGridNumericColumn Field="@nameof(PersonneDto.Email)" Caption="Email" Editable></DataGridNumericColumn>
+</DataGrid>

@@ -8,13 +8,13 @@ using Microsoft.EntityFrameworkCore;
 namespace BlazorBaseApi.Controllers
 {
     [Route("api/[controller]")]
-    public class UsersController : AppController
+    public class UserController : AppController
     {
-        private readonly ILogger<UsersController> _logger;
+        private readonly ILogger<UserController> _logger;
 
-        public UsersController(
+        public UserController(
             MysqlDbContext dbContext
-            , ILogger<UsersController> logger) : base(dbContext)
+            , ILogger<UserController> logger) : base(dbContext)
         {
             _logger = logger;
         }

@@ -8,13 +8,13 @@ namespace BlazorBaseApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class AdressesController : AppController
+    public class AdresseController : AppController
     {
-        private readonly ILogger<AdressesController> _logger;
+        private readonly ILogger<AdresseController> _logger;
 
-        public AdressesController(
+        public AdresseController(
             MysqlDbContext dbContext
-            , ILogger<AdressesController> logger) : base(dbContext)
+            , ILogger<AdresseController> logger) : base(dbContext)
         {
             _logger = logger;
         }

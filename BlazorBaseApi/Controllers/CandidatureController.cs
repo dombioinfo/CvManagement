@@ -9,13 +9,13 @@ namespace BlazorBaseApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class CandidaturesController : AppController
+    public class CandidatureController : AppController
     {
-        private readonly ILogger<CandidaturesController> _logger;
+        private readonly ILogger<CandidatureController> _logger;
 
-        public CandidaturesController(
+        public CandidatureController(
             MysqlDbContext dbContext
-            , ILogger<CandidaturesController> logger) : base(dbContext)
+            , ILogger<CandidatureController> logger) : base(dbContext)
         {
             _logger = logger;
         }

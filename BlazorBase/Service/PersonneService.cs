@@ -28,8 +28,8 @@ namespace BlazorBase.Service
             foreach (Personne personne in personnes)
             {
                 PersonneDto personneDto = _mapper.Map<PersonneDto>(personne);
-                AdresseDto? adresseDto = adresseDtos.FirstOrDefault(a => a.PersonneDto.Id == personneDto.Id);
-                personneDto.AdresseDto = adresseDto != null ? adresseDto : new AdresseDto();
+                List<AdresseDto> adresseDtoFiltres = adresseDtos.Where(a => a.PersonneId == personneDto.Id).ToList();
+                personneDto.AdresseDtos = adresseDtoFiltres != null ? adresseDtoFiltres : new List<AdresseDto>();
                 personneDtos.Add(personneDto);
             }
             return personneDtos.ToArray();

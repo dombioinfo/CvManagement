@@ -11,11 +11,12 @@ namespace BlazorBase.Pages
         [Inject]
         protected PersonneService PersonneService { get; set; } = default!;
         private IEnumerable<PersonneDto> personnes { get; set; } = default!;
+        private PersonneDto? selectedPersonne;
 
         protected override async Task OnInitializedAsync()
         {
             personnes = await PersonneService.GetPersonnesAsync();
+            await base.OnInitializedAsync();
         }
     }
 }
-

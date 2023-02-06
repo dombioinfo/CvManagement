@@ -1,73 +1,31 @@
 using System.Text.Json;
+using AutoMapper;
 using BlazorBaseModel;
+using BlazorBaseModel.Db;
 using BlazorBaseModel.Model;
 using Microsoft.AspNetCore.Components;
 
 namespace BlazorBase.Service
 {
-    public class CandidatureService
+    public class CandidatureService : GenericObjectService<Candidature>
     {
-        private readonly IHttpClientFactory _clientFactory;
+        public CandidatureService(
+            IHttpClientFactory clientFactory, IMapper mapper
+            ) : base(clientFactory, mapper)
+        { }
+        public List<CandidatureDto> CandidatureDtoList { get; set; } = new List<CandidatureDto>();
 
-        public CandidatureService(IHttpClientFactory clientFactory)
+        public async Task<CandidatureDto[]> GetPersonnesAsync()
         {
-            _clientFactory = clientFactory;
-        }
-        private List<CandidatureDto> CandidatureDtoList { get; set; } = new List<CandidatureDto>();
-
-        public async Task<CandidatureDto> GetCandidatureByIdAsync(int id)
-        {
-            var result = new CandidatureDto();
-
-            var url = $"https://172.26.0.2:7031/api/app/GetObject/CandidatureDto/{id}";
-
-            var request = new HttpRequestMessage(HttpMethod.Get, url);
-            request.Headers.Add("Accept", "application/json");
-
-            HttpClient client = _clientFactory.CreateClient("HttpClientWithSSLUntrusted");
-
-            var response = await client.SendAsync(request);
-
-            if (response.IsSuccessStatusCode)
+            Candidature[] candidatures = await this.GetGenericObjectListAsync();
+            List<CandidatureDto> candidatureDtos = new List<CandidatureDto>();
+            foreach (Candidature candidature in candidatures)
             {
-                var stringResponse = await response.Content.ReadAsStringAsync();
-
-                result = JsonSerializer.Deserialize<CandidatureDto>(stringResponse,
-                    new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+                CandidatureDto candidatureDto = _mapper.Map<CandidatureDto>(candidature);
+                
+                candidatureDtos.Add(candidatureDto);
             }
-
-            return result == null ? new CandidatureDto() : result;
-        }
-
-        public async Task<CandidatureDto[]> GetCandidatureAsync(DateTime startDate)
-        {
-            var result = new List<CandidatureDto>();
-
-            var url = $"http://api:7031/api/app/GetObjectList/CandidatureDto";
-
-            var request = new HttpRequestMessage(HttpMethod.Get, url);
-            request.Headers.Add("Accept", "application/json");
-
-            HttpClient client = _clientFactory.CreateClient("HttpClientWithSSLUntrusted");
-
-            var response = await client.SendAsync(request);
-
-            if (response.IsSuccessStatusCode)
-            {
-                var stringResponse = await response.Content.ReadAsStringAsync();
-                if (string.IsNullOrEmpty(stringResponse))
-                {
-                    throw new Exception("La réponse ne doit pas être un objet vide");
-                }
-                result = JsonSerializer.Deserialize<List<CandidatureDto>>(stringResponse,
-                    new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
-            }
-            else
-            {
-                result = Array.Empty<CandidatureDto>().ToList();
-            }
-
-            return result == null ? Array.Empty<CandidatureDto>() : result.ToArray();
+            return candidatureDtos.ToArray();
         }
     }
 }
