@@ -1,4 +1,5 @@
 ﻿@page "/personnes"
+@using Blazorise
 
 <PageTitle>@PageTitle</PageTitle>
 
@@ -8,46 +9,44 @@
 }
 else
 {
-    <!--
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Nom</th>
-                <th>Prénom</th>
-                <th>Date naissance</th>
-            </tr>
-        </thead>
-        <tbody>
-            @* @foreach (var personneDto in personnes)
-            {
-                <tr>
-                    <td>@personneDto.Nom</td>
-                    <td>@personneDto.Prenom</td>
-                    <td>@personneDto.DateNaissance</td>
-                </tr>
-            } *@
-        </tbody>
-    </table>
-    -->
-}
-<DataGrid TItem="PersonneDto"
-          Data="@personnes"
-          @bind-SelectedRow="@selectedPersonne"
-          Responsive>
-    <DataGridCommandColumn Caption="Action" />
-    <DataGridNumericColumn Field="@nameof(PersonneDto.Nom)" Caption="Nom" Editable></DataGridNumericColumn>
-    <DataGridNumericColumn Field="@nameof(PersonneDto.Prenom)" Caption="Prénom" Editable></DataGridNumericColumn>
-    <DataGridNumericColumn Field="@nameof(PersonneDto.DateNaissance)" Caption="Date de naissance" Editable>
-        <DisplayTemplate>
-        @{
-            var date = ( context as PersonneDto )?.DateNaissance;
+   
+    <DataGrid TItem="PersonneDto"
+            Data="@personnes"
+            @bind-SelectedRow="@selectedPersonne"
+            ReadData="@OnReadData"
+            TotalItems="@totalPersonnes"
+            PageSize="20"
+            ShowPager
+            Editable
+            Responsive>
+        <DataGridCommandColumn Caption="Action">
+            <NewCommandTemplate>
+                <!--<Button Color="Color.Success" Clicked="@context.Clicked">Créer</Button>-->
+                <Icon Name="IconName.Add" Clicked="@context.Clicked" Margin="Margin.Is3.FromEnd" />
+            </NewCommandTemplate>
+            <EditCommandTemplate>
+                <!--<Button Color="Color.Primary" Clicked="@context.Clicked">Modifier</Button>-->
+                <Icon Name="IconName.Edit" Clicked="@context.Clicked" Margin="Margin.Is3.FromEnd" />
+            </EditCommandTemplate>
+            <DeleteCommandTemplate>
+                <!--<Button Color="Color.Danger" Clicked="@context.Clicked">Suppression</Button>-->
+                <Icon Name="IconName.Delete" Clicked="@context.Clicked" Margin="Margin.Is3.FromEnd" />
+            </DeleteCommandTemplate>
+        </DataGridCommandColumn>
+        <DataGridNumericColumn Field="@nameof(PersonneDto.Nom)" Caption="Nom" Editable></DataGridNumericColumn>
+        <DataGridNumericColumn Field="@nameof(PersonneDto.Prenom)" Caption="Prénom" Editable></DataGridNumericColumn>
+        <DataGridNumericColumn Field="@nameof(PersonneDto.DateNaissance)" Caption="Date de naissance" Editable>
+            <DisplayTemplate>
+            @{
+                var date = ( context as PersonneDto )?.DateNaissance;
 
-            if ( date != null )
-            {
-                @($"{date.Value.ToShortDateString()} | Age: {( DateTime.Now.Year - date.Value.Year )}")
+                if ( date != null )
+                {
+                    @($"{date.Value.ToShortDateString()} | Age: {( DateTime.Now.Year - date.Value.Year )}")
+                }
             }
-        }
-        </DisplayTemplate>
-    </DataGridNumericColumn>
-    <DataGridNumericColumn Field="@nameof(PersonneDto.Email)" Caption="Email" Editable></DataGridNumericColumn>
-</DataGrid>
+            </DisplayTemplate>
+        </DataGridNumericColumn>
+        <DataGridNumericColumn Field="@nameof(PersonneDto.Email)" Caption="Email" Editable></DataGridNumericColumn>
+    </DataGrid>
+}
