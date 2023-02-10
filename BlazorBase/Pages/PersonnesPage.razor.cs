@@ -43,5 +43,25 @@ namespace BlazorBase.Pages
                 }
             }
         }
+
+        private void OnNewItemDefaultSetter(PersonneDto personneDto) {
+            personneDto.DateCreation = DateTime.UtcNow;
+            StateHasChanged();
+        }
+
+        private async Task<int> OnRowInserted(SavedRowItem<PersonneDto, Dictionary<string, object>> e) {
+            int personneId = await PersonneService.CreatePersonneAsync(e.Item);
+            StateHasChanged();
+            return personneId;
+        }
+
+        private async Task OnRowUpdated(SavedRowItem<PersonneDto, Dictionary<string, object>> e) {
+            int id = await PersonneService.UpdatePersonneAsync(e.Item.Id, e.Item);
+        }
+
+        public async Task OnRowRemoved(PersonneDto personneDto) {
+            await PersonneService.DeletePersonneAsync(personneDto.Id);
+        }
+
     }
 }

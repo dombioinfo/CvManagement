@@ -34,5 +34,39 @@ namespace BlazorBase.Service
             }
             return personneDtos.ToArray();
         }
+
+        public async Task<int> CreatePersonneAsync(PersonneDto personneDto)
+        {
+            Personne personne = new Personne()
+            {
+                Id = 0,
+                Nom = personneDto.Nom,
+                Prenom = personneDto.Prenom,
+                DateNaissance = personneDto.DateNaissance,
+                Email = personneDto.Email,
+                Tel = personneDto.Tel
+            };
+            return await this.CreateGenericObjectAsync("Personne/create-with-data", personne);
+        }
+
+        public async Task<int> UpdatePersonneAsync(long personneId, PersonneDto personneDto)
+        {
+            Personne personne = new Personne()
+            {
+                Id = personneId,
+                Nom = personneDto.Nom,
+                Prenom = personneDto.Prenom,
+                DateNaissance = personneDto.DateNaissance,
+                Email = personneDto.Email,
+                Tel = personneDto.Tel,
+                Adresses = null
+            };
+            return await this.UpdateGenericObjectAsync(personneId, personne);
+        }
+
+        public async Task<int> DeletePersonneAsync(long personneId)
+        {
+            return await this.DeleteGenericObjectAsync(personneId);
+        }  
     }
 }

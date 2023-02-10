@@ -1,11 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace BlazorBaseModel.Db
 {
     public class Personne : GenericObject
     {
-
         public Personne() : base()
         {
             this.Adresses = new HashSet<Adresse>();
@@ -28,6 +28,7 @@ namespace BlazorBaseModel.Db
         [Column("Tel")]
         public string? Tel { get; set; } = default!;
         
-        public virtual ICollection<Adresse> Adresses { get; set; } = default!;
+        [JsonIgnore]
+        public virtual ICollection<Adresse>? Adresses { get; set; } = default!;
     }
 }

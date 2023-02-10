@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 namespace BlazorBaseApi.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class CandidatureController : AppController
     {
         private readonly ILogger<CandidatureController> _logger;

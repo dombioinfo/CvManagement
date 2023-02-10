@@ -12,8 +12,7 @@ using BlazorBaseModel.Db;
 
 namespace BlazorBaseApi.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]/[action]")]
+
     public class AppController : ControllerBase
     {
         protected MysqlDbContext _dbContext;

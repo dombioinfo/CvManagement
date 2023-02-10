@@ -9,18 +9,20 @@
 }
 else
 {
-   
     <DataGrid TItem="PersonneDto"
             Data="@personnes"
             @bind-SelectedRow="@selectedPersonne"
             ReadData="@OnReadData"
             TotalItems="@totalPersonnes"
             EditMode="DataGridEditMode.Popup"
-            PageSize="20"
-            ShowPager
-            Editable
+            PageSize="30" ShowPager="true" Editable="true"
+            NewItemDefaultSetter="@OnNewItemDefaultSetter"
+            RowInserted="@OnRowInserted"
+            RowUpdated="@OnRowUpdated"
+            RowRemoved="@OnRowRemoved"
+            FixedHeader="true"
             Responsive>
-        <DataGridCommandColumn Caption="Action">
+        <DataGridCommandColumn>
             <NewCommandTemplate>
                 <Icon Name="IconName.Add" Clicked="@context.Clicked" Margin="Margin.Is3.FromEnd" />
             </NewCommandTemplate>
@@ -31,8 +33,8 @@ else
                 <Icon Name="IconName.Delete" Clicked="@context.Clicked" Margin="Margin.Is3.FromEnd" />
             </DeleteCommandTemplate>
         </DataGridCommandColumn>
-        <DataGridNumericColumn Field="@nameof(PersonneDto.Nom)" Caption="Nom" Editable></DataGridNumericColumn>
-        <DataGridNumericColumn Field="@nameof(PersonneDto.Prenom)" Caption="Prénom" Editable></DataGridNumericColumn>
+        <DataGridNumericColumn Field="@nameof(PersonneDto.Nom)" Caption="Nom" Editable Sortable></DataGridNumericColumn>
+        <DataGridNumericColumn Field="@nameof(PersonneDto.Prenom)" Caption="Prénom" Editable Sortable></DataGridNumericColumn>
         <DataGridNumericColumn Field="@nameof(PersonneDto.DateNaissance)" Caption="Date de naissance" Editable>
             <DisplayTemplate>
             @{

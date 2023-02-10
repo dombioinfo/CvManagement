@@ -7,7 +7,7 @@ using AutoMapper;
 namespace BlazorBaseApi.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class PersonneController : AppController
     {
         private readonly ILogger<PersonneController> _logger;
@@ -19,7 +19,7 @@ namespace BlazorBaseApi.Controllers
             _logger = logger;
         }
 
-        [HttpGet()]
+        [HttpGet(Name = "GetPersonnes")]
         public async Task<IEnumerable<Personne>> GetPersonnes()
         {
             List<Personne> personnes = new List<Personne>();
@@ -27,14 +27,14 @@ namespace BlazorBaseApi.Controllers
             return personnes;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetPersonneById")]
         public async Task<Personne> GetPersonne(int id)
         {
             Personne? personne = await _dbContext.Personnes.FirstOrDefaultAsync(p => p.Id == id);
             return personne != null ? personne : new Personne();
         }
 
-        [HttpPost()]
+        [HttpPost(Name = "PostPersonne")]
         public async Task<long> CreatePersonne()
         {
             Personne personne = new Personne();
@@ -44,7 +44,16 @@ namespace BlazorBaseApi.Controllers
             return personne.Id;
         }
 
-        [HttpPut("{id}")]
+        [HttpPost("create-with-data", Name = "PostPersonneWithData")]
+        public async Task<long> CreatePersonneWithData(Personne personne)
+        {
+            await _dbContext.AddAsync(personne);
+            await _dbContext.SaveChangesAsync();
+
+            return personne.Id;
+        }
+
+        [HttpPut("{id}", Name = "PutPersonne")]
         public async Task UpdatePersonne(int id, Personne personneRequest)
         {
             Personne? personne = await _dbContext.Personnes
@@ -63,7 +72,7 @@ namespace BlazorBaseApi.Controllers
             await _dbContext.SaveChangesAsync();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}", Name = "DeletePersonne")]
         public async Task DeletePersonne(int id)
         {
             Personne? personne = await _dbContext.Personnes

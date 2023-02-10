@@ -14,19 +14,25 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddHttpClient();
-builder.Services.AddSingleton<HttpClient>(httpClient => new HttpClient()
+// builder.Services.AddHttpClient();
+// builder.Services.AddSingleton<HttpClient>(httpClient => new HttpClient()
+// {
+//     BaseAddress = new Uri("https://api:7031/api")
+// });
+
+builder.Services.AddHttpClient("HttpClientWithSSLUntrusted", c =>
 {
-    BaseAddress = new Uri("https://api:7031/")
-});
-builder.Services.AddHttpClient("HttpClientWithSSLUntrusted").ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+    c.BaseAddress = new Uri("https://localhost:7031");
+    c.DefaultRequestHeaders.Add("Accept", "application/json");
+})
+.ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
 {
     ClientCertificateOptions = ClientCertificateOption.Manual,
     ServerCertificateCustomValidationCallback =
-            (httpRequestMessage, cert, cetChain, policyErrors) =>
-            {
-                return true;
-            }
+        (httpRequestMessage, cert, cetChain, policyErrors) =>
+        {
+            return true;
+        }
 });
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services

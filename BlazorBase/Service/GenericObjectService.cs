@@ -1,3 +1,4 @@
+using System.Net.Http.Headers;
 using System.Text.Json;
 using AutoMapper;
 
@@ -5,11 +6,12 @@ namespace BlazorBase.Service
 {
     public class GenericObjectService<T> where T : new()
     {
-        protected readonly IHttpClientFactory _clientFactory;
+        // protected string baseUrl = "https://api:7031/api";
+        protected readonly HttpClient _httpClient;
         protected readonly IMapper _mapper;
-        public GenericObjectService(IHttpClientFactory clientFactory, IMapper mapper)
+        public GenericObjectService(IHttpClientFactory client, IMapper mapper)
         {
-            _clientFactory = clientFactory;
+            _httpClient = client.CreateClient("HttpClientWithSSLUntrusted");
             _mapper = mapper;
         }
 
@@ -18,16 +20,10 @@ namespace BlazorBase.Service
             var result = new T();
             try
             {
-                string typeOfObject = typeof(T).Name;//.Replace("Dto", "");
-                // var url = $"https://api:7031/api/app/GetObjectList/{typeOfObject}";
-                var url = $"https://api:7031/api/{typeOfObject}";
-
-                var request = new HttpRequestMessage(HttpMethod.Get, url);
-                request.Headers.Add("Accept", "application/json");
-
-                HttpClient client = _clientFactory.CreateClient("HttpClientWithSSLUntrusted");
-
-                var response = await client.SendAsync(request);
+                string typeOfObject = typeof(T).Name;
+                // var url = $"{baseUrl}/{typeOfObject}";
+                var url = $"{typeOfObject}";
+                var response = await _httpClient.GetAsync(url);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -49,16 +45,11 @@ namespace BlazorBase.Service
         {
             var result = new List<T>();
 
-            string typeOfObject = typeof(T).Name;//.Replace("Dto", "");
-            // var url = $"https://api:7031/api/app/GetObjectList/{typeOfObject}";
-            var url = $"https://api:7031/api/{typeOfObject}";
+            string typeOfObject = typeof(T).Name;
+            var url = $"/{typeOfObject}";
             Console.WriteLine($"URL : {url}");
-            var request = new HttpRequestMessage(HttpMethod.Get, url);
-            request.Headers.Add("Accept", "application/json");
 
-            HttpClient client = _clientFactory.CreateClient("HttpClientWithSSLUntrusted");
-
-            var response = await client.SendAsync(request);
+            var response = await _httpClient.GetAsync(url);
 
             if (response.IsSuccessStatusCode)
             {
@@ -76,6 +67,99 @@ namespace BlazorBase.Service
             }
 
             return result == null ? Array.Empty<T>() : result.ToArray();
+        }
+
+        protected async Task<int> CreateGenericObjectAsync(T objectToCreate) {
+            string typeOfObject = typeof(T).Name;
+            var url = $"{typeOfObject}";
+            return await this.CreateGenericObjectAsync(objectToCreate);
+        } 
+
+        protected async Task<int> CreateGenericObjectAsync(string url, T objectToCreate)
+        {
+            int result = 0;
+            Console.WriteLine($"URL : {url}");
+            
+            var response = await _httpClient.PostAsJsonAsync(url, objectToCreate);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var stringResponse = await response.Content.ReadAsStringAsync();
+                if (string.IsNullOrEmpty(stringResponse))
+                {
+                    throw new Exception("La réponse ne doit pas être un objet vide");
+                }
+                result = JsonSerializer.Deserialize<int>(stringResponse,
+                    new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+            }
+            else
+            {
+                result = 0;
+            }
+
+            return result;
+        }
+
+        protected async Task<int> UpdateGenericObjectAsync(long id, T objectToUpdate) {
+            string typeOfObject = typeof(T).Name;
+            string url = $"{typeOfObject}/{id}";
+            return await this.UpdateGenericObjectAsync(url, objectToUpdate);
+        }
+
+        protected async Task<int> UpdateGenericObjectAsync(string url, T objectToUpdate)
+        {
+            int result = 0;
+            Console.WriteLine($"URL : {url}");
+
+            var response = await _httpClient.PutAsJsonAsync(url, objectToUpdate);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var stringResponse = await response.Content.ReadAsStringAsync();
+                if (string.IsNullOrEmpty(stringResponse))
+                {
+                    throw new Exception("La réponse ne doit pas être un objet vide");
+                }
+                result = JsonSerializer.Deserialize<int>(stringResponse,
+                    new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+            }
+            else
+            {
+                result = 0;
+            }
+
+            return result;
+        }
+
+        protected async Task<int> DeleteGenericObjectAsync(long id) {
+            string typeOfObject = typeof(T).Name;
+            string url = $"{typeOfObject}/{id}";
+            return await this.DeleteGenericObjectAsync(url);
+        }
+
+        protected async Task<int> DeleteGenericObjectAsync(string url)
+        {
+            int result = 0;
+            Console.WriteLine($"URL : {url}");
+
+            var response = await _httpClient.DeleteAsync(url);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var stringResponse = await response.Content.ReadAsStringAsync();
+                if (string.IsNullOrEmpty(stringResponse))
+                {
+                    throw new Exception("La réponse ne doit pas être un objet vide");
+                }
+                result = JsonSerializer.Deserialize<int>(stringResponse,
+                    new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+            }
+            else
+            {
+                result = 0;
+            }
+
+            return result;
         }
     }
 }
