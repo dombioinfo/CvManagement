@@ -15,7 +15,7 @@ namespace BlazorBase.Service
         { }
         public List<CandidatureDto> CandidatureDtoList { get; set; } = new List<CandidatureDto>();
 
-        public async Task<CandidatureDto[]> GetPersonnesAsync()
+        public async Task<CandidatureDto[]> GetCandidaturesAsync()
         {
             Candidature[] candidatures = await this.GetGenericObjectListAsync();
             List<CandidatureDto> candidatureDtos = new List<CandidatureDto>();

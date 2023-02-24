@@ -28,14 +28,24 @@ namespace BlazorBaseApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<Adresse> GetAdresse(int id)
+        public async Task<Adresse> GetAdresse(long id)
         {
             Adresse? adresse = await _dbContext.Adresses.FirstOrDefaultAsync(x => x.Id == id);
             return adresse != null ? adresse : new Adresse();
         }
 
         [HttpPost()]
-        public async Task<long> CreateAdresse(Adresse adresseRequest)
+        public async Task<long> CreateAdresse()
+        {
+            Adresse adresse = new Adresse();
+            await _dbContext.AddAsync(adresse);
+            await _dbContext.SaveChangesAsync();
+
+            return adresse.Id;
+        }
+
+        [HttpPost("create-with-data", Name = "PostAdresseWithData")]
+        public async Task<long> PostAdresseWithData(Adresse adresseRequest)
         {
             adresseRequest.Id = 0;
             await _dbContext.AddAsync(adresseRequest);
@@ -45,7 +55,7 @@ namespace BlazorBaseApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task UpdateAdresse(int id, Adresse adresseRequest)
+        public async Task UpdateAdresse(long id, Adresse adresseRequest)
         {
             Adresse? adresse = await _dbContext.Adresses
                 .Where(x => x.Id == id)
@@ -65,7 +75,7 @@ namespace BlazorBaseApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task DeleteAdresse(int id)
+        public async Task DeleteAdresse(long id)
         {
             Adresse? adresse = await _dbContext.Adresses
                 .Where(x => x.Id == id)

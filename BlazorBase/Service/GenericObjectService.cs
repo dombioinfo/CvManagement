@@ -115,13 +115,7 @@ namespace BlazorBase.Service
 
             if (response.IsSuccessStatusCode)
             {
-                var stringResponse = await response.Content.ReadAsStringAsync();
-                if (string.IsNullOrEmpty(stringResponse))
-                {
-                    throw new Exception("La réponse ne doit pas être un objet vide");
-                }
-                result = JsonSerializer.Deserialize<int>(stringResponse,
-                    new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+                result = 1;
             }
             else
             {
@@ -146,6 +140,7 @@ namespace BlazorBase.Service
 
             if (response.IsSuccessStatusCode)
             {
+                /*
                 var stringResponse = await response.Content.ReadAsStringAsync();
                 if (string.IsNullOrEmpty(stringResponse))
                 {
@@ -153,6 +148,8 @@ namespace BlazorBase.Service
                 }
                 result = JsonSerializer.Deserialize<int>(stringResponse,
                     new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
+                */
+                result = 1;
             }
             else
             {

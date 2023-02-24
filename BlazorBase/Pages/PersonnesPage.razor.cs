@@ -2,6 +2,8 @@ using BlazorBase.Service;
 using Microsoft.AspNetCore.Components;
 using BlazorBaseModel.Model;
 using Blazorise.DataGrid;
+using System.Drawing;
+using BlazorBase.Shared.Component;
 
 namespace BlazorBase.Pages
 {
@@ -11,13 +13,18 @@ namespace BlazorBase.Pages
 
         [Inject]
         protected PersonneService PersonneService { get; set; } = default!;
-        private IEnumerable<PersonneDto> personnes { get; set; } = default!;
-        private PersonneDto? selectedPersonne;
-        private int totalPersonnes;
+        [Inject]
+        public IModalService? ModalService { get; set; }
+        private IEnumerable<PersonneDto> Items { get; set; } = default!;
+        private PersonneDto? SelectedRow;
+        private int TotalItems;
+        bool ShowContextMenu = false;
+        PersonneDto ContextMenuPersonne;
+        Point ContextMenuPos;
 
         protected override async Task OnInitializedAsync()
         {
-            personnes = await PersonneService.GetPersonnesAsync();
+            Items = await PersonneService.GetPersonnesAsync();
             await base.OnInitializedAsync();
         }
 
@@ -38,8 +45,8 @@ namespace BlazorBase.Pages
 
                 if (!e.CancellationToken.IsCancellationRequested)
                 {
-                    totalPersonnes = (await PersonneService.GetPersonnesAsync()).Count();
-                    personnes = new List<PersonneDto>(response); // an actual data for the current page
+                    TotalItems = (await PersonneService.GetPersonnesAsync()).Count();
+                    Items = new List<PersonneDto>(response); // an actual data for the current page
                 }
             }
         }
@@ -63,5 +70,25 @@ namespace BlazorBase.Pages
             await PersonneService.DeletePersonneAsync(personneDto.Id);
         }
 
+        protected Task OnRowContextMenu( DataGridRowMouseEventArgs<PersonneDto> eventArgs )
+        {
+            ShowContextMenu = true;
+            ContextMenuPersonne = eventArgs.Item;
+            ContextMenuPos = eventArgs.MouseEventArgs.Client;
+
+            return Task.CompletedTask;
+        }
+
+        protected Task? OnContextAdresseEditClicked(PersonneDto personne)
+        {
+            ShowContextMenu = false;
+            return ModalService?.Show<AdressesModal>(parameters => parameters.Add(x => x.PersonneId, personne.Id), new ModalInstanceOptions() { UseModalStructure = false } );
+        }
+
+        protected Task? OnContextCandidatureEditClicked(PersonneDto personne)
+        {
+            ShowContextMenu = false;
+            return null;
+        }
     }
 }

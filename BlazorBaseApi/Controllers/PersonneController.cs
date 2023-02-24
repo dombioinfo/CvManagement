@@ -54,7 +54,7 @@ namespace BlazorBaseApi.Controllers
         }
 
         [HttpPut("{id}", Name = "PutPersonne")]
-        public async Task UpdatePersonne(int id, Personne personneRequest)
+        public async Task UpdatePersonne(long id, Personne personneRequest)
         {
             Personne? personne = await _dbContext.Personnes
                 .Where(p => p.Id == id)
@@ -73,7 +73,7 @@ namespace BlazorBaseApi.Controllers
         }
 
         [HttpDelete("{id}", Name = "DeletePersonne")]
-        public async Task DeletePersonne(int id)
+        public async Task DeletePersonne(long id)
         {
             Personne? personne = await _dbContext.Personnes
                 .Where(p => p.Id == id)

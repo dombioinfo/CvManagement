@@ -1,0 +1,44 @@
+@page "/personnes/{PersonneId:long}/adresses"
+@using Blazorise
+
+<!--<PageTitle>@PageTitle</PageTitle>-->
+<h1>Liste des adresses de '@Personne?.Nom @Personne?.Prenom'</h1>
+
+<a href="/personnes">&lt; Retour</a>
+
+@if (Items == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <DataGrid TItem="AdresseDto"
+            Data="@Items"
+            @bind-SelectedRow="@SelectedAdresse"
+            ReadData="@OnReadData"
+            TotalItems="@TotalItems"
+            EditMode="DataGridEditMode.Popup"
+            PageSize="30" ShowPager="true" Editable="true"
+            NewItemDefaultSetter="@OnNewItemDefaultSetter"
+            RowInserted="@OnRowInserted"
+            RowUpdated="@OnRowUpdated"
+            RowRemoved="@OnRowRemoved"
+            FixedHeader="true"
+            Responsive>
+        <DataGridCommandColumn>
+            <NewCommandTemplate>
+                <Icon Name="IconName.Add" Clicked="@context.Clicked" Margin="Margin.Is3.FromEnd" />
+            </NewCommandTemplate>
+            <EditCommandTemplate>
+                <Icon Name="IconName.Edit" Clicked="@context.Clicked" Margin="Margin.Is3.FromEnd" />
+            </EditCommandTemplate>
+            <DeleteCommandTemplate>
+                <Icon Name="IconName.Delete" Clicked="@context.Clicked" Margin="Margin.Is3.FromEnd" />
+            </DeleteCommandTemplate>
+        </DataGridCommandColumn>
+        <DataGridColumn Field="@nameof(AdresseDto.Rue)" Caption="Rue" Editable Sortable></DataGridColumn>
+        <DataGridColumn Field="@nameof(AdresseDto.Complement)" Caption="Complément" Editable></DataGridColumn>
+        <DataGridColumn Field="@nameof(AdresseDto.CodePostal)" Caption="Code postal" Editable Sortable></DataGridColumn>
+        <DataGridColumn Field="@nameof(AdresseDto.Ville)" Caption="Ville" Editable Sortable></DataGridColumn>
+    </DataGrid>
+}

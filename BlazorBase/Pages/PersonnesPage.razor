@@ -1,25 +1,28 @@
 ﻿@page "/personnes"
 @using Blazorise
 
-<PageTitle>@PageTitle</PageTitle>
+<!--<PageTitle>@PageTitle</PageTitle>-->
+<h1>Liste des candidats</h1>
 
-@if (personnes == null)
+@if (Items == null)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
     <DataGrid TItem="PersonneDto"
-            Data="@personnes"
-            @bind-SelectedRow="@selectedPersonne"
+            Data="@Items"
+            @bind-SelectedRow="@SelectedRow"
             ReadData="@OnReadData"
-            TotalItems="@totalPersonnes"
+            TotalItems="@TotalItems"
             EditMode="DataGridEditMode.Popup"
             PageSize="30" ShowPager="true" Editable="true"
             NewItemDefaultSetter="@OnNewItemDefaultSetter"
             RowInserted="@OnRowInserted"
             RowUpdated="@OnRowUpdated"
             RowRemoved="@OnRowRemoved"
+            RowContextMenu="@OnRowContextMenu"
+          RowContextMenuPreventDefault="true"
             FixedHeader="true"
             Responsive>
         <DataGridCommandColumn>
@@ -28,14 +31,15 @@ else
             </NewCommandTemplate>
             <EditCommandTemplate>
                 <Icon Name="IconName.Edit" Clicked="@context.Clicked" Margin="Margin.Is3.FromEnd" />
+                <!--<Button Type="ButtonType.Link"  @(()=>OnClickedEditAdresse(context.Id)) To="@adresseToLink" >Adresse</Button> -->
             </EditCommandTemplate>
             <DeleteCommandTemplate>
                 <Icon Name="IconName.Delete" Clicked="@context.Clicked" Margin="Margin.Is3.FromEnd" />
             </DeleteCommandTemplate>
         </DataGridCommandColumn>
-        <DataGridNumericColumn Field="@nameof(PersonneDto.Nom)" Caption="Nom" Editable Sortable></DataGridNumericColumn>
-        <DataGridNumericColumn Field="@nameof(PersonneDto.Prenom)" Caption="Prénom" Editable Sortable></DataGridNumericColumn>
-        <DataGridNumericColumn Field="@nameof(PersonneDto.DateNaissance)" Caption="Date de naissance" Editable>
+        <DataGridColumn Field="@nameof(PersonneDto.Nom)" Caption="Nom" Editable Sortable></DataGridColumn>
+        <DataGridColumn Field="@nameof(PersonneDto.Prenom)" Caption="Prénom" Editable Sortable></DataGridColumn>
+        <DataGridDateColumn Field="@nameof(PersonneDto.DateNaissance)" Caption="Date de naissance" Editable Displayable="false">
             <DisplayTemplate>
             @{
                 var date = ( context as PersonneDto )?.DateNaissance;
@@ -46,7 +50,31 @@ else
                 }
             }
             </DisplayTemplate>
-        </DataGridNumericColumn>
-        <DataGridNumericColumn Field="@nameof(PersonneDto.Email)" Caption="Email" Editable></DataGridNumericColumn>
+        </DataGridDateColumn>
+        <DataGridColumn Field="@nameof(PersonneDto.Email)" Caption="Email" Editable></DataGridColumn>
+        <DataGridColumn Field="@nameof(PersonneDto.Tel)" Caption="Tél" Editable></DataGridColumn>
+        <DataGridColumn Field="@nameof(PersonneDto.Tel)" Caption="Tél" Editable>
+            <DisplayTemplate>
+                @{
+                    var personneId = (context as PersonneDto)?.Id;
+                    string urlToAdresse = personneId != null ? $"/personnes/{personneId}/adresses" : "";
+                    <a href="@urlToAdresse">Adresses</a>
+                }
+            </DisplayTemplate>
+        </DataGridColumn>
     </DataGrid>
+
+    @if (ShowContextMenu)
+    {
+        <Div Position="Position.Fixed" Background="Background.Danger" Style="@($"left:{ContextMenuPos.X}px;top:{ContextMenuPos.Y}px;")">
+            <ListGroup>
+                <ListGroupItem Clicked="@(()=>OnContextAdresseEditClicked(ContextMenuPersonne))">
+                    <Icon Name="IconName.Edit" TextColor="TextColor.Secondary" /> Adresse
+                </ListGroupItem>
+                <ListGroupItem Clicked="@(()=>OnContextCandidatureEditClicked(ContextMenuPersonne))">
+                    <Icon Name="IconName.Delete" TextColor="TextColor.Danger" /> Candidature
+                </ListGroupItem>
+            </ListGroup>
+        </Div>
+    }
 }

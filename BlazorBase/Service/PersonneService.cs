@@ -18,12 +18,11 @@ namespace BlazorBase.Service
         {
             _adresseService = adresseService;
         }
-        public List<PersonneDto> PersonneDtoList { get; set; } = new List<PersonneDto>();
 
         public async Task<PersonneDto[]> GetPersonnesAsync()
         {
             Personne[] personnes = await this.GetGenericObjectListAsync();
-            AdresseDto[] adresseDtos = await _adresseService.GetAdresseAsync();
+            AdresseDto[] adresseDtos = await _adresseService.GetAdressesAsync();
             List<PersonneDto> personneDtos = new List<PersonneDto>();
             foreach (Personne personne in personnes)
             {
@@ -33,6 +32,22 @@ namespace BlazorBase.Service
                 personneDtos.Add(personneDto);
             }
             return personneDtos.ToArray();
+        }
+
+        public async Task<PersonneDto> GetPersonneAsync(long personneId)
+        {
+            Personne[] personnes = await this.GetGenericObjectListAsync();
+            Personne? personne = personnes.Where(x => x.Id == personneId).FirstOrDefault();
+            PersonneDto personneDto = new PersonneDto();
+            if (personne != null)
+            {
+                personneDto = _mapper.Map<PersonneDto>(personne);
+            }
+            else
+            {
+                throw new Exception($"Il n'existe pas d'objet Personne avec l'Id '{personneId}'");
+            }
+            return personneDto;
         }
 
         public async Task<int> CreatePersonneAsync(PersonneDto personneDto)
@@ -67,6 +82,6 @@ namespace BlazorBase.Service
         public async Task<int> DeletePersonneAsync(long personneId)
         {
             return await this.DeleteGenericObjectAsync(personneId);
-        }  
+        }
     }
 }
