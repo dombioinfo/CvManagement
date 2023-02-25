@@ -10,10 +10,10 @@
 }
 else
 {
+    <!--ReadData="@OnReadData"-->
     <DataGrid TItem="PersonneDto"
             Data="@Items"
             @bind-SelectedRow="@SelectedRow"
-            ReadData="@OnReadData"
             TotalItems="@TotalItems"
             EditMode="DataGridEditMode.Popup"
             PageSize="30" ShowPager="true" Editable="true"
@@ -22,8 +22,10 @@ else
             RowUpdated="@OnRowUpdated"
             RowRemoved="@OnRowRemoved"
             RowContextMenu="@OnRowContextMenu"
-          RowContextMenuPreventDefault="true"
+            RowContextMenuPreventDefault="true"
             FixedHeader="true"
+            Sortable
+            SortMode="DataGridSortMode.Multiple"
             Responsive>
         <DataGridCommandColumn>
             <NewCommandTemplate>
@@ -53,12 +55,14 @@ else
         </DataGridDateColumn>
         <DataGridColumn Field="@nameof(PersonneDto.Email)" Caption="Email" Editable></DataGridColumn>
         <DataGridColumn Field="@nameof(PersonneDto.Tel)" Caption="Tél" Editable></DataGridColumn>
-        <DataGridColumn Field="@nameof(PersonneDto.Tel)" Caption="Tél" Editable>
+        <DataGridColumn Caption="Actions">
             <DisplayTemplate>
                 @{
                     var personneId = (context as PersonneDto)?.Id;
                     string urlToAdresse = personneId != null ? $"/personnes/{personneId}/adresses" : "";
-                    <a href="@urlToAdresse">Adresses</a>
+                    string urlToCandidature = personneId != null ? $"/personnes/{personneId}/candidatures" : "";
+                    <a href="@urlToAdresse" title="Adresses" alt="Adresses"><Icon Name="IconName.Mail" Margin="Margin.Is3.FromEnd" /></a>
+                    <a href="@urlToCandidature" title="Candidatures" alt="Candidatures"><Icon Name="IconName.Archive" Margin="Margin.Is3.FromEnd" /></a>
                 }
             </DisplayTemplate>
         </DataGridColumn>

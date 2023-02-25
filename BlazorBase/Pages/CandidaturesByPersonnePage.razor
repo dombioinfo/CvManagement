@@ -1,8 +1,8 @@
-@page "/personnes/{PersonneId:long}/adresses"
+@page "/personnes/{PersonneId:long}/candidatures"
 @using Blazorise
 
 <!--<PageTitle>@PageTitle</PageTitle>-->
-<h1>Liste des adresses de '@Personne?.Nom @Personne?.Prenom'</h1>
+<h1>Liste des candidatures de '@Personne?.Nom @Personne?.Prenom'</h1>
 
 <a href="/personnes">&lt; Retour</a>
 
@@ -12,9 +12,9 @@
 }
 else
 {
-    <DataGrid TItem="AdresseDto"
+    <DataGrid TItem="CandidatureDto"
             Data="@Items"
-            @bind-SelectedRow="@SelectedAdresse"
+            @bind-SelectedRow="@SelectedItem"
             TotalItems="@TotalItems"
             EditMode="DataGridEditMode.Popup"
             PageSize="30" ShowPager="true" Editable="true"
@@ -37,9 +37,7 @@ else
                 <Icon Name="IconName.Delete" Clicked="@context.Clicked" Margin="Margin.Is3.FromEnd" />
             </DeleteCommandTemplate>
         </DataGridCommandColumn>
-        <DataGridColumn Field="@nameof(AdresseDto.Rue)" Caption="Voie" Editable Sortable></DataGridColumn>
-        <DataGridColumn Field="@nameof(AdresseDto.Complement)" Caption="Complément" Editable></DataGridColumn>
-        <DataGridColumn Field="@nameof(AdresseDto.CodePostal)" Caption="Code postal" Editable Sortable></DataGridColumn>
-        <DataGridColumn Field="@nameof(AdresseDto.Ville)" Caption="Ville" Editable Sortable></DataGridColumn>
+        <DataGridColumn Field="@nameof(CandidatureDto.DateCandidature)" Caption="Date de candidature" Editable Sortable></DataGridColumn>
+        <DataGridColumn Field="@nameof(CandidatureDto.Annotation)" Caption="Annotation" Editable></DataGridColumn>
     </DataGrid>
 }

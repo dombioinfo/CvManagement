@@ -10,28 +10,28 @@ namespace BlazorBase.Service
             IHttpClientFactory clientFactory, IMapper mapper
             ) : base(clientFactory, mapper) { }
 
-        public async Task<AdresseDto[]> GetAdressesAsync()
+        public async Task<List<AdresseDto>> GetAdressesAsync()
         {
-            Adresse[] adresses = await this.GetGenericObjectListAsync();
+            List<Adresse> adresses = (await this.GetGenericObjectListAsync()).ToList();
             List<AdresseDto> adresseDtos = new List<AdresseDto>();
             foreach (Adresse adresse in adresses)
             {
                 AdresseDto adresseDto = _mapper.Map<AdresseDto>(adresse);
                 adresseDtos.Add(adresseDto);
             }
-            return adresseDtos.ToArray();
+            return adresseDtos;
         }
 
-        public async Task<AdresseDto[]> GetAdressesByPersonneAsync(long personneId)
+        public async Task<List<AdresseDto>> GetAdressesByPersonneAsync(long personneId)
         {
-            Adresse[] adresses = await this.GetGenericObjectListAsync(); // TODO: passer personneId en paramètre
+            List<Adresse> adresses = (await this.GetGenericObjectListAsync()).ToList(); // TODO: passer personneId en paramètre
             List<AdresseDto> adresseDtos = new List<AdresseDto>();
             foreach (Adresse adresse in adresses.Where(x => x.PersonneId == personneId).ToList())
             {
                 AdresseDto adresseDto = _mapper.Map<AdresseDto>(adresse);
                 adresseDtos.Add(adresseDto);
             }
-            return adresseDtos.ToArray();
+            return adresseDtos;
         }
 
         public async Task<AdresseDto> GetAdresseAsync(int adresseId)
@@ -57,7 +57,8 @@ namespace BlazorBase.Service
                 Rue = adresseDto.Rue,
                 Complement = adresseDto.Complement,
                 Ville = adresseDto.Ville,
-                CodePostal = adresseDto.CodePostal
+                CodePostal = adresseDto.CodePostal,
+                PersonneId = adresseDto.PersonneId
             };
             return await this.CreateGenericObjectAsync("Adresse/create-with-data", adresse);
         }

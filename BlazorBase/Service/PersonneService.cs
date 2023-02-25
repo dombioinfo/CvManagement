@@ -19,10 +19,10 @@ namespace BlazorBase.Service
             _adresseService = adresseService;
         }
 
-        public async Task<PersonneDto[]> GetPersonnesAsync()
+        public async Task<List<PersonneDto>> GetPersonnesAsync()
         {
-            Personne[] personnes = await this.GetGenericObjectListAsync();
-            AdresseDto[] adresseDtos = await _adresseService.GetAdressesAsync();
+            List<Personne> personnes = (await this.GetGenericObjectListAsync()).ToList();
+            List<AdresseDto> adresseDtos = await _adresseService.GetAdressesAsync();
             List<PersonneDto> personneDtos = new List<PersonneDto>();
             foreach (Personne personne in personnes)
             {
@@ -31,12 +31,12 @@ namespace BlazorBase.Service
                 personneDto.AdresseDtos = adresseDtoFiltres != null ? adresseDtoFiltres : new List<AdresseDto>();
                 personneDtos.Add(personneDto);
             }
-            return personneDtos.ToArray();
+            return personneDtos;
         }
 
         public async Task<PersonneDto> GetPersonneAsync(long personneId)
         {
-            Personne[] personnes = await this.GetGenericObjectListAsync();
+            List<Personne> personnes = (await this.GetGenericObjectListAsync()).ToList();
             Personne? personne = personnes.Where(x => x.Id == personneId).FirstOrDefault();
             PersonneDto personneDto = new PersonneDto();
             if (personne != null)

@@ -1,0 +1,74 @@
+using BlazorBase.Service;
+using Blazorise.DataGrid;
+using Microsoft.AspNetCore.Components;
+
+namespace BlazorBase.Pages
+{
+    public partial class CandidaturesByPersonnePage : ComponentBase
+    {
+        [Inject]
+        private PersonneService PersonneService { get; set; } = default!;
+        [Inject]
+        private CandidatureService CandidatureService { get; set; } = default!;
+        [Parameter]
+        public long PersonneId { get; set; }
+        private PersonneDto Personne { get; set; } = default!;
+
+        private IEnumerable<CandidatureDto> Items { get; set; } = default!;
+        private CandidatureDto? SelectedItem;
+        private int TotalItems { get; set; } = 0;
+
+        protected override async Task OnInitializedAsync()
+        {
+            Personne = await PersonneService.GetPersonneAsync(PersonneId);
+            Items = await CandidatureService.GetCandidaturesByPersonneAsync(PersonneId);
+            await base.OnInitializedAsync();
+        }
+        
+        private async Task OnReadData(DataGridReadDataEventArgs<CandidatureDto> e)
+        {
+            if (!e.CancellationToken.IsCancellationRequested)
+            {
+                List<CandidatureDto> response = default!;
+
+                // this can be call to anything, in this case we're calling a fictional api
+                //var response = await Http.GetJsonAsync<Employee[]>( $"some-api/employees?page={e.Page}&pageSize={e.PageSize}" );
+                if (e.ReadDataMode is DataGridReadDataMode.Virtualize)
+                    response = (await CandidatureService.GetCandidaturesAsync()).Skip(e.VirtualizeOffset).Take(e.VirtualizeCount).ToList();
+                else if (e.ReadDataMode is DataGridReadDataMode.Paging)
+                    response = (await CandidatureService.GetCandidaturesAsync()).Skip((e.Page - 1) * e.PageSize).Take(e.PageSize).ToList();
+                else
+                    throw new Exception("Unhandled ReadDataMode");
+
+                if (!e.CancellationToken.IsCancellationRequested)
+                {
+                    TotalItems = (await CandidatureService.GetCandidaturesAsync()).Count();
+                    Items = new List<CandidatureDto>(response); // an actual data for the current page
+                }
+            }
+        }
+
+        private void OnNewItemDefaultSetter(CandidatureDto candidatureDto)
+        {
+            candidatureDto.DateCreation = DateTime.UtcNow;
+            StateHasChanged();
+        }
+
+        private async Task<long> OnRowInserted(SavedRowItem<CandidatureDto, Dictionary<string, object>> e)
+        {
+            long id = await CandidatureService.CreateCandidatureAsync(e.Item);
+            StateHasChanged();
+            return id;
+        }
+
+        private async Task OnRowUpdated(SavedRowItem<CandidatureDto, Dictionary<string, object>> e)
+        {
+            int id = await CandidatureService.UpdateCandidatureAsync(e.Item.Id, e.Item);
+        }
+
+        public async Task OnRowRemoved(CandidatureDto candidatureDto)
+        {
+            await CandidatureService.DeleteCandidatureAsync(candidatureDto.Id);
+        }
+    }
+}

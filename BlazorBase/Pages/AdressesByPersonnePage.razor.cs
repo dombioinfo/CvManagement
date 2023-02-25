@@ -2,7 +2,8 @@ using BlazorBase.Service;
 using Blazorise.DataGrid;
 using Microsoft.AspNetCore.Components;
 
-namespace BlazorBase.Pages {
+namespace BlazorBase.Pages
+{
     public partial class AdressesByPersonnePage : ComponentBase
     {
         [Inject]
@@ -23,6 +24,7 @@ namespace BlazorBase.Pages {
             Items = await AdresseService.GetAdressesByPersonneAsync(PersonneId);
             await base.OnInitializedAsync();
         }
+        
         private async Task OnReadData(DataGridReadDataEventArgs<AdresseDto> e)
         {
             if (!e.CancellationToken.IsCancellationRequested)
@@ -46,24 +48,30 @@ namespace BlazorBase.Pages {
             }
         }
 
-        private void OnNewItemDefaultSetter(AdresseDto adresseDto) {
+        private void OnNewItemDefaultSetter(AdresseDto adresseDto)
+        {
             adresseDto.DateCreation = DateTime.UtcNow;
+            adresseDto.PersonneId = PersonneId;
+            adresseDto.PersonneDto = Personne;
             StateHasChanged();
         }
 
-        private async Task<long> OnRowInserted(SavedRowItem<AdresseDto, Dictionary<string, object>> e) {
+        private async Task<long> OnRowInserted(SavedRowItem<AdresseDto, Dictionary<string, object>> e)
+        {
             long id = await AdresseService.CreateAdresseAsync(e.Item);
             StateHasChanged();
             return id;
         }
 
-        private async Task OnRowUpdated(SavedRowItem<AdresseDto, Dictionary<string, object>> e) {
+        private async Task OnRowUpdated(SavedRowItem<AdresseDto, Dictionary<string, object>> e)
+        {
             int id = await AdresseService.UpdateAdresseAsync(e.Item.Id, e.Item);
         }
 
-        public async Task OnRowRemoved(AdresseDto adresseDto) {
+        public async Task OnRowRemoved(AdresseDto adresseDto)
+        {
             await AdresseService.DeleteAdresseAsync(adresseDto.Id);
         }
-        
+
     }
 }

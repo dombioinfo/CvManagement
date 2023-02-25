@@ -1,4 +1,3 @@
-using AutoMapper;
 using BlazorBaseModel;
 using BlazorBaseModel.Db;
 using BlazorBaseModel.Model;
@@ -29,7 +28,7 @@ namespace BlazorBaseApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<Candidature> GetCandidature(int id)
+        public async Task<Candidature> GetCandidature(long id)
         {
             Candidature? candidature = await _dbContext.Candidatures.FirstOrDefaultAsync(x => x.Id == id);
             return candidature != null ? candidature : new Candidature();
@@ -45,8 +44,18 @@ namespace BlazorBaseApi.Controllers
             return candidature.Id;
         }
 
+        [HttpPost("create-with-data", Name = "PostCandidatureWithData")]
+        public async Task<long> PostCandidatureWithData(Candidature candidatureRequest)
+        {
+            candidatureRequest.Id = 0;
+            await _dbContext.AddAsync(candidatureRequest);
+            await _dbContext.SaveChangesAsync();
+
+            return candidatureRequest.Id;
+        }
+
         [HttpPut("{id}")]
-        public async Task UpdateCandidature(int id, Candidature candidatueRequest)
+        public async Task UpdateCandidature(long id, Candidature candidatureRequest)
         {
             Candidature? candidature = await _dbContext.Candidatures
                 .Where(x => x.Id == id)
@@ -56,15 +65,15 @@ namespace BlazorBaseApi.Controllers
             {
                 throw new Exception($"Il n'existe pas d'enregistrement Candidature pour l'Id '{id}'");
             }
-            candidature.DateCandidature = candidatueRequest.DateCandidature;
-            candidature.PersonneId = candidatueRequest.PersonneId;
-            candidature.Annotation = candidatueRequest.Annotation;
+            candidature.DateCandidature = candidatureRequest.DateCandidature;
+            candidature.Annotation = candidatureRequest.Annotation;
+            candidature.PersonneId = candidatureRequest.PersonneId;
             await _dbContext.AddAsync(candidature);
             await _dbContext.SaveChangesAsync();
         }
 
         [HttpDelete("{id}")]
-        public async Task DeleteCandidature(int id)
+        public async Task DeleteCandidature(long id)
         {
             Candidature? candidature = await _dbContext.Candidatures
                 .Where(x => x.Id == id)
