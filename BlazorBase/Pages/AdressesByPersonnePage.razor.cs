@@ -24,7 +24,7 @@ namespace BlazorBase.Pages
             Items = await AdresseService.GetAdressesByPersonneAsync(PersonneId);
             await base.OnInitializedAsync();
         }
-        
+
         private async Task OnReadData(DataGridReadDataEventArgs<AdresseDto> e)
         {
             if (!e.CancellationToken.IsCancellationRequested)
@@ -72,6 +72,5 @@ namespace BlazorBase.Pages
         {
             await AdresseService.DeleteAdresseAsync(adresseDto.Id);
         }
-
     }
 }
