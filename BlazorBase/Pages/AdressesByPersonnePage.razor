@@ -14,9 +14,9 @@ else
 {
     <DataGrid TItem="AdresseDto"
             Data="@Items"
-            @bind-SelectedRow="@SelectedAdresse"
+            @bind-SelectedRow="@SelectedItem"
             TotalItems="@TotalItems"
-            EditMode="DataGridEditMode.Popup"
+            EditMode="DataGridEditMode.Form"
             PageSize="30" ShowPager="true" Editable="true"
             NewItemDefaultSetter="@OnNewItemDefaultSetter"
             RowInserted="@OnRowInserted"

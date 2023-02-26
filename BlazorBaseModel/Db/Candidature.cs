@@ -19,6 +19,6 @@ namespace BlazorBaseModel.Db
         public long PersonneId { get; set; } = default!;
 
         [ForeignKey("PersonneId")]
-        public virtual Personne Personne { get; set; } = default!;
+        public virtual Personne? Personne { get; set; } = default!;
     }
 }

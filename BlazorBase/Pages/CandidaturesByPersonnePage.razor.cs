@@ -51,7 +51,8 @@ namespace BlazorBase.Pages
         private void OnNewItemDefaultSetter(CandidatureDto candidatureDto)
         {
             candidatureDto.DateCreation = DateTime.UtcNow;
-            candidatureDto.Personne = Personne;
+            candidatureDto.DateCandidature = DateTime.UtcNow;
+            candidatureDto.PersonneId = PersonneId;
             StateHasChanged();
         }
 

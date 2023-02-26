@@ -15,7 +15,7 @@ namespace BlazorBase.Pages
         private PersonneDto Personne { get; set; } = default!;
 
         private IEnumerable<AdresseDto> Items { get; set; } = default!;
-        private AdresseDto? SelectedAdresse;
+        private AdresseDto? SelectedItem;
         private int TotalItems { get; set; } = 0;
 
         protected override async Task OnInitializedAsync()

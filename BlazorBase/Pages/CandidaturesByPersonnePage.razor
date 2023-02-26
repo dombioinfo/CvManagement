@@ -16,7 +16,7 @@ else
             Data="@Items"
             @bind-SelectedRow="@SelectedItem"
             TotalItems="@TotalItems"
-            EditMode="DataGridEditMode.Popup"
+            EditMode="DataGridEditMode.Form"
             PageSize="30" ShowPager="true" Editable="true"
             NewItemDefaultSetter="@OnNewItemDefaultSetter"
             RowInserted="@OnRowInserted"
@@ -38,6 +38,10 @@ else
             </DeleteCommandTemplate>
         </DataGridCommandColumn>
         <DataGridColumn Field="@nameof(CandidatureDto.DateCandidature)" Caption="Date de candidature" Editable Sortable></DataGridColumn>
-        <DataGridColumn Field="@nameof(CandidatureDto.Annotation)" Caption="Annotation" Editable></DataGridColumn>
+        <DataGridColumn Field="@nameof(CandidatureDto.Annotation)" Caption="Annotation" Editable>
+            <EditTemplate>
+                <MemoEdit Rows="5" Text="@((string)context.CellValue)">@((string)context.CellValue)</MemoEdit>
+            </EditTemplate>
+        </DataGridColumn>
     </DataGrid>
 }
