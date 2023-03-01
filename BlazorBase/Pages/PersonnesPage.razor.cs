@@ -4,6 +4,7 @@ using BlazorBaseModel.Model;
 using Blazorise.DataGrid;
 using System.Drawing;
 using BlazorBase.Shared.Component;
+using Microsoft.JSInterop;
 
 namespace BlazorBase.Pages
 {
@@ -14,12 +15,14 @@ namespace BlazorBase.Pages
         [Inject]
         protected PersonneService PersonneService { get; set; } = default!;
         [Inject]
-        public IModalService? ModalService { get; set; }
+        public IModalService ModalService { get; set; } = default!;
+        [Inject]
+        public IMessageService MessageService { get; set; } = default!;
         private IEnumerable<PersonneDto> Items { get; set; } = default!;
         private PersonneDto? SelectedRow;
         private int TotalItems;
         bool ShowContextMenu = false;
-        PersonneDto ContextMenuPersonne;
+        PersonneDto? ContextMenuPersonne;
         Point ContextMenuPos;
 
         protected override async Task OnInitializedAsync()
@@ -51,26 +54,35 @@ namespace BlazorBase.Pages
             }
         }
 
-        private void OnNewItemDefaultSetter(PersonneDto personneDto) {
+        private void OnNewItemDefaultSetter(PersonneDto personneDto)
+        {
             personneDto.DateCreation = DateTime.UtcNow;
             StateHasChanged();
         }
 
-        private async Task<int> OnRowInserted(SavedRowItem<PersonneDto, Dictionary<string, object>> e) {
+        private async Task<int> OnRowInserted(SavedRowItem<PersonneDto, Dictionary<string, object>> e)
+        {
             int personneId = await PersonneService.CreatePersonneAsync(e.Item);
             StateHasChanged();
             return personneId;
         }
 
-        private async Task OnRowUpdated(SavedRowItem<PersonneDto, Dictionary<string, object>> e) {
+        private async Task OnRowUpdated(SavedRowItem<PersonneDto, Dictionary<string, object>> e)
+        {
             int id = await PersonneService.UpdatePersonneAsync(e.Item.Id, e.Item);
         }
 
-        public async Task OnRowRemoved(PersonneDto personneDto) {
+        public async Task OnRowRemoving(CancellableRowChange<PersonneDto> e)
+        {
+            e.Cancel = await ShowDeleteConfirmMessage();
+        }
+
+        public async Task OnRowRemoved(PersonneDto personneDto)
+        {
             await PersonneService.DeletePersonneAsync(personneDto.Id);
         }
 
-        protected Task OnRowContextMenu( DataGridRowMouseEventArgs<PersonneDto> eventArgs )
+        protected Task OnRowContextMenu(DataGridRowMouseEventArgs<PersonneDto> eventArgs)
         {
             ShowContextMenu = true;
             ContextMenuPersonne = eventArgs.Item;
@@ -82,13 +94,23 @@ namespace BlazorBase.Pages
         protected Task? OnContextAdresseEditClicked(PersonneDto personne)
         {
             ShowContextMenu = false;
-            return ModalService?.Show<AdressesModal>(parameters => parameters.Add(x => x.PersonneId, personne.Id), new ModalInstanceOptions() { UseModalStructure = false } );
+            return ModalService?.Show<AdressesModal>(parameters => parameters.Add(x => x.PersonneId, personne.Id), new ModalInstanceOptions() { UseModalStructure = false });
         }
 
         protected Task? OnContextCandidatureEditClicked(PersonneDto personne)
         {
             ShowContextMenu = false;
             return null;
+        }
+
+        public async Task<bool> ShowDeleteConfirmMessage()
+        {
+            var confirmed = await MessageService.Confirm("Etes-vous de vouloir supprimer ?", "Confirmation");
+            if (confirmed)
+            {
+                return false; // pas d'annulation
+            }
+            return true; // annulation
         }
     }
 }

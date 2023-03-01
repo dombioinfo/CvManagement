@@ -10,6 +10,10 @@ namespace BlazorBase.Pages
         private PersonneService PersonneService { get; set; } = default!;
         [Inject]
         private CandidatureService CandidatureService { get; set; } = default!;
+        [Inject]
+        public IModalService ModalService { get; set; } = default!;
+        [Inject]
+        public IMessageService MessageService { get; set; } = default!;
         [Parameter]
         public long PersonneId { get; set; }
         private PersonneDto Personne { get; set; } = default!;
@@ -71,6 +75,21 @@ namespace BlazorBase.Pages
         public async Task OnRowRemoved(CandidatureDto candidatureDto)
         {
             await CandidatureService.DeleteCandidatureAsync(candidatureDto.Id);
+        }
+
+        public async Task OnRowRemoving(CancellableRowChange<CandidatureDto> e)
+        {
+            e.Cancel = await ShowDeleteConfirmMessage();
+        }
+
+        public async Task<bool> ShowDeleteConfirmMessage()
+        {
+            var confirmed = await MessageService.Confirm("Etes-vous de vouloir supprimer ?", "Confirmation");
+            if (confirmed)
+            {
+                return false; // pas d'annulation
+            }
+            return true; // annulation
         }
     }
 }
