@@ -21,6 +21,7 @@ namespace BlazorBase.Pages
         private IEnumerable<CvDto> Items { get; set; } = default!;
         private CvDto? SelectedItem;
         private int TotalItems { get; set; } = 0;
+        private CvDto CvTmpToUploadFile { get; set; } = default!;
 
         protected override async Task OnInitializedAsync()
         {
@@ -61,8 +62,13 @@ namespace BlazorBase.Pages
 
         private async Task<long> OnRowInserted(SavedRowItem<CvDto, Dictionary<string, object>> e)
         {
-            long id = 0;
-            //long id = await CvService.CreateCvAsync(e.Item); // this is done into OnFileUpload (below)
+
+            e.Item.BlobFile = CvTmpToUploadFile.BlobFile;
+            e.Item.FileName = CvTmpToUploadFile.FileName;
+            e.Item.FileSize = CvTmpToUploadFile.FileSize;
+            e.Item.RelativePath = CvTmpToUploadFile.RelativePath;
+            long id = await CvService.CreateCvAsync(e.Item); 
+            
             await InvokeAsync(() => StateHasChanged());
             return id;
         }
@@ -89,7 +95,7 @@ namespace BlazorBase.Pages
 
         public async Task OnFileUpload(FileUploadEventArgs e)
         {
-            CvDto cvDto = new CvDto()
+            CvTmpToUploadFile = new CvDto()
             {
                 DateCreation = DateTime.UtcNow,
                 RelativePath = "data"
@@ -99,21 +105,21 @@ namespace BlazorBase.Pages
                 using (MemoryStream result = new MemoryStream())
                 {
                     await e.File.OpenReadStream(long.MaxValue).CopyToAsync(result);
-                    cvDto.FileName = e.File.Name;
-                    cvDto.FileSize = (int)e.File.Size;
-                    string path = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, cvDto.RelativePath));
+                    CvTmpToUploadFile.FileName = e.File.Name;
+                    CvTmpToUploadFile.FileSize = (int)e.File.Size;
+                    string path = Path.GetFullPath(Path.Combine(Environment.CurrentDirectory, CvTmpToUploadFile.RelativePath));
                     if (!Directory.Exists(path))
                     {
                         Directory.CreateDirectory(path);
                     }
-                    using (FileStream fileStream = new FileStream(Path.Combine(path, cvDto.FileName), FileMode.OpenOrCreate, FileAccess.Write))
+                    using (FileStream fileStream = new FileStream(Path.Combine(path, CvTmpToUploadFile.FileName), FileMode.OpenOrCreate, FileAccess.Write))
                     {
-                        await fileStream.WriteAsync(result.ToArray(), 0, cvDto.FileSize);
+                        await fileStream.WriteAsync(result.ToArray(), 0, CvTmpToUploadFile.FileSize);
                     }
-                    cvDto.BlobFile = result.ToArray();
-                    cvDto.PersonneId = PersonneId;
+                    CvTmpToUploadFile.BlobFile = result.ToArray();
+                    CvTmpToUploadFile.PersonneId = PersonneId;
                 }
-                await CvService.CreateCvAsync(cvDto);
+                await CvService.CreateCvAsync(CvTmpToUploadFile);
             }
             catch (Exception exc)
             {
