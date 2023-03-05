@@ -25,7 +25,8 @@ else
             RowContextMenu="@OnRowContextMenu"
             RowContextMenuPreventDefault="true"
             FixedHeader="true"
-            Sortable
+            Filterable="true"
+            Sortable="true"
             SortMode="DataGridSortMode.Multiple"
             Responsive>
         <DataGridCommandColumn>
@@ -62,8 +63,10 @@ else
                     var personneId = (context as PersonneDto)?.Id;
                     string urlToAdresse = personneId != null ? $"/personnes/{personneId}/adresses" : "";
                     string urlToCandidature = personneId != null ? $"/personnes/{personneId}/candidatures" : "";
+                    string urlToCv = personneId != null ? $"/personnes/{personneId}/cvs" : "";
                     <a href="@urlToAdresse" title="Adresses" alt="Adresses"><Icon Name="IconName.Mail" Margin="Margin.Is3.FromEnd" /></a>
                     <a href="@urlToCandidature" title="Candidatures" alt="Candidatures"><Icon Name="IconName.Archive" Margin="Margin.Is3.FromEnd" /></a>
+                    <a href="@urlToCv" title="CV" alt="CV"><Icon Name="IconName.FilePdf" Margin="Margin.Is3.FromEnd" /></a>
                 }
             </DisplayTemplate>
         </DataGridColumn>

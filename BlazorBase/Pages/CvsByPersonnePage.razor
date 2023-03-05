@@ -1,0 +1,41 @@
+@page "/personnes/{PersonneId:long}/cvs"
+@using Blazorise
+
+<!--<PageTitle>@PageTitle</PageTitle>-->
+<h1>Liste des CVs de '@Personne?.Nom @Personne?.Prenom'</h1>
+
+<a href="/cvs">&lt; Retour</a>
+
+@if (Items == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <DataGrid TItem="CvDto" Data="@Items" @bind-SelectedRow="@SelectedItem" TotalItems="@TotalItems"
+        EditMode="DataGridEditMode.Form" PageSize="30" ShowPager="true" Editable="true"
+        NewItemDefaultSetter="@OnNewItemDefaultSetter" RowRemoving="@OnRowRemoving" RowInserted="@OnRowInserted"
+        RowRemoved="@OnRowRemoved" FixedHeader="true" Sortable SortMode="DataGridSortMode.Multiple" Responsive>
+        <DataGridCommandColumn>
+            <NewCommandTemplate>
+                <Icon Name="IconName.Add" Clicked="@context.Clicked" Margin="Margin.Is3.FromEnd" />
+            </NewCommandTemplate>
+            <EditCommandTemplate>
+                <!--<Icon Name="IconName.Add" Clicked="@context.Clicked" Margin="Margin.Is3.FromEnd" />-->
+            </EditCommandTemplate>
+            <DeleteCommandTemplate>
+                <Icon Name="IconName.Delete" Clicked="@context.Clicked" Margin="Margin.Is3.FromEnd" />
+            </DeleteCommandTemplate>
+        </DataGridCommandColumn>
+        <DataGridColumn Field="@nameof(CvDto.FileName)" Caption="Nom de fichier" Editable="false" Sortable></DataGridColumn>
+        <DataGridColumn Field="@nameof(CvDto.FileSize)" Caption="Taille du fichier" Editable="false" Sortable></DataGridColumn>
+        <DataGridDateColumn Field="@nameof(CvDto.DateCreation)" Caption="Date de dépôt" Editable="false"></DataGridDateColumn>
+        <DataGridColumn Field="@nameof(CvDto.BlobFile)" Caption="Sélection d'un CV" Editable Displayable="false">
+            <EditTemplate>
+                <Field>
+                    <FilePicker Upload="OnFileUpload" ShowMode="FilePickerShowMode.List" />
+                </Field>
+            </EditTemplate>
+        </DataGridColumn>
+    </DataGrid>
+}

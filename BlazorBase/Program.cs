@@ -48,6 +48,7 @@ builder.Services
 builder.Services.AddSingleton<PersonneService>();
 builder.Services.AddSingleton<AdresseService>();
 builder.Services.AddSingleton<CandidatureService>();
+builder.Services.AddSingleton<CvService>();
 
 var app = builder.Build();
 

@@ -13,6 +13,7 @@ namespace BlazorBase.Helpers
             CreateMap<Adresse, AdresseDto>();
             CreateMap<Personne, PersonneDto>();
             CreateMap<Candidature, CandidatureDto>();
+            CreateMap<Cv, CvDto>();
         }
     }
 }

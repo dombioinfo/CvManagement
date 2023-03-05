@@ -13,6 +13,7 @@ namespace BlazorBaseApi
         public DbSet<Candidature> Candidatures { get; set; } = default!;
         public DbSet<Personne> Personnes { get; set; } = default!;
         public DbSet<Adresse> Adresses { get; set; } = default!;
+        public DbSet<Cv> Cvs { get; set; } = default!;
 
         // public DbSet<GenericObject> GenericObject { get; set; } = default!;
 
