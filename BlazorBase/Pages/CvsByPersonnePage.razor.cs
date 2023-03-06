@@ -62,12 +62,12 @@ namespace BlazorBase.Pages
 
         private async Task<long> OnRowInserted(SavedRowItem<CvDto, Dictionary<string, object>> e)
         {
-
             e.Item.BlobFile = CvTmpToUploadFile.BlobFile;
             e.Item.FileName = CvTmpToUploadFile.FileName;
             e.Item.FileSize = CvTmpToUploadFile.FileSize;
             e.Item.RelativePath = CvTmpToUploadFile.RelativePath;
-            long id = await CvService.CreateCvAsync(e.Item); 
+            long id = await CvService.CreateCvAsync(e.Item);
+            CvTmpToUploadFile = new CvDto(); // on reinit
             
             await InvokeAsync(() => StateHasChanged());
             return id;
