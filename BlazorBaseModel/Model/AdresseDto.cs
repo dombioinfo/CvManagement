@@ -9,7 +9,7 @@ namespace BlazorBaseModel.Model
         public string Rue { get; set; } = "";
         public string Complement { get; set; } = "";
         public string Ville { get; set; } = "";
-        public long CodePostal { get; set; } = default!;
+        public string CodePostal { get; set; } = default!;
         public long PersonneId { get; set; } = default!;
 
         [JsonIgnore]

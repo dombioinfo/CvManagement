@@ -1,7 +1,31 @@
 ﻿@page "/"
+@using Blazorise
 
 <PageTitle>Gestion des CV</PageTitle>
-
-<h1>Gestion des CV</h1>
-
-<p>Bienvenue dans votre espace de gestion des CV et candidatures</p>
+<Card>
+    <CardTitle>Gestion des CV</CardTitle>
+    <CardBody>Bienvenue dans votre espace de gestion des CV et candidatures</CardBody>
+</Card>
+<CardGroup>
+    <CardTitle>Tableau de bord</CardTitle>
+    <CardDeck>
+        <Card>
+            <CardTitle Size="5">{}</CardTitle>
+            <CardText>Total candidats</CardText>
+        </Card>
+        <Card>
+            <CardTitle Size="5">{}</CardTitle>
+            <CardText>Candidats employés</CardText>
+        </Card>
+        <Card>
+            <CardTitle Size="5">{}</CardTitle>
+            <CardText>Recrutement</CardText>
+        </Card>
+    </CardDeck>
+</CardGroup>
+<Card>
+    <h2>Importation de données</h2>
+    <Field>
+        <FilePicker Upload="OnFileUpload" ShowMode="FilePickerShowMode.List" />
+    </Field>
+</Card>

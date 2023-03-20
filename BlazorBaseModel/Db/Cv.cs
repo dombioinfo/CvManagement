@@ -8,10 +8,12 @@ namespace BlazorBaseModel.Db
     {
         public Cv() : base() { }
 
-        [Column("FileName")]
+        [Column("FileName", TypeName = "VARCHAR")]
+        [StringLength(200)]
         public string FileName { get; set; } = "";
 
-        [Column("RelativePath")]
+        [Column("RelativePath", TypeName = "VARCHAR")]
+        [StringLength(100)]
         public string RelativePath { get; set; } = "";
 
         [Column("FileSize")]

@@ -1,13 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-   <ItemGroup>
-    <ProjectReference Include="..\Crosscutting\Crosscutting.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Using Include="Crosscutting" />
-  </ItemGroup>
-
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>

@@ -12,7 +12,8 @@ namespace BlazorBaseModel.Db
         [Column("DateCandidature")]
         public DateTime DateCandidature { get; set; } = default;
 
-        [Column("Annotation")]
+        [Column("Annotation", TypeName = "VARCHAR")]
+        [StringLength(5000)]
         public string Annotation { get; set; } = "";
 
         [Column("PersonneId")]

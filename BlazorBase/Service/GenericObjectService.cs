@@ -9,6 +9,7 @@ namespace BlazorBase.Service
         // protected string baseUrl = "https://api:7031/api";
         protected readonly HttpClient _httpClient;
         protected readonly IMapper _mapper;
+
         public GenericObjectService(IHttpClientFactory client, IMapper mapper)
         {
             _httpClient = client.CreateClient("HttpClientWithSSLUntrusted");

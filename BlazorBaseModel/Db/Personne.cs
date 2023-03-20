@@ -12,20 +12,24 @@ namespace BlazorBaseModel.Db
         }
 
         [Required]
-        [Column("Nom")]
+        [Column("Nom", TypeName = "VARCHAR")]
+        [StringLength(100)]
         public string Nom { get; set; } = "";
 
         [Required]
-        [Column("Prenom")]
+        [Column("Prenom", TypeName = "VARCHAR")]
+        [StringLength(100)]
         public string Prenom { get; set; } = "";
 
         [Column("DateNaissance")]
         public DateTime? DateNaissance { get; set; } = default!;
 
-        [Column("Email")]
+        [Column("Email", TypeName = "VARCHAR")]
+        [StringLength(200)]
         public string? Email { get; set; } = default!;
 
-        [Column("Tel")]
+        [Column("Tel", TypeName = "VARCHAR")]
+        [StringLength(50)]
         public string? Tel { get; set; } = default!;
         
         [JsonIgnore]
