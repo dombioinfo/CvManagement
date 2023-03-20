@@ -20,5 +20,7 @@ namespace BlazorBaseModel.Db
         public int? UpdateUserId { get; set; }
 
         public int? CreateUserId { get; set; }
+
+        public bool Actif { get; set; }
     }
 }

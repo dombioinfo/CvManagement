@@ -1,7 +1,3 @@
-using AutoMapper;
-using BlazorBaseModel.Db;
-using BlazorBaseModel.Model;
-
 namespace BlazorBase.Helpers
 {
     public class MappingProfiles : Profile

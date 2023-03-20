@@ -34,5 +34,11 @@ namespace BlazorBaseModel.Db
         
         [JsonIgnore]
         public virtual ICollection<Adresse>? Adresses { get; set; } = default!;
+
+        [JsonIgnore]
+        public virtual ICollection<Candidature>? Candidatures { get; set; } = default!;
+
+        [JsonIgnore]
+        public virtual ICollection<Cv>? Cvs { get; set; } = default!;
     }
 }

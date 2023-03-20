@@ -14,6 +14,8 @@ namespace BlazorBaseApi
         public DbSet<Personne> Personnes { get; set; } = default!;
         public DbSet<Adresse> Adresses { get; set; } = default!;
         public DbSet<Cv> Cvs { get; set; } = default!;
+        public DbSet<ListeType> ListeType { get; set; } = default!;
+        public DbSet<ListeItem> ListeItem { get; set; } = default!;
 
         // public DbSet<GenericObject> GenericObject { get; set; } = default!;
 
@@ -34,6 +36,12 @@ namespace BlazorBaseApi
             // modelBuilder.Entity<GenericObject>()
             //     .Property(o => o.DateUpdate)
             //     .HasComputedColumnSql("NOW()", stored: true);
+
+            // modelBuilder.Entity<ListeType>()
+            //     .HasMany<ListeItem>(s => s.ListeItems)
+            //     .WithMany()
+            //     .HasForeignKey(s => s.ListeItem)
+            //     .WillCascadeOnDelete(false);
 
             base.OnModelCreating(modelBuilder);
         }

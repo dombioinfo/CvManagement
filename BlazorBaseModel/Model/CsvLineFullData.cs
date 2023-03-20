@@ -18,6 +18,8 @@ namespace BlazorBaseModel.Model
                 AdresseDto = new AdresseDto(),
                 CandidatureDto = new CandidatureDto()
             };
+
+            // PersonneDto
             lineData.PersonneDto.Nom = lineOfCsv[0];
             lineData.PersonneDto.Prenom = lineOfCsv[1];
             lineData.PersonneDto.Email = lineOfCsv[2];
@@ -27,11 +29,13 @@ namespace BlazorBaseModel.Model
             {
                 lineData.PersonneDto.DateNaissance = date;
             }
-            // lineData.AdresseDto.Ville = lineOfCsv[5];
-            // if (long.TryParse(lineOfCsv[6], out) {
-            //     lineData.AdresseDto.CodePostal = 
-            // }
-            
+
+            // AdresseDto
+            lineData.AdresseDto.Ville = lineOfCsv[5];
+            lineData.AdresseDto.CodePostal = lineOfCsv[6];
+
+            // CandidatureDto
+
             return lineData;
         }
     }
