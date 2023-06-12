@@ -50,6 +50,34 @@ namespace BlazorBase.Service
             return personneDto;
         }
 
+        public async Task<PersonneDto?> GetPersonneAsync(PersonneDto personneForSearch)
+        {
+            List<Personne> personnes = (await this.GetGenericObjectListAsync()).ToList();
+            if (!string.IsNullOrWhiteSpace(personneForSearch.Email)) 
+            {
+                personnes = personnes.Where(x => x.Email == personneForSearch.Email).ToList();
+            }
+            if (!string.IsNullOrWhiteSpace(personneForSearch.Nom))
+            {
+                personnes = personnes.Where(x => x.Nom == personneForSearch.Nom).ToList();
+            }
+            if (!string.IsNullOrWhiteSpace(personneForSearch.Prenom))
+            {
+                personnes = personnes.Where(x => x.Prenom == personneForSearch.Prenom).ToList();
+            }
+            if (!string.IsNullOrWhiteSpace(personneForSearch.Tel))
+            {
+                personnes = personnes.Where(x => x.Tel == personneForSearch.Tel).ToList();
+            }
+            Personne? personne = personnes.FirstOrDefault();
+            PersonneDto? personneDto = null;
+            if (personne != null)
+            {
+                personneDto = _mapper.Map<PersonneDto>(personne);
+            }
+            return personneDto;
+        }
+
         public async Task<int> CreatePersonneAsync(PersonneDto personneDto)
         {
             Personne personne = new Personne()
@@ -74,7 +102,7 @@ namespace BlazorBase.Service
                 DateNaissance = personneDto.DateNaissance,
                 Email = personneDto.Email,
                 Tel = personneDto.Tel,
-                Adresses = null
+                //Adresses = null
             };
             return await this.UpdateGenericObjectAsync(personneId, personne);
         }

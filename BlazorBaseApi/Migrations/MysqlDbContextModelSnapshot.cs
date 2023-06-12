@@ -72,7 +72,7 @@ namespace BlazorBaseApi.Migrations
 
                     b.HasIndex("PersonneId");
 
-                    b.ToTable("Adresse");
+                    b.ToTable("Adresse", (string)null);
                 });
 
             modelBuilder.Entity("BlazorBaseModel.Db.Candidature", b =>
@@ -120,7 +120,7 @@ namespace BlazorBaseApi.Migrations
 
                     b.HasIndex("PersonneId");
 
-                    b.ToTable("Candidature");
+                    b.ToTable("Candidature", (string)null);
                 });
 
             modelBuilder.Entity("BlazorBaseModel.Db.Cv", b =>
@@ -174,7 +174,7 @@ namespace BlazorBaseApi.Migrations
 
                     b.HasIndex("PersonneId");
 
-                    b.ToTable("Cv");
+                    b.ToTable("Cv", (string)null);
                 });
 
             modelBuilder.Entity("BlazorBaseModel.Db.ListeItem", b =>
@@ -218,7 +218,7 @@ namespace BlazorBaseApi.Migrations
 
                     b.HasIndex("ListeTypeId");
 
-                    b.ToTable("ListeItem");
+                    b.ToTable("ListeItem", (string)null);
                 });
 
             modelBuilder.Entity("BlazorBaseModel.Db.ListeType", b =>
@@ -257,7 +257,7 @@ namespace BlazorBaseApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ListeType");
+                    b.ToTable("ListeType", (string)null);
                 });
 
             modelBuilder.Entity("BlazorBaseModel.Db.Personne", b =>
@@ -310,7 +310,7 @@ namespace BlazorBaseApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Personnes");
+                    b.ToTable("Personnes", (string)null);
                 });
 
             modelBuilder.Entity("BlazorBaseModel.Db.Profil", b =>
@@ -342,7 +342,7 @@ namespace BlazorBaseApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Profil");
+                    b.ToTable("Profil", (string)null);
                 });
 
             modelBuilder.Entity("BlazorBaseModel.Db.User", b =>
@@ -400,7 +400,7 @@ namespace BlazorBaseApi.Migrations
 
                     b.HasIndex("ProfilId");
 
-                    b.ToTable("User");
+                    b.ToTable("User", (string)null);
                 });
 
             modelBuilder.Entity("BlazorBaseModel.Db.Adresse", b =>

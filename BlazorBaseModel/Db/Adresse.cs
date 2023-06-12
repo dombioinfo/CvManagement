@@ -8,7 +8,6 @@ namespace BlazorBaseModel.Db
     {
         public Adresse() : base() { }
 
-        [Required]
         [Column("Rue")]
         public string Rue { get; set; } = "";
 
@@ -16,7 +15,6 @@ namespace BlazorBaseModel.Db
         [StringLength(100)]
         public string Complement { get; set; } = "";
 
-        [Required]
         [Column("Ville", TypeName = "VARCHAR")]
         [StringLength(100)]
         public string Ville { get; set; } = "";

@@ -58,7 +58,8 @@ namespace BlazorBase.Service
                 Complement = adresseDto.Complement,
                 Ville = adresseDto.Ville,
                 CodePostal = adresseDto.CodePostal,
-                PersonneId = adresseDto.PersonneId
+                PersonneId = adresseDto.PersonneId,
+                Actif = true
             };
             return await this.CreateGenericObjectAsync("Adresse/create-with-data", adresse);
         }

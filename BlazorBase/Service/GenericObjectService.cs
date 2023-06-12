@@ -1,4 +1,5 @@
 using System.Net.Http.Headers;
+using System.Text;
 using System.Text.Json;
 using AutoMapper;
 
@@ -80,7 +81,9 @@ namespace BlazorBase.Service
         {
             int result = 0;
             Console.WriteLine($"URL : {url}");
-            
+            var stringPayload = JsonSerializer.Serialize(objectToCreate);
+            Console.WriteLine($"Content Json :\n{stringPayload}");
+
             var response = await _httpClient.PostAsJsonAsync(url, objectToCreate);
 
             if (response.IsSuccessStatusCode)

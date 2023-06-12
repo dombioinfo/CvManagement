@@ -25,6 +25,7 @@ namespace BlazorBase.Pages
                     {
                         Directory.CreateDirectory(path);
                     }
+                    fileDto.RelativePath = path;
                     using (FileStream fileStream = new FileStream(Path.Combine(path, fileDto.FileName), FileMode.OpenOrCreate, FileAccess.Write))
                     {
                         await fileStream.WriteAsync(result.ToArray(), 0, fileDto.FileSize);
