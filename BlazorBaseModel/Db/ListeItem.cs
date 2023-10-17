@@ -17,6 +17,6 @@ namespace BlazorBaseModel.Db
         public long ListeTypeId { get; set; }
 
         [ForeignKey("ListeTypeId")]
-        public virtual ListeType ListeType { get; set; } = default!;
+        public virtual ListeType? ListeType { get; set; } = default!;
     }
 }

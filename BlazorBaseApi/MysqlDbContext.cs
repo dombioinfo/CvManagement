@@ -14,8 +14,8 @@ namespace BlazorBaseApi
         public DbSet<Personne> Personnes { get; set; } = default!;
         public DbSet<Adresse> Adresses { get; set; } = default!;
         public DbSet<Cv> Cvs { get; set; } = default!;
-        public DbSet<ListeType> ListeType { get; set; } = default!;
-        public DbSet<ListeItem> ListeItem { get; set; } = default!;
+        public DbSet<ListeType> ListeTypes { get; set; } = default!;
+        public DbSet<ListeItem> ListeItems { get; set; } = default!;
 
         // public DbSet<GenericObject> GenericObject { get; set; } = default!;
 

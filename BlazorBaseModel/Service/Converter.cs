@@ -1,6 +1,7 @@
 using System.Reflection;
+using BlazorBaseModel.Sevice;
 
-public class Converter
+public class Converter : IConverter
 {
     /// <summary>
     /// Permet de convertir un objet model en objet de base de données. Tous les champs de model qui existent dans db sont transférés sur db.
@@ -10,7 +11,7 @@ public class Converter
     /// <param name="modelObj"></param>
     /// <param name="dbObj"></param>
     /// <exception cref="Exception"></exception>
-    public static void ModelToDb<T, U>(T modelObj, U dbObj) where U : new()
+    public void ModelToDb<T, U>(T modelObj, U dbObj) where U : new()
     {
         if (modelObj == null)
         {

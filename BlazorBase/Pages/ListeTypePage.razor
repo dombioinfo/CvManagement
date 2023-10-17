@@ -1,0 +1,68 @@
+﻿@page "/listetype"
+@using Blazorise
+
+<!--<PageTitle>@PageTitle</PageTitle>-->
+<h1>Liste des catégories et leurs items</h1>
+
+@if (Items == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <DataGrid TItem="ListeTypeDto"
+            Data="@Items"
+            @bind-SelectedRow="@SelectedRow"
+            TotalItems="@TotalItems"
+            EditMode="DataGridEditMode.Form"
+            PageSize="50" ShowPager="true" Editable="true"
+            NewItemDefaultSetter="@OnNewItemDefaultSetter"
+            RowInserted="@OnRowInserted"
+            RowUpdated="@OnRowUpdated"
+            RowRemoving="@OnRowRemoving"
+            RowRemoved="@OnRowRemoved"
+            RowContextMenu="@OnRowContextMenu"
+            RowContextMenuPreventDefault="true"
+            FixedHeader="true"
+            Filterable="true"
+            Sortable="true"
+            SortMode="DataGridSortMode.Multiple"
+            Responsive>
+        <DataGridCommandColumn>
+            <NewCommandTemplate>
+                <Icon Name="IconName.Add" Clicked="@context.Clicked" Margin="Margin.Is3.FromEnd" />
+            </NewCommandTemplate>
+            <EditCommandTemplate>
+                <Icon Name="IconName.Edit" Clicked="@context.Clicked" Margin="Margin.Is3.FromEnd" />
+            </EditCommandTemplate>
+            <DeleteCommandTemplate>
+                <Icon Name="IconName.Delete" Clicked="@context.Clicked" Margin="Margin.Is3.FromEnd" />
+            </DeleteCommandTemplate>
+        </DataGridCommandColumn>
+        <DataGridColumn Field="@nameof(ListeTypeDto.Code)" Caption="Nom" Editable Sortable></DataGridColumn>
+        <DataGridColumn Field="@nameof(ListeTypeDto.DefaultLibelle)" Caption="Libelle" Editable Sortable></DataGridColumn>
+        <DataGridColumn Caption="Actions">
+            <DisplayTemplate>
+                @{
+                    var listeTypeId = (context as ListeTypeDto)?.Id;
+                    string urlToEditType = listeTypeId != null ? $"/listetype/{listeTypeId}/listeitems" : "";
+                    <a href="@urlToEditType" title="Type" alt="Type"><Icon Name="IconName.List" Margin="Margin.Is3.FromEnd" /></a>
+                }
+            </DisplayTemplate>
+        </DataGridColumn>
+    </DataGrid>
+
+    @if (ShowContextMenu)
+    {
+        <Div Position="Position.Fixed" Background="Background.Danger" Style="@($"left:{ContextMenuPos.X}px;top:{ContextMenuPos.Y}px;")">
+            <ListGroup>
+                <ListGroupItem Clicked="@(()=>OnContextAdresseEditClicked(ContextMenuListeTypeDto))">
+                    <Icon Name="IconName.Edit" TextColor="TextColor.Secondary" /> Adresse
+                </ListGroupItem>
+                <ListGroupItem Clicked="@(()=>OnContextCandidatureEditClicked(ContextMenuListeTypeDto))">
+                    <Icon Name="IconName.Delete" TextColor="TextColor.Danger" /> Candidature
+                </ListGroupItem>
+            </ListGroup>
+        </Div>
+    }
+}

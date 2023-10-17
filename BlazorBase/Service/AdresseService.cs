@@ -73,7 +73,7 @@ namespace BlazorBase.Service
                 Complement = adresseDto.Complement,
                 Ville = adresseDto.Ville,
                 CodePostal = adresseDto.CodePostal,
-                PersonneId = 0
+                PersonneId = adresseDto.PersonneId
             };
             return await this.UpdateGenericObjectAsync(adresseId, adresse);
         }

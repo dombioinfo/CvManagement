@@ -1,0 +1,47 @@
+﻿@page "/listetype/{ListeTypeId:long}/listeitems"
+@using Blazorise
+
+<!--<PageTitle>@PageTitle</PageTitle>-->
+<h1>Liste des items de la catégorie '@ListeTypeDto?.DefaultLibelle'</h1>
+
+<a href="/listetype">&lt; Retour</a>
+
+@if (Items == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <DataGrid TItem="ListeItemDto"
+            Data="@Items"
+            @bind-SelectedRow="@SelectedRow"
+            TotalItems="@TotalItems"
+            EditMode="DataGridEditMode.Form"
+            PageSize="50" ShowPager="true" Editable="true"
+            NewItemDefaultSetter="@OnNewItemDefaultSetter"
+            RowInserted="@OnRowInserted"
+            RowUpdated="@OnRowUpdated"
+            RowRemoving="@OnRowRemoving"
+            RowRemoved="@OnRowRemoved"
+            RowContextMenu="@OnRowContextMenu"
+            RowContextMenuPreventDefault="true"
+            FixedHeader="true"
+            Filterable="true"
+            Sortable="true"
+            SortMode="DataGridSortMode.Multiple"
+            Responsive>
+        <DataGridCommandColumn>
+            <NewCommandTemplate>
+                <Icon Name="IconName.Add" Clicked="@context.Clicked" Margin="Margin.Is3.FromEnd" />
+            </NewCommandTemplate>
+            <EditCommandTemplate>
+                <Icon Name="IconName.Edit" Clicked="@context.Clicked" Margin="Margin.Is3.FromEnd" />
+            </EditCommandTemplate>
+            <DeleteCommandTemplate>
+                <Icon Name="IconName.Delete" Clicked="@context.Clicked" Margin="Margin.Is3.FromEnd" />
+            </DeleteCommandTemplate>
+        </DataGridCommandColumn>
+        <DataGridColumn Field="@nameof(ListeItemDto.Code)" Caption="Nom" Editable Sortable></DataGridColumn>
+        <DataGridColumn Field="@nameof(ListeItemDto.DefaultLibelle)" Caption="Libelle" Editable Sortable></DataGridColumn>
+    </DataGrid>
+}

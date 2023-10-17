@@ -50,6 +50,9 @@ builder.Services.AddSingleton<AdresseService>();
 builder.Services.AddSingleton<CandidatureService>();
 builder.Services.AddSingleton<CvService>();
 builder.Services.AddSingleton<ConfigurationService>();
+builder.Services.AddSingleton<ListeItemService>();
+builder.Services.AddSingleton<ListeTypeService>();
+builder.Services.AddSingleton<ListeChoixService>();
 
 var app = builder.Build();
 

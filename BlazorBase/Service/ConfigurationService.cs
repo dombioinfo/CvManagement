@@ -5,6 +5,7 @@ namespace BlazorBase.Service
         private readonly PersonneService _personneService;
         private readonly AdresseService _adresseService;
         private readonly CandidatureService _candidatureService;
+
         public ConfigurationService(
             IHttpClientFactory clientFactory, IMapper mapper,
             PersonneService personneService,

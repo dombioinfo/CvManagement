@@ -1,0 +1,29 @@
+@using Blazorise
+@using Blazorise.Components
+
+<Field>
+    <FieldLabel>Ajout/modification d'une catégorie</FieldLabel>
+    <TextEdit Placeholder="Libellé de la catégorie" />
+    
+    <FieldLabel>Catégorie</FieldLabel>
+    <!--<div><Button Clicked="@OnCategorieClickedToAdd" Color="Color.Primary">Ajout</Button><Button Clicked="@OnCategorieClickedToUpdate" Color="Color.Primary">Modification</Button></div>-->
+    <SelectList TItem="ListeTypeDto"
+        TValue="long"
+        Data="@ListeCategorieListe"
+        TextField="@((item)=>item.DefaultLibelle)"
+        ValueField="@((item)=>item.Id)" 
+        @bind-SelectedValue="@SelectedValueForListeType" />
+
+</Field>
+<Field>
+    <FieldLabel>Ajout/modification d'un choix</FieldLabel>
+    <TextEdit Placeholder="Libellé de l'item" />
+    
+    <FieldLabel>Liste des choix</FieldLabel>
+    <SelectList TItem="ListeItemDto"
+        TValue="long"
+        Data="@ListeItemListe"
+        TextField="@((item)=>item.DefaultLibelle)"
+        ValueField="@((item)=>item.Id)"
+        @bind-SelectedValue="@SelectedValueForListeItem" />
+</Field>

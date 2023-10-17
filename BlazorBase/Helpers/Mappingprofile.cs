@@ -10,6 +10,8 @@ namespace BlazorBase.Helpers
             CreateMap<Personne, PersonneDto>();
             CreateMap<Candidature, CandidatureDto>();
             CreateMap<Cv, CvDto>();
+            CreateMap<ListeType, ListeTypeDto>();
+            CreateMap<ListeItem, ListeItemDto>();
         }
     }
 }

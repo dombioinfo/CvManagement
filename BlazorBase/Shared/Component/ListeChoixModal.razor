@@ -1,0 +1,17 @@
+@using Blazorise
+
+<Modal @ref="modalListeChoixRef">
+    <ModalContent Centered>
+        <ModalHeader>
+            <ModalTitle>@Title</ModalTitle>
+            <CloseButton />
+        </ModalHeader>
+        <ModalBody>
+            <ListeChoixForm></ListeChoixForm>
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Secondary" Clicked="@HideModal">Annuler</Button>
+            <Button Color="Color.Primary" Clicked="@HideModal">Valider</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
