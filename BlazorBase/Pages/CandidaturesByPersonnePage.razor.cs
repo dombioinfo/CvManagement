@@ -9,6 +9,8 @@ namespace BlazorBase.Pages
         [Inject]
         private PersonneService PersonneService { get; set; } = default!;
         [Inject]
+        private ListeItemService ListeItemService { get; set; } = default!;
+        [Inject]
         private CandidatureService CandidatureService { get; set; } = default!;
         [Inject]
         public IModalService ModalService { get; set; } = default!;
@@ -22,10 +24,19 @@ namespace BlazorBase.Pages
         private CandidatureDto? SelectedItem;
         private int TotalItems { get; set; } = 0;
 
+        public List<ListeItemDto> Metiers { get; set; } = default!;
+        public long SelectedMetierListValue { get; set; } = default!;
+
         protected override async Task OnInitializedAsync()
         {
             Personne = await PersonneService.GetPersonneAsync(PersonneId);
+            Metiers = await ListeItemService.GetListeItemsByListeTypeAsync("METIER");
             Items = await CandidatureService.GetCandidaturesByPersonneAsync(PersonneId);
+            foreach (CandidatureDto candidatureDto in Items)
+            {
+                candidatureDto.Metier = Metiers.FirstOrDefault(x => x.Id == candidatureDto.MetierId);
+                candidatureDto.Personne = Personne;
+            }
             await base.OnInitializedAsync();
         }
         

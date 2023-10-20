@@ -7,5 +7,7 @@ namespace BlazorBaseModel.Model
         public string Annotation { get; set; } = "";
         public long PersonneId { get; set; } = default!;
         public virtual PersonneDto Personne { get; set; } = default!;
+        public long MetierId { get; set; } = default!;
+        public virtual ListeItemDto? Metier { get; set; } = default!;
     }
 }

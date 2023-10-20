@@ -71,7 +71,6 @@ namespace BlazorBaseApi.Controllers
             Cv.RelativePath = CvRequest.RelativePath;
             Cv.FileSize = CvRequest.FileSize;
             Cv.PersonneId = CvRequest.PersonneId;
-            await _dbContext.AddAsync(Cv);
             await _dbContext.SaveChangesAsync();
         }
 */

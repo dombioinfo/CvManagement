@@ -34,6 +34,16 @@ namespace BlazorBaseApi.Controllers
             return listeType != null ? listeType : new ListeType();
         }
 
+        [HttpGet("{listeTypeCode}/listeitems", Name = "GetListeItemByListeTypeCode")]
+        public async Task<ListeType?> GetListeItemsByListeTypeCode(string listeTypeCode)
+        {
+            ListeType? listeType = await _dbContext.ListeTypes
+                .Include(x => x.ListeItems)
+                .Where(p => p.Code == listeTypeCode)
+                .FirstOrDefaultAsync();
+            return listeType;
+        }
+
         [HttpPost(Name = "PostListeType")]
         public async Task<long> CreateListeType()
         {

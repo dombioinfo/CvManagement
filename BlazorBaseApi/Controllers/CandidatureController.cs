@@ -68,7 +68,7 @@ namespace BlazorBaseApi.Controllers
             candidature.DateCandidature = candidatureRequest.DateCandidature;
             candidature.Annotation = candidatureRequest.Annotation;
             candidature.PersonneId = candidatureRequest.PersonneId;
-            await _dbContext.AddAsync(candidature);
+            candidature.MetierId = candidatureRequest.MetierId;
             await _dbContext.SaveChangesAsync();
         }
 

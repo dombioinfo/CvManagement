@@ -70,7 +70,6 @@ namespace BlazorBaseApi.Controllers
             adresse.Ville = adresseRequest.Ville;
             adresse.CodePostal = adresseRequest.CodePostal;
             adresse.PersonneId = adresseRequest.PersonneId;
-            await _dbContext.AddAsync(adresse);
             await _dbContext.SaveChangesAsync();
         }
 

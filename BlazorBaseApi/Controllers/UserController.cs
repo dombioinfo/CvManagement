@@ -61,7 +61,6 @@ namespace BlazorBaseApi.Controllers
             user.Nom = userRequest.Nom;
             user.Prenom = userRequest.Prenom;
             user.ProfilId = userRequest.ProfilId;
-            await _dbContext.AddAsync(user);
             await _dbContext.SaveChangesAsync();
         }
 

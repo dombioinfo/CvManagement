@@ -22,7 +22,10 @@ namespace BlazorBaseModel.Db
         [ForeignKey("PersonneId")]
         public virtual Personne? Personne { get; set; } = default!;
 
+        [Column("MetierId")]
+        public long MetierId { get; set; } = default!;
+
         [ForeignKey("MetierId")]
-        public ListeItem? ListeItem { get; set; } = default!;
+        public virtual ListeItem? Metier { get; set; } = default!;
     }
 }

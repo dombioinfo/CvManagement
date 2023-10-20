@@ -66,7 +66,7 @@ namespace BlazorBaseApi.Controllers
             }
             listeItem.Code = listeItemRequest.Code;
             listeItem.DefaultLibelle = listeItemRequest.DefaultLibelle;
-            listeItem.ListeTypeId = listeItemRequest.ListeTypeId;
+            //listeItem.ListeTypeId = listeItemRequest.ListeTypeId;
             listeItem.Actif = listeItemRequest.Actif;
             await _dbContext.SaveChangesAsync();
         }

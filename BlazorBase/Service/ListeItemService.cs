@@ -53,8 +53,45 @@ namespace BlazorBase.Service
 
         public async Task<List<ListeItemDto>> GetListeItemsByListeTypeAsync(long listeTypeId)
         {
-            List<ListeItem> listeItems = (await this.GetGenericObjectListAsync()).ToList(); // TODO: passer personneId en paramètre
+            List<ListeItem> listeItems = (await this.GetGenericObjectListAsync()).ToList();
             List<ListeItemDto> listeItemDtos = _mapper.Map<List<ListeItemDto>>(listeItems.Where(x => x.ListeTypeId == listeTypeId).ToList());
+            return listeItemDtos;
+        }
+
+        public async Task<List<ListeItemDto>> GetListeItemsByListeTypeAsync(string listeTypeCode)
+        {
+            //List<ListeItem> listeItems = (await this.GetGenericObjectListAsync()).ToList();
+            //List<ListeItemDto> listeItemDtos = _mapper.Map<List<ListeItemDto>>(listeItems.Where(x => x.ListeType!.Code == listeTypeCode).ToList());
+
+            ListeType listeType = default!;
+
+            string typeOfObject = typeof(ListeItem).Name;
+            var url = $"/listetype/{listeTypeCode}/{typeOfObject}s";
+            Console.WriteLine($"URL : {url}");
+
+            var response = await _httpClient.GetAsync(url);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var stringResponse = await response.Content.ReadAsStringAsync();
+                if (string.IsNullOrEmpty(stringResponse))
+                {
+                    throw new Exception("La réponse ne doit pas être un objet vide");
+                }
+                listeType = JsonSerializer.Deserialize<ListeType>(stringResponse,
+                    new JsonSerializerOptions()
+                    {
+                        //ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                        PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                    });
+            }
+            else
+            {
+                listeType = new ListeType();
+            }
+
+            List<ListeItemDto> listeItemDtos = _mapper.Map<List<ListeItemDto>>(listeType!.ListeItems);
+            
             return listeItemDtos;
         }
 
@@ -65,8 +102,7 @@ namespace BlazorBase.Service
                 Id = 0,
                 Code = listeItemToCreate.Code,
                 ListeTypeId = listeItemToCreate.ListeTypeDtoId,
-                DefaultLibelle = listeItemToCreate.DefaultLibelle,
-                ListeType = default
+                DefaultLibelle = listeItemToCreate.DefaultLibelle
             };
             return await this.CreateGenericObjectAsync("listeitem/create-with-data", listeItem);
         }

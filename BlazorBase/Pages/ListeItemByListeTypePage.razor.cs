@@ -75,7 +75,8 @@ namespace BlazorBase.Pages
 
         private async Task OnRowUpdated(SavedRowItem<ListeItemDto, Dictionary<string, object>> e)
         {
-            //int id = await ListeItemService.UpdateListeItemAsync(e.Item.Id, e.Item);
+            e.Item.ListeTypeDtoId = ListeTypeId;
+            int id = await ListeItemService.UpdateListeItemAsync(e.Item.Id, e.Item);
         }
 
         public async Task OnRowRemoving(CancellableRowChange<ListeItemDto> e)
