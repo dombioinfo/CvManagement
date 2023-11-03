@@ -35,6 +35,16 @@ namespace BlazorBaseModel.Model
             lineData.AdresseDto.CodePostal = lineOfCsv[6];
 
             // CandidatureDto
+            lineData.CandidatureDto.Metier = new ListeItemDto() {
+                DefaultLibelle = lineOfCsv[9]
+            };
+            lineData.CandidatureDto.SourceCandidature = lineOfCsv[10];
+            lineData.CandidatureDto.PrescripteurLibelle = lineOfCsv[11];
+            lineData.CandidatureDto.PrescripteurNom = lineOfCsv[12];
+            if (DateTime.TryParse(lineOfCsv[13], out date))
+            {
+                lineData.CandidatureDto.DateCandidature = date;
+            }
 
             return lineData;
         }

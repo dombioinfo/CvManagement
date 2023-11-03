@@ -1,0 +1,10 @@
+namespace BlazorBase.Helpers
+{
+    public class Constantes
+    {
+        #region Liste des codes des "liste type"
+        public static readonly string LISTE_CODE_METIER = "METIER";
+        public static readonly string LISTE_CODE_SOURCE_CANDIDATURE = "SOURCE_CANDIDATURE";
+        #endregion
+    }
+}

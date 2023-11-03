@@ -5,17 +5,20 @@ namespace BlazorBase.Service
         private readonly PersonneService _personneService;
         private readonly AdresseService _adresseService;
         private readonly CandidatureService _candidatureService;
+        private readonly ListeItemService _listeItemService;
 
         public ConfigurationService(
             IHttpClientFactory clientFactory, IMapper mapper,
             PersonneService personneService,
             AdresseService adresseService,
-            CandidatureService candidatureService
+            CandidatureService candidatureService,
+            ListeItemService listeItemService
             ) : base(clientFactory, mapper)
         {
             _personneService = personneService;
             _adresseService = adresseService;
             _candidatureService = candidatureService;
+            _listeItemService = listeItemService;
         }
 
         public async Task ImportFullDataAsync(FileDto uploadedFileWithData)
@@ -53,6 +56,8 @@ namespace BlazorBase.Service
                         {
                             Email = personneDtoFromCsv.Email
                         };
+                        
+                        #region Personne
                         PersonneDto? personneDto = await _personneService.GetPersonneAsync(critereForSearch);
                         if (personneDto == null) 
                         {
@@ -63,12 +68,14 @@ namespace BlazorBase.Service
                         {
                             await _personneService.UpdatePersonneAsync(personneDto.Id, personneDtoFromCsv);
                         }
+                        #endregion
 
+                        #region Adresse
                         List<AdresseDto> adresseDtoList = await _adresseService.GetAdressesByPersonneAsync(personneDto.Id);
                         AdresseDto? adresseDto = adresseDtoList.FirstOrDefault(x => x.Rue == adresseDtoFromCsv.Rue && x.CodePostal == adresseDtoFromCsv.CodePostal);
+                        adresseDtoFromCsv.PersonneId = personneDto.Id;
                         if (adresseDto == null)
                         {
-                            adresseDtoFromCsv.PersonneId = personneDto.Id;
                             adresseDto = new AdresseDto();
                             adresseDto.Id = await _adresseService.CreateAdresseAsync(adresseDtoFromCsv);
                         }
@@ -76,12 +83,21 @@ namespace BlazorBase.Service
                         {
                             await _adresseService.UpdateAdresseAsync(adresseDto.Id, adresseDtoFromCsv);
                         }
+                        #endregion
+
+                        #region Candidature
+                        List<ListeItemDto> listeItemDtos = await _listeItemService.GetListeItemsByListeTypeAsync("METIER");
+                        ListeItemDto? listeItemDto = listeItemDtos.FirstOrDefault(x => x.DefaultLibelle == candidatureDtoFromCsv.Metier?.DefaultLibelle);
+                        if (listeItemDto != null)
+                        {
+                            candidatureDtoFromCsv.MetierId = listeItemDto.Id;
+                        }
 
                         List<CandidatureDto> candidatureDtoList = await _candidatureService.GetCandidaturesByPersonneAsync(personneDto.Id);
                         CandidatureDto? candidatureDto = candidatureDtoList.FirstOrDefault(x => x.DateCandidature == candidatureDtoFromCsv.DateCandidature);
+                        candidatureDtoFromCsv.PersonneId = personneDto.Id;
                         if (candidatureDto == null)
                         {
-                            candidatureDtoFromCsv.PersonneId = personneDto.Id;
                             candidatureDto = new CandidatureDto();
                             candidatureDto.Id = await _candidatureService.CreateCandidatureAsync(candidatureDtoFromCsv);
                         }
@@ -89,6 +105,7 @@ namespace BlazorBase.Service
                         {
                             await _candidatureService.UpdateCandidatureAsync(candidatureDto.Id, candidatureDtoFromCsv);
                         }
+                        #endregion
                     }
                 }
             }
@@ -97,7 +114,6 @@ namespace BlazorBase.Service
                 Console.WriteLine($"Nom du fichier: '{fullFileName}'");
                 Console.WriteLine(e.Message);
             }
-            //return new Task(null);
         }
     }
 }
