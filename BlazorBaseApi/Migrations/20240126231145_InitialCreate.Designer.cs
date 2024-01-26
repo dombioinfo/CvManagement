@@ -3,30 +3,31 @@ using System;
 using BlazorBaseApi;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
 namespace BlazorBaseApi.Migrations
 {
-    [DbContext(typeof(MysqlDbContext))]
-    partial class MysqlDbContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(SqliteDbContext))]
+    [Migration("20240126231145_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.4")
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+            modelBuilder.HasAnnotation("ProductVersion", "7.0.4");
 
             modelBuilder.Entity("BlazorBaseModel.Db.Adresse", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("Actif")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("CodePostal")
                         .IsRequired()
@@ -41,26 +42,25 @@ namespace BlazorBaseApi.Migrations
                         .HasColumnName("Complement");
 
                     b.Property<int?>("CreateUserId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("DateCreation")
-                        .HasColumnType("datetime(6)");
+                    b.Property<DateTime>("DateCreation")
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("DateUpdate")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("TEXT");
 
                     b.Property<long>("PersonneId")
-                        .HasColumnType("bigint")
+                        .HasColumnType("INTEGER")
                         .HasColumnName("PersonneId");
 
                     b.Property<string>("Rue")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("TEXT")
                         .HasColumnName("Rue");
 
                     b.Property<int?>("UpdateUserId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Ville")
                         .IsRequired()
@@ -72,17 +72,17 @@ namespace BlazorBaseApi.Migrations
 
                     b.HasIndex("PersonneId");
 
-                    b.ToTable("Adresse", (string)null);
+                    b.ToTable("Adresse");
                 });
 
             modelBuilder.Entity("BlazorBaseModel.Db.Candidature", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("Actif")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Annotation")
                         .IsRequired()
@@ -91,28 +91,32 @@ namespace BlazorBaseApi.Migrations
                         .HasColumnName("Annotation");
 
                     b.Property<int?>("CreateUserId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("DateCandidature")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("DateCandidature");
 
-                    b.Property<DateTime?>("DateCreation")
-                        .HasColumnType("datetime(6)");
+                    b.Property<DateTime>("DateCreation")
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("DateUpdate")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("TEXT");
 
                     b.Property<long>("MetierId")
-                        .HasColumnType("bigint");
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("MetierId");
 
                     b.Property<long>("PersonneId")
-                        .HasColumnType("bigint")
+                        .HasColumnType("INTEGER")
                         .HasColumnName("PersonneId");
 
+                    b.Property<long>("StatutId")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("StatutId");
+
                     b.Property<int?>("UpdateUserId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -120,32 +124,33 @@ namespace BlazorBaseApi.Migrations
 
                     b.HasIndex("PersonneId");
 
-                    b.ToTable("Candidature", (string)null);
+                    b.HasIndex("StatutId");
+
+                    b.ToTable("Candidature");
                 });
 
             modelBuilder.Entity("BlazorBaseModel.Db.Cv", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("Actif")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("INTEGER");
 
                     b.Property<byte[]>("BlobFile")
                         .IsRequired()
-                        .HasColumnType("longblob")
+                        .HasColumnType("BLOB")
                         .HasColumnName("BlobFile");
 
                     b.Property<int?>("CreateUserId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("DateCreation")
-                        .HasColumnType("datetime(6)");
+                    b.Property<DateTime>("DateCreation")
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("DateUpdate")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("FileName")
                         .IsRequired()
@@ -154,11 +159,11 @@ namespace BlazorBaseApi.Migrations
                         .HasColumnName("FileName");
 
                     b.Property<int>("FileSize")
-                        .HasColumnType("int")
+                        .HasColumnType("INTEGER")
                         .HasColumnName("FileSize");
 
                     b.Property<long>("PersonneId")
-                        .HasColumnType("bigint")
+                        .HasColumnType("INTEGER")
                         .HasColumnName("PersonneId");
 
                     b.Property<string>("RelativePath")
@@ -168,23 +173,23 @@ namespace BlazorBaseApi.Migrations
                         .HasColumnName("RelativePath");
 
                     b.Property<int?>("UpdateUserId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PersonneId");
 
-                    b.ToTable("Cv", (string)null);
+                    b.ToTable("Cv");
                 });
 
             modelBuilder.Entity("BlazorBaseModel.Db.ListeItem", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("Actif")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Code")
                         .IsRequired()
@@ -193,14 +198,13 @@ namespace BlazorBaseApi.Migrations
                         .HasColumnName("Code");
 
                     b.Property<int?>("CreateUserId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("DateCreation")
-                        .HasColumnType("datetime(6)");
+                    b.Property<DateTime>("DateCreation")
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("DateUpdate")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("DefaultLibelle")
                         .IsRequired()
@@ -209,26 +213,26 @@ namespace BlazorBaseApi.Migrations
                         .HasColumnName("DefaultLibelle");
 
                     b.Property<long>("ListeTypeId")
-                        .HasColumnType("bigint");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int?>("UpdateUserId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ListeTypeId");
 
-                    b.ToTable("ListeItem", (string)null);
+                    b.ToTable("ListeItem");
                 });
 
             modelBuilder.Entity("BlazorBaseModel.Db.ListeType", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("Actif")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Code")
                         .IsRequired()
@@ -237,14 +241,13 @@ namespace BlazorBaseApi.Migrations
                         .HasColumnName("Code");
 
                     b.Property<int?>("CreateUserId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("DateCreation")
-                        .HasColumnType("datetime(6)");
+                    b.Property<DateTime>("DateCreation")
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("DateUpdate")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("DefaultLibelle")
                         .IsRequired()
@@ -253,35 +256,34 @@ namespace BlazorBaseApi.Migrations
                         .HasColumnName("DefaultLibelle");
 
                     b.Property<int?>("UpdateUserId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
-                    b.ToTable("ListeType", (string)null);
+                    b.ToTable("ListeType");
                 });
 
             modelBuilder.Entity("BlazorBaseModel.Db.Personne", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("Actif")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int?>("CreateUserId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("DateCreation")
-                        .HasColumnType("datetime(6)");
+                    b.Property<DateTime>("DateCreation")
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime?>("DateNaissance")
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("DateNaissance");
 
                     b.Property<DateTime>("DateUpdate")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
                         .HasMaxLength(200)
@@ -306,101 +308,99 @@ namespace BlazorBaseApi.Migrations
                         .HasColumnName("Tel");
 
                     b.Property<int?>("UpdateUserId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Personnes", (string)null);
+                    b.ToTable("Personnes");
                 });
 
             modelBuilder.Entity("BlazorBaseModel.Db.Profil", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("Actif")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int?>("CreateUserId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("DateCreation")
-                        .HasColumnType("datetime(6)");
+                    b.Property<DateTime>("DateCreation")
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("DateUpdate")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Libelle")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("TEXT")
                         .HasColumnName("Libelle");
 
                     b.Property<int?>("UpdateUserId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Profil", (string)null);
+                    b.ToTable("Profil");
                 });
 
             modelBuilder.Entity("BlazorBaseModel.Db.User", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("Actif")
-                        .HasColumnType("tinyint(1)");
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("Age")
-                        .HasColumnType("int")
+                        .HasColumnType("INTEGER")
                         .HasColumnName("Age");
 
                     b.Property<int?>("CreateUserId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
-                    b.Property<DateTime?>("DateCreation")
-                        .HasColumnType("datetime(6)");
+                    b.Property<DateTime>("DateCreation")
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("DateUpdate")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Login")
                         .IsRequired()
                         .HasMaxLength(20)
-                        .HasColumnType("varchar(20)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("Login");
 
                     b.Property<string>("Nom")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("TEXT")
                         .HasColumnName("Nom");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("TEXT")
                         .HasColumnName("Password");
 
                     b.Property<string>("Prenom")
                         .IsRequired()
-                        .HasColumnType("longtext")
+                        .HasColumnType("TEXT")
                         .HasColumnName("Prenom");
 
                     b.Property<long>("ProfilId")
-                        .HasColumnType("bigint")
+                        .HasColumnType("INTEGER")
                         .HasColumnName("ProfilId");
 
                     b.Property<int?>("UpdateUserId")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ProfilId");
 
-                    b.ToTable("User", (string)null);
+                    b.ToTable("User");
                 });
 
             modelBuilder.Entity("BlazorBaseModel.Db.Adresse", b =>
@@ -416,7 +416,7 @@ namespace BlazorBaseApi.Migrations
 
             modelBuilder.Entity("BlazorBaseModel.Db.Candidature", b =>
                 {
-                    b.HasOne("BlazorBaseModel.Db.ListeItem", "ListeItem")
+                    b.HasOne("BlazorBaseModel.Db.ListeItem", "Metier")
                         .WithMany()
                         .HasForeignKey("MetierId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -428,9 +428,17 @@ namespace BlazorBaseApi.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ListeItem");
+                    b.HasOne("BlazorBaseModel.Db.ListeItem", "Statut")
+                        .WithMany()
+                        .HasForeignKey("StatutId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Metier");
 
                     b.Navigation("Personne");
+
+                    b.Navigation("Statut");
                 });
 
             modelBuilder.Entity("BlazorBaseModel.Db.Cv", b =>
@@ -446,13 +454,11 @@ namespace BlazorBaseApi.Migrations
 
             modelBuilder.Entity("BlazorBaseModel.Db.ListeItem", b =>
                 {
-                    b.HasOne("BlazorBaseModel.Db.ListeType", "ListeType")
+                    b.HasOne("BlazorBaseModel.Db.ListeType", null)
                         .WithMany("ListeItems")
                         .HasForeignKey("ListeTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("ListeType");
                 });
 
             modelBuilder.Entity("BlazorBaseModel.Db.User", b =>

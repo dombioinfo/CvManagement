@@ -14,7 +14,7 @@ namespace BlazorBaseApi.Controllers
         private readonly ILogger<UserController> _logger;
 
         public UserController(
-            MysqlDbContext dbContext
+            SqliteDbContext dbContext
             , ILogger<UserController> logger) : base(dbContext)
         {
             _logger = logger;
@@ -39,6 +39,7 @@ namespace BlazorBaseApi.Controllers
         public async Task<long> CreateUser()
         {
             User user = new User();
+            user.DateCreation = DateTime.Now;
             await _dbContext.AddAsync(user);
             await _dbContext.SaveChangesAsync();
 
@@ -61,6 +62,7 @@ namespace BlazorBaseApi.Controllers
             user.Nom = userRequest.Nom;
             user.Prenom = userRequest.Prenom;
             user.ProfilId = userRequest.ProfilId;
+            user.DateUpdate = DateTime.Now;
             await _dbContext.SaveChangesAsync();
         }
 

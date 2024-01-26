@@ -15,12 +15,12 @@ namespace BlazorBaseApi.Controllers
 
     public class AppController : ControllerBase
     {
-        protected MysqlDbContext _dbContext;
+        protected SqliteDbContext _dbContext;
         // protected readonly IMapper? _mapper;
         //private readonly IHubContext<AppHub> _hubContext = default!;
 
         public AppController(
-            MysqlDbContext dbContext
+            SqliteDbContext dbContext
             // , IMapper mapper
         /*, IHubContext<AppHub> hubContext*/
         )

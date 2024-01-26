@@ -13,7 +13,7 @@ namespace BlazorBaseApi.Controllers
         private readonly ILogger<CvController> _logger;
 
         public CvController(
-            MysqlDbContext dbContext
+            SqliteDbContext dbContext
             , ILogger<CvController> logger) : base(dbContext)
         {
             _logger = logger;
@@ -38,6 +38,7 @@ namespace BlazorBaseApi.Controllers
         public async Task<long> CreateCv()
         {
             Cv Cv = new Cv();
+            Cv.DateCreation = DateTime.Now;
             await _dbContext.AddAsync(Cv);
             await _dbContext.SaveChangesAsync();
 
@@ -48,6 +49,7 @@ namespace BlazorBaseApi.Controllers
         public async Task<long> PostCvWithData(Cv CvRequest)
         {
             CvRequest.Id = 0;
+            CvRequest.DateCreation = DateTime.Now;
             await _dbContext.AddAsync(CvRequest);
             await _dbContext.SaveChangesAsync();
 
@@ -71,6 +73,7 @@ namespace BlazorBaseApi.Controllers
             Cv.RelativePath = CvRequest.RelativePath;
             Cv.FileSize = CvRequest.FileSize;
             Cv.PersonneId = CvRequest.PersonneId;
+            Cv.DateUpdate = DateTime.Now;
             await _dbContext.SaveChangesAsync();
         }
 */

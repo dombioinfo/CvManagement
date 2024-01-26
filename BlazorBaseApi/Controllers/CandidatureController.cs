@@ -13,7 +13,7 @@ namespace BlazorBaseApi.Controllers
         private readonly ILogger<CandidatureController> _logger;
 
         public CandidatureController(
-            MysqlDbContext dbContext
+            SqliteDbContext dbContext
             , ILogger<CandidatureController> logger) : base(dbContext)
         {
             _logger = logger;
@@ -38,6 +38,7 @@ namespace BlazorBaseApi.Controllers
         public async Task<long> CreateCandidature()
         {
             Candidature candidature = new Candidature();
+            candidature.DateCreation = DateTime.Now;
             await _dbContext.AddAsync(candidature);
             await _dbContext.SaveChangesAsync();
 
@@ -48,6 +49,7 @@ namespace BlazorBaseApi.Controllers
         public async Task<long> PostCandidatureWithData(Candidature candidatureRequest)
         {
             candidatureRequest.Id = 0;
+            candidatureRequest.DateCreation = DateTime.Now;
             await _dbContext.AddAsync(candidatureRequest);
             await _dbContext.SaveChangesAsync();
 
@@ -69,6 +71,7 @@ namespace BlazorBaseApi.Controllers
             candidature.Annotation = candidatureRequest.Annotation;
             candidature.PersonneId = candidatureRequest.PersonneId;
             candidature.MetierId = candidatureRequest.MetierId;
+            candidatureRequest.DateUpdate = DateTime.Now;
             await _dbContext.SaveChangesAsync();
         }
 

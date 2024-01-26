@@ -6,10 +6,18 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+/*
 builder.Services.AddDbContext<MysqlDbContext>(options =>
     {
         var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? "";
         options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+    });
+*/
+builder.Services.AddDbContext<SqliteDbContext>(options =>
+    {
+        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? "";
+        //options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+        options.UseSqlite(connectionString);
     });
 builder.Services.AddCors(policy =>
     {

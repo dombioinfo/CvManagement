@@ -39,6 +39,7 @@ else
                 <Icon Name="IconName.Delete" Clicked="@context.Clicked" Margin="Margin.Is3.FromEnd" />
             </DeleteCommandTemplate>
         </DataGridCommandColumn>
+        <!-- <DataGridColumn Field="@nameof(CandidatureDto.)"></DataGridColumn> -->
         <DataGridColumn Field="@nameof(CandidatureDto.DateCandidature)" Caption="Date de candidature" Editable Sortable></DataGridColumn>
         <DataGridColumn Field="@nameof(CandidatureDto.Annotation)" Caption="Annotation" Editable>
             <EditTemplate>

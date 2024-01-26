@@ -5,11 +5,16 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": ".NET Core Attach",
+            "type": "coreclr",
+            "request": "attach"
+        },
+        {
             "name": ".NET Core Launch (web)",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/bin/Debug/BlazorBaseApi.dll>",
+            "program": "${workspaceFolder}/bin/Debug/net7.0/BlazorBaseApi.dll>",
             "args": [],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,

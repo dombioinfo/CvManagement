@@ -13,7 +13,7 @@ namespace BlazorBaseApi.Controllers
         private readonly ILogger<AdresseController> _logger;
 
         public AdresseController(
-            MysqlDbContext dbContext
+            SqliteDbContext dbContext
             , ILogger<AdresseController> logger) : base(dbContext)
         {
             _logger = logger;
@@ -38,6 +38,7 @@ namespace BlazorBaseApi.Controllers
         public async Task<long> CreateAdresse()
         {
             Adresse adresse = new Adresse();
+            adresse.DateCreation = DateTime.Now;
             await _dbContext.AddAsync(adresse);
             await _dbContext.SaveChangesAsync();
 
@@ -48,6 +49,7 @@ namespace BlazorBaseApi.Controllers
         public async Task<long> PostAdresseWithData(Adresse adresseRequest)
         {
             adresseRequest.Id = 0;
+            adresseRequest.DateCreation = DateTime.Now;
             await _dbContext.AddAsync(adresseRequest);
             await _dbContext.SaveChangesAsync();
 
@@ -70,6 +72,7 @@ namespace BlazorBaseApi.Controllers
             adresse.Ville = adresseRequest.Ville;
             adresse.CodePostal = adresseRequest.CodePostal;
             adresse.PersonneId = adresseRequest.PersonneId;
+            adresse.DateUpdate = DateTime.Now;
             await _dbContext.SaveChangesAsync();
         }
 

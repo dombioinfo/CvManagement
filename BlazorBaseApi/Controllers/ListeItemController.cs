@@ -13,7 +13,7 @@ namespace BlazorBaseApi.Controllers
         private readonly ILogger<ListeItemController> _logger;
 
         public ListeItemController(
-            MysqlDbContext dbContext
+            SqliteDbContext dbContext
             , ILogger<ListeItemController> logger) : base(dbContext)
         {
             _logger = logger;
@@ -38,6 +38,7 @@ namespace BlazorBaseApi.Controllers
         public async Task<long> CreateListeItem()
         {
             ListeItem listeItem = new ListeItem();
+            listeItem.DateCreation = DateTime.Now;
             await _dbContext.AddAsync(listeItem);
             await _dbContext.SaveChangesAsync();
 
@@ -47,6 +48,7 @@ namespace BlazorBaseApi.Controllers
         [HttpPost("create-with-data", Name = "PostListeItemWithData")]
         public async Task<long> CreateListeItemWithData(ListeItem listeItem)
         {
+            listeItem.DateCreation = DateTime.Now;
             await _dbContext.AddAsync(listeItem);
             await _dbContext.SaveChangesAsync();
 
@@ -68,6 +70,7 @@ namespace BlazorBaseApi.Controllers
             listeItem.DefaultLibelle = listeItemRequest.DefaultLibelle;
             //listeItem.ListeTypeId = listeItemRequest.ListeTypeId;
             listeItem.Actif = listeItemRequest.Actif;
+            listeItem.DateUpdate = DateTime.Now;
             await _dbContext.SaveChangesAsync();
         }
 

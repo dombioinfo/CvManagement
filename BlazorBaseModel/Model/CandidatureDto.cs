@@ -9,7 +9,8 @@ namespace BlazorBaseModel.Model
         public virtual PersonneDto Personne { get; set; } = default!;
         public long MetierId { get; set; } = default!;
         public virtual ListeItemDto? Metier { get; set; } = default!;
-
+        public long StatutId { get; set; } = default!;
+        public virtual ListeItemDto? Statut { get; set; } = default!;
         public string SourceCandidature { get; set; } = default!;
         public string PrescripteurLibelle { get; set; } = default!; // structure
         public string PrescripteurNom { get; set; } = default!; // personne moral

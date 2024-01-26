@@ -13,7 +13,7 @@ namespace BlazorBaseApi.Controllers
         private readonly ILogger<PersonneController> _logger;
 
         public PersonneController(
-            MysqlDbContext dbContext
+            SqliteDbContext dbContext
             , ILogger<PersonneController> logger) : base(dbContext)
         {
             _logger = logger;
@@ -38,6 +38,8 @@ namespace BlazorBaseApi.Controllers
         public async Task<long> CreatePersonne()
         {
             Personne personne = new Personne();
+            personne.DateCreation = DateTime.Now;
+            personne.DateUpdate = personne.DateCreation;
             await _dbContext.AddAsync(personne);
             await _dbContext.SaveChangesAsync();
 
@@ -47,6 +49,8 @@ namespace BlazorBaseApi.Controllers
         [HttpPost("create-with-data", Name = "PostPersonneWithData")]
         public async Task<long> CreatePersonneWithData(Personne personne)
         {
+            personne.DateCreation = DateTime.Now;
+            personne.DateUpdate = personne.DateCreation;
             await _dbContext.AddAsync(personne);
             await _dbContext.SaveChangesAsync();
 
@@ -69,6 +73,7 @@ namespace BlazorBaseApi.Controllers
             personne.Prenom = personneRequest.Prenom;
             personne.Email = personneRequest.Email;
             personne.Tel = personneRequest.Tel;
+            personne.DateUpdate = DateTime.Now;
             await _dbContext.SaveChangesAsync();
         }
 

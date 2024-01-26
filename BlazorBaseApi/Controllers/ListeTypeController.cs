@@ -13,7 +13,7 @@ namespace BlazorBaseApi.Controllers
         private readonly ILogger<ListeTypeController> _logger;
 
         public ListeTypeController(
-            MysqlDbContext dbContext
+            SqliteDbContext dbContext
             , ILogger<ListeTypeController> logger) : base(dbContext)
         {
             _logger = logger;
@@ -47,16 +47,18 @@ namespace BlazorBaseApi.Controllers
         [HttpPost(Name = "PostListeType")]
         public async Task<long> CreateListeType()
         {
-            ListeType personne = new ListeType();
-            await _dbContext.AddAsync(personne);
+            ListeType listeType = new ListeType();
+            listeType.DateCreation = DateTime.Now;
+            await _dbContext.AddAsync(listeType);
             await _dbContext.SaveChangesAsync();
 
-            return personne.Id;
+            return listeType.Id;
         }
 
         [HttpPost("create-with-data", Name = "PostListeTypeWithData")]
         public async Task<long> CreateListeTypeWithData(ListeType listeType)
         {
+            listeType.DateCreation = DateTime.Now;
             await _dbContext.AddAsync(listeType);
             await _dbContext.SaveChangesAsync();
 
@@ -77,6 +79,7 @@ namespace BlazorBaseApi.Controllers
             listeType.Code = listeTypeRequest.Code;
             listeType.DefaultLibelle = listeTypeRequest.DefaultLibelle;
             listeType.Actif = listeTypeRequest.Actif;
+            listeType.DateUpdate = DateTime.Now;
             await _dbContext.SaveChangesAsync();
         }
 
