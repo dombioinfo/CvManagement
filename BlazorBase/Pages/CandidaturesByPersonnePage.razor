@@ -39,7 +39,37 @@ else
                 <Icon Name="IconName.Delete" Clicked="@context.Clicked" Margin="Margin.Is3.FromEnd" />
             </DeleteCommandTemplate>
         </DataGridCommandColumn>
-        <!-- <DataGridColumn Field="@nameof(CandidatureDto.)"></DataGridColumn> -->
+        <DataGridColumn Field="@nameof(CandidatureDto.Statut)" Caption="Statut" Editable>
+            <DisplayTemplate>
+                @{
+                    var statutId = (context as CandidatureDto)?.StatutId;
+                    @(Statuts.FirstOrDefault(x => x.Id == statutId)?.DefaultLibelle)
+                }
+            </DisplayTemplate>
+            <EditTemplate>
+                <SelectList TItem="ListeItemDto"
+                    TValue="long"
+                    Data="@Statuts"
+                    TextField="@((item) => item != null ? item.DefaultLibelle : "")"
+                    ValueField="@((item) => item != null ? item.Id : 0)"
+                    SelectedValue="@(
+                        ((ListeItemDto)((CellEditContext)context).CellValue) != null ? 
+                        ((ListeItemDto)((CellEditContext)context).CellValue).Id :
+                        0
+                    )"
+                    SelectedValueChanged="@(e => 
+                    {
+                        long statutId = (long)Convert.ToDouble(e);
+                        if (((CellEditContext)context).CellValue == null) {
+                            ((CellEditContext)context).CellValue = new ListeItemDto();
+                        }
+                        ((ListeItemDto)((CellEditContext)context).CellValue).Id = statutId;
+                        context.Item.StatutId = statutId;
+                        context.Item.Statut = Statuts.FirstOrDefault(x => x.Id == statutId);
+                    })"
+                />
+            </EditTemplate>
+        </DataGridColumn>
         <DataGridColumn Field="@nameof(CandidatureDto.DateCandidature)" Caption="Date de candidature" Editable Sortable></DataGridColumn>
         <DataGridColumn Field="@nameof(CandidatureDto.Annotation)" Caption="Annotation" Editable>
             <EditTemplate>

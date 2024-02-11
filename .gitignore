@@ -3,3 +3,6 @@ obj/
 data/
 tmp/
 .fake
+*.csv
+*.db*
+*/.vscode/*

@@ -57,7 +57,9 @@ namespace BlazorBase.Service
                 DateCandidature = candidatureDto.DateCandidature,
                 Annotation = candidatureDto.Annotation,
                 PersonneId = candidatureDto.PersonneId,
-                MetierId = candidatureDto.MetierId
+                MetierId = candidatureDto.MetierId,
+                StatutId = candidatureDto.StatutId,
+                Actif = true
             };
             return await this.CreateGenericObjectAsync("Candidature/create-with-data", candidature);
         }
@@ -70,7 +72,8 @@ namespace BlazorBase.Service
                 DateCandidature = candidatureDto.DateCandidature,
                 Annotation = candidatureDto.Annotation,
                 PersonneId = candidatureDto.PersonneId,
-                MetierId = candidatureDto.MetierId
+                MetierId = candidatureDto.MetierId,
+                StatutId = candidatureDto.StatutId
             };
             return await this.UpdateGenericObjectAsync(candidatureId, candidature);
         }

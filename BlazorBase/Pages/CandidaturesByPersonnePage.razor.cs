@@ -27,14 +27,19 @@ namespace BlazorBase.Pages
         public List<ListeItemDto> Metiers { get; set; } = default!;
         public long SelectedMetierListValue { get; set; } = default!;
 
+        public List<ListeItemDto> Statuts { get; set; } = default!;
+        public long SelectedStatutListValue { get; set; } = default!;
+
         protected override async Task OnInitializedAsync()
         {
             Personne = await PersonneService.GetPersonneAsync(PersonneId);
             Metiers = await ListeItemService.GetListeItemsByListeTypeAsync("METIER");
+            Statuts = await ListeItemService.GetListeItemsByListeTypeAsync("CANDIDATURE_STATUT");
             Items = await CandidatureService.GetCandidaturesByPersonneAsync(PersonneId);
             foreach (CandidatureDto candidatureDto in Items)
             {
                 candidatureDto.Metier = Metiers.FirstOrDefault(x => x.Id == candidatureDto.MetierId);
+                candidatureDto.Statut = Statuts.FirstOrDefault(x => x.Id == candidatureDto.StatutId);
                 candidatureDto.Personne = Personne;
             }
             await base.OnInitializedAsync();
