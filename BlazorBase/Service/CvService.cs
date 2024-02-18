@@ -77,5 +77,10 @@ namespace BlazorBase.Service
         {
             return await this.DeleteGenericObjectAsync(CvId);
         }
+
+        public async Task<byte[]> DownloadCvAsync(long cvId)
+        {
+            return await this.DownloadFileAsync($"/cv/{cvId}/download", new Cv());
+        }
     }
 }

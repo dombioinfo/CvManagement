@@ -1,11 +1,13 @@
 using BlazorBase.Service;
 using Blazorise.DataGrid;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 namespace BlazorBase.Pages
 {
     public partial class CvsByPersonnePage : ComponentBase
     {
+        [Inject] protected IJSRuntime JSRuntime { get; set; }
         [Inject]
         private PersonneService PersonneService { get; set; } = default!;
         [Inject]
@@ -22,6 +24,7 @@ namespace BlazorBase.Pages
         private CvDto? SelectedItem;
         private int TotalItems { get; set; } = 0;
         private CvDto CvTmpToUploadFile { get; set; } = default!;
+        private bool IsLoading {get; set; } = false;
 
         protected override async Task OnInitializedAsync()
         {
@@ -130,5 +133,22 @@ namespace BlazorBase.Pages
                 this.StateHasChanged();
             }
         }
+        public async Task OnClickedDownloadCv(long cvId)
+        {
+            IsLoading = true;
+            try 
+            {
+                byte[] file = await CvService.DownloadCvAsync(cvId);
+                await JSRuntime.InvokeVoidAsync(
+                    "BlazorDownloadFile",
+                    "cv.pdf",
+                    "application/octet-stream",
+                    file
+                );
+            }
+            finally {
+                IsLoading = false;
+            }
+        } 
     }
 }

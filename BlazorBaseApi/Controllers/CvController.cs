@@ -91,5 +91,20 @@ namespace BlazorBaseApi.Controllers
             _dbContext.Remove(Cv);
             await _dbContext.SaveChangesAsync();
         }
+
+        [HttpGet("{id}/download")]
+        public async Task<FileContentResult> DownloadCv(long id) 
+        {
+            Cv? cv = await _dbContext.Cvs
+                .Where(x => x.Id == id)
+                .FirstOrDefaultAsync();
+            if (cv == null)
+            {
+                throw new Exception($"Il n'existe pas d'enregistrement Cv pour l'Id '{id}'");
+            }
+
+            return File(cv?.BlobFile, "application/octet-stream");
+        }
+
     }
 }

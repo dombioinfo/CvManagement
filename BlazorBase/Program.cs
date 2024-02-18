@@ -22,7 +22,7 @@ builder.Services.AddServerSideBlazor();
 
 builder.Services.AddHttpClient("HttpClientWithSSLUntrusted", c =>
 {
-    c.BaseAddress = new Uri("https://localhost:7031");
+    c.BaseAddress = new Uri("https://localhost:5001");
     c.DefaultRequestHeaders.Add("Accept", "application/json");
 })
 .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler

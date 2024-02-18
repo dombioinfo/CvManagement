@@ -37,5 +37,20 @@ else
                 </Field>
             </EditTemplate>
         </DataGridColumn>
+        <DataGridColumn Caption="Actions">
+            <DisplayTemplate>
+                @{
+                    var cvId = (context as CvDto)?.Id ?? 0;
+                    var personneId = (context as CvDto)?.PersonneId;
+                    var fileName = (context as CvDto)?.FileName;
+                    <Button Type="ButtonType.Link"  Clicked="(() => OnClickedDownloadCv(cvId))" Loading="@IsLoading">Télécharger</Button>
+                    <!--
+                    <button @onclick="OnClickedDownloadCv(cvId)" title="Télécharger" alt="Télécharger" download="@fileName" target="_top">
+                        <Icon Name="IconName.FileDownload" Margin="Margin.Is3.FromEnd" />
+                    </button>
+                    -->
+                }
+            </DisplayTemplate>
+        </DataGridColumn>
     </DataGrid>
 }

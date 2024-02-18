@@ -162,5 +162,15 @@ namespace BlazorBase.Service
 
             return result;
         }
-    }
+
+        protected async Task<byte[]> DownloadFileAsync(string url, T objectToCreate)
+        {
+            Console.WriteLine($"URL : {url}");
+            var stringPayload = JsonSerializer.Serialize(objectToCreate);
+            Console.WriteLine($"Content Json :\n{stringPayload}");
+
+            var response = await _httpClient.GetByteArrayAsync(url);
+            return response;
+        }
+    } 
 }
