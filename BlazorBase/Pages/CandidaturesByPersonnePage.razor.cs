@@ -30,16 +30,21 @@ namespace BlazorBase.Pages
         public List<ListeItemDto> Statuts { get; set; } = default!;
         public long SelectedStatutListValue { get; set; } = default!;
 
+        public List<ListeItemDto> ResultatEntretiens { get; set; } = default!;
+        public long SelectedResultatEntretienListValue { get; set; } = default!;
+
         protected override async Task OnInitializedAsync()
         {
             Personne = await PersonneService.GetPersonneAsync(PersonneId);
             Metiers = await ListeItemService.GetListeItemsByListeTypeAsync("METIER");
             Statuts = await ListeItemService.GetListeItemsByListeTypeAsync("CANDIDATURE_STATUT");
+            ResultatEntretiens = await ListeItemService.GetListeItemsByListeTypeAsync("RESULTAT_ENTRETIEN");
             Items = await CandidatureService.GetCandidaturesByPersonneAsync(PersonneId);
             foreach (CandidatureDto candidatureDto in Items)
             {
                 candidatureDto.Metier = Metiers.FirstOrDefault(x => x.Id == candidatureDto.MetierId);
                 candidatureDto.Statut = Statuts.FirstOrDefault(x => x.Id == candidatureDto.StatutId);
+                candidatureDto.ResultatEntretien = ResultatEntretiens.FirstOrDefault(x => x.Id == candidatureDto.ResultatEntretienId);
                 candidatureDto.Personne = Personne;
             }
             await base.OnInitializedAsync();
@@ -78,14 +83,15 @@ namespace BlazorBase.Pages
 
         private async Task<long> OnRowInserted(SavedRowItem<CandidatureDto, Dictionary<string, object>> e)
         {
-            long id = await CandidatureService.CreateCandidatureAsync(e.Item);
+            long id = await CandidatureService.CreateCandidatureAsync(e.NewItem);
+            e.NewItem.Id = id;
             StateHasChanged();
             return id;
         }
 
         private async Task OnRowUpdated(SavedRowItem<CandidatureDto, Dictionary<string, object>> e)
         {
-            int id = await CandidatureService.UpdateCandidatureAsync(e.Item.Id, e.Item);
+            int id = await CandidatureService.UpdateCandidatureAsync(e.NewItem.Id, e.NewItem);
         }
 
         public async Task OnRowRemoved(CandidatureDto candidatureDto)

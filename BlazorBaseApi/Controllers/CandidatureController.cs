@@ -39,6 +39,7 @@ namespace BlazorBaseApi.Controllers
         {
             Candidature candidature = new Candidature();
             candidature.DateCreation = DateTime.Now;
+            candidature.Actif = true;
             await _dbContext.AddAsync(candidature);
             await _dbContext.SaveChangesAsync();
 
@@ -68,9 +69,18 @@ namespace BlazorBaseApi.Controllers
                 throw new Exception($"Il n'existe pas d'enregistrement Candidature pour l'Id '{id}'");
             }
             candidature.DateCandidature = candidatureRequest.DateCandidature;
+            candidature.DateEntretien = candidatureRequest.DateEntretien;
+            candidature.PrescripteurLibelle = candidatureRequest.PrescripteurLibelle;
+            candidature.PrescripteurNom = candidatureRequest.PrescripteurNom;
+            candidature.ModaliteOrientation = candidatureRequest.ModaliteOrientation;
+            candidature.DateEntree = candidatureRequest.DateEntree;
+            candidature.DateSortie = candidatureRequest.DateSortie;
+            candidature.MotifRefus = candidatureRequest.MotifRefus;
+            candidature.SourceCandidature = candidatureRequest.SourceCandidature;
             candidature.Annotation = candidatureRequest.Annotation;
             candidature.PersonneId = candidatureRequest.PersonneId;
             candidature.MetierId = candidatureRequest.MetierId;
+            candidature.ResultatEntretienId = candidatureRequest.ResultatEntretienId;
             candidatureRequest.DateUpdate = DateTime.Now;
             await _dbContext.SaveChangesAsync();
         }

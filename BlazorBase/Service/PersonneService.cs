@@ -83,11 +83,13 @@ namespace BlazorBase.Service
             Personne personne = new Personne()
             {
                 Id = 0,
+                CiviliteId = personneDto.CiviliteId,
                 Nom = personneDto.Nom,
                 Prenom = personneDto.Prenom,
                 DateNaissance = personneDto.DateNaissance,
                 Email = personneDto.Email,
-                Tel = personneDto.Tel
+                Tel = personneDto.Tel,
+                Actif = true
             };
             return await this.CreateGenericObjectAsync("Personne/create-with-data", personne);
         }
@@ -102,6 +104,7 @@ namespace BlazorBase.Service
                 DateNaissance = personneDto.DateNaissance,
                 Email = personneDto.Email,
                 Tel = personneDto.Tel,
+                CiviliteId = personneDto.CiviliteId
                 //Adresses = null
             };
             return await this.UpdateGenericObjectAsync(personneId, personne);

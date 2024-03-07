@@ -3,29 +3,37 @@
 
 <PageTitle>Gestion des CV</PageTitle>
 <Card>
-    <CardTitle>Gestion des CV</CardTitle>
+    <CardTitle><h2>Gestion des CV</h2></CardTitle>
     <CardBody>Bienvenue dans votre espace de gestion des CV et candidatures</CardBody>
 </Card>
 <CardGroup>
-    <CardTitle>Tableau de bord</CardTitle>
-    <CardDeck>
-        <Card>
-            <CardTitle Size="5">{}</CardTitle>
-            <CardText>Total candidats</CardText>
-        </Card>
-        <Card>
-            <CardTitle Size="5">{}</CardTitle>
-            <CardText>Candidats employés</CardText>
-        </Card>
-        <Card>
-            <CardTitle Size="5">{}</CardTitle>
-            <CardText>Recrutement</CardText>
-        </Card>
-    </CardDeck>
+    <Card>
+        <CardTitle><h2>Tableau de bord</h2></CardTitle>
+        <CardBody>
+            <CardDeck>
+                <Card>
+                    <CardTitle Size="5">{}</CardTitle>
+                    <CardText>Total candidats</CardText>
+                </Card>
+                <Card>
+                    <CardTitle Size="5">{}</CardTitle>
+                    <CardText>Candidats employés</CardText>
+                </Card>
+                <Card>
+                    <CardTitle Size="5">{}</CardTitle>
+                    <CardText>Recrutement</CardText>
+                </Card>
+            </CardDeck>
+        </CardBody>
+    </Card>
 </CardGroup>
-<Card>
-    <h2>Importation de données</h2>
-    <Field>
-        <FilePicker Upload="OnFileUpload" ShowMode="FilePickerShowMode.List" />
-    </Field>
-</Card>
+<CardGroup>
+    <Card>
+        <CardTitle><h2>Importation de données</h2></CardTitle>
+        <CardBody>
+            <Field>
+                <FilePicker Upload="OnFileUpload" ShowMode="FilePickerShowMode.List" />
+            </Field>
+        </CardBody>
+    </Card>
+</CardGroup>

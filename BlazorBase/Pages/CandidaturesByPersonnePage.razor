@@ -50,7 +50,7 @@ else
                 <SelectList TItem="ListeItemDto"
                     TValue="long"
                     Data="@Statuts"
-                    TextField="@((item) => item != null ? item.DefaultLibelle : "")"
+                    TextField="@((item) => item != null ? item.DefaultLibelle : string.Empty)"
                     ValueField="@((item) => item != null ? item.Id : 0)"
                     SelectedValue="@(
                         ((ListeItemDto)((CellEditContext)context).CellValue) != null ? 
@@ -71,14 +71,42 @@ else
             </EditTemplate>
         </DataGridColumn>
         <DataGridColumn Field="@nameof(CandidatureDto.DateCandidature)" Caption="Date de candidature" Editable Sortable></DataGridColumn>
-        <DataGridColumn Field="@nameof(CandidatureDto.Annotation)" Caption="Annotation" Editable>
+        <DataGridColumn Field="@nameof(CandidatureDto.DateEntretien)" Caption="Date d'entretien" Editable Displayable="false"></DataGridColumn>
+        <DataGridColumn Field="@nameof(CandidatureDto.DateEntree)" Caption="Date d'entrée" Editable Displayable="false"></DataGridColumn>
+        <DataGridColumn Field="@nameof(CandidatureDto.DateSortie)" Caption="Date de sortie" Editable Displayable="false"></DataGridColumn>
+        <DataGridColumn Field="@nameof(CandidatureDto.ResultatEntretien)" Caption="Résultat d'entretien" Editable>
+            <DisplayTemplate>
+                @{
+                    var resultatEntretienId = (context as CandidatureDto)?.ResultatEntretienId;
+                    @(ResultatEntretiens.FirstOrDefault(x => x.Id == resultatEntretienId)?.DefaultLibelle)
+                }
+            </DisplayTemplate>
             <EditTemplate>
-                <MemoEdit Rows="5"
-                    Text="@((string)context.CellValue)"
-                    TextChanged="@(e => ((CellEditContext)context).CellValue = e)"
-                ></MemoEdit>
+                <SelectList TItem="ListeItemDto"
+                    TValue="long"
+                    Data="@ResultatEntretiens"
+                    TextField="@((item) => item != null ? item.DefaultLibelle : string.Empty)"
+                    ValueField="@((item) => item != null ? item.Id : 0)"
+                    SelectedValue="@(
+                        ((ListeItemDto)((CellEditContext)context).CellValue) != null ? 
+                        ((ListeItemDto)((CellEditContext)context).CellValue).Id :
+                        0
+                    )"
+                    SelectedValueChanged="@(e => 
+                    {
+                        long resultatEntretienId = (long)Convert.ToDouble(e);
+                        if (((CellEditContext)context).CellValue == null) {
+                            ((CellEditContext)context).CellValue = new ListeItemDto();
+                        }
+                        ((ListeItemDto)((CellEditContext)context).CellValue).Id = resultatEntretienId;
+                        context.Item.ResultatEntretienId = resultatEntretienId;
+                        context.Item.ResultatEntretien = ResultatEntretiens.FirstOrDefault(x => x.Id == resultatEntretienId);
+                    })"
+                />
             </EditTemplate>
         </DataGridColumn>
+        <DataGridColumn Field="@nameof(CandidatureDto.PrescripteurLibelle)" Caption="Structure prescriptrice" Editable Displayable="false"></DataGridColumn>
+        <DataGridColumn Field="@nameof(CandidatureDto.PrescripteurNom)" Caption="Nom prescripteur" Editable Displayable="false"></DataGridColumn>
         <DataGridColumn Field="@nameof(CandidatureDto.Metier)" Caption="Metier" Editable>
             <DisplayTemplate>
                 @{
@@ -90,7 +118,7 @@ else
                 <SelectList TItem="ListeItemDto"
                     TValue="long"
                     Data="@Metiers"
-                    TextField="@((item) => item != null ? item.DefaultLibelle : "")"
+                    TextField="@((item) => item != null ? item.DefaultLibelle : string.Empty)"
                     ValueField="@((item) => item != null ? item.Id : 0)"
                     SelectedValue="@(
                         ((ListeItemDto)((CellEditContext)context).CellValue) != null ? 
@@ -108,6 +136,14 @@ else
                         context.Item.Metier = Metiers.FirstOrDefault(x => x.Id == metierId);
                     })"
                 />
+            </EditTemplate>
+        </DataGridColumn>
+        <DataGridColumn Field="@nameof(CandidatureDto.Annotation)" Caption="Annotation" Editable>
+            <EditTemplate>
+                <MemoEdit Rows="5"
+                    Text="@((string)context.CellValue)"
+                    TextChanged="@(e => ((CellEditContext)context).CellValue = e)"
+                ></MemoEdit>
             </EditTemplate>
         </DataGridColumn>
     </DataGrid>

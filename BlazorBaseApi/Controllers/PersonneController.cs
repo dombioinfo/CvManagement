@@ -68,6 +68,7 @@ namespace BlazorBaseApi.Controllers
             {
                 throw new Exception($"Il n'existe pas d'enregistrement Personne pour l'Id '{id}'");
             }
+            personne.CiviliteId = personneRequest.CiviliteId;
             personne.DateNaissance = personneRequest.DateNaissance;
             personne.Nom = personneRequest.Nom;
             personne.Prenom = personneRequest.Prenom;

@@ -3,6 +3,7 @@ using System;
 using BlazorBaseApi;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlazorBaseApi.Migrations
 {
     [DbContext(typeof(SqliteDbContext))]
-    partial class SqliteDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240221230310_AddCivilite_FieldForCandidature")]
+    partial class AddCivilite_FieldForCandidature
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.1");
@@ -140,16 +143,11 @@ namespace BlazorBaseApi.Migrations
                         .HasColumnType("TEXT")
                         .HasColumnName("PrescripteurNom");
 
-                    b.Property<long?>("ResultatEntretienId")
+                    b.Property<long>("ResultatEntretienId")
                         .HasColumnType("INTEGER")
                         .HasColumnName("ResultatEntretienId");
 
-                    b.Property<string>("SourceCandidature")
-                        .IsRequired()
-                        .HasColumnType("TEXT")
-                        .HasColumnName("SourceCandidature");
-
-                    b.Property<long?>("StatutId")
+                    b.Property<long>("StatutId")
                         .HasColumnType("INTEGER")
                         .HasColumnName("StatutId");
 
@@ -312,7 +310,7 @@ namespace BlazorBaseApi.Migrations
                     b.Property<bool>("Actif")
                         .HasColumnType("INTEGER");
 
-                    b.Property<long?>("CiviliteId")
+                    b.Property<long>("CiviliteId")
                         .HasColumnType("INTEGER")
                         .HasColumnName("CiviliteId");
 
@@ -476,11 +474,15 @@ namespace BlazorBaseApi.Migrations
 
                     b.HasOne("BlazorBaseModel.Db.ListeItem", "ResultatEntretien")
                         .WithMany()
-                        .HasForeignKey("ResultatEntretienId");
+                        .HasForeignKey("ResultatEntretienId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("BlazorBaseModel.Db.ListeItem", "Statut")
                         .WithMany()
-                        .HasForeignKey("StatutId");
+                        .HasForeignKey("StatutId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Metier");
 
@@ -515,7 +517,9 @@ namespace BlazorBaseApi.Migrations
                 {
                     b.HasOne("BlazorBaseModel.Db.ListeItem", "Civilite")
                         .WithMany()
-                        .HasForeignKey("CiviliteId");
+                        .HasForeignKey("CiviliteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Civilite");
                 });

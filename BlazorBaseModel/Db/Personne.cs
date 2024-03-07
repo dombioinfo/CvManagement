@@ -32,6 +32,12 @@ namespace BlazorBaseModel.Db
         [StringLength(50)]
         public string? Tel { get; set; } = default!;
         
+        [Column("CiviliteId")]
+        public long? CiviliteId { get; set; } = default!;
+
+        [ForeignKey("CiviliteId")]
+        public virtual ListeItem? Civilite { get; set; } = default!;
+
         [JsonIgnore]
         public virtual ICollection<Adresse>? Adresses { get; set; } = default!;
 

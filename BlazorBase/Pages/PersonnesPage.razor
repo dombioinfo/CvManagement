@@ -1,5 +1,6 @@
 ﻿@page "/personnes"
 @using Blazorise
+@using Blazorise.Components
 
 <!--<PageTitle>@PageTitle</PageTitle>-->
 <h1>Liste des candidats</h1>
@@ -40,6 +41,37 @@ else
                 <Icon Name="IconName.Delete" Clicked="@context.Clicked" Margin="Margin.Is3.FromEnd" />
             </DeleteCommandTemplate>
         </DataGridCommandColumn>
+        <DataGridColumn Field="@nameof(PersonneDto.Civilite)" Caption="Civilité" Editable Displayable="false">
+            <DisplayTemplate>
+                @{
+                    var civiliteId = (context as PersonneDto)?.CiviliteId;
+                    @(Civilites.FirstOrDefault(x => x.Id == civiliteId)?.DefaultLibelle)
+                }
+            </DisplayTemplate>
+            <EditTemplate>
+                <SelectList TItem="ListeItemDto"
+                    TValue="long"
+                    Data="@Civilites"
+                    TextField="@((item) => item != null ? item.DefaultLibelle : string.Empty)"
+                    ValueField="@((item) => item != null ? item.Id : 0)"
+                    SelectedValue="@(
+                        ((ListeItemDto)((CellEditContext)context).CellValue) != null ? 
+                        ((ListeItemDto)((CellEditContext)context).CellValue).Id :
+                        0
+                    )"
+                    SelectedValueChanged="@(e => 
+                    {
+                        long civiliteId = (long)Convert.ToDouble(e);
+                        if (((CellEditContext)context).CellValue == null) {
+                            ((CellEditContext)context).CellValue = new ListeItemDto();
+                        }
+                        ((ListeItemDto)((CellEditContext)context).CellValue).Id = civiliteId;
+                        context.Item.CiviliteId = civiliteId;
+                        context.Item.Civilite = Civilites.FirstOrDefault(x => x.Id == civiliteId);
+                    })"
+                />
+            </EditTemplate>
+        </DataGridColumn>
         <DataGridColumn Field="@nameof(PersonneDto.Nom)" Caption="Nom" Editable Sortable></DataGridColumn>
         <DataGridColumn Field="@nameof(PersonneDto.Prenom)" Caption="Prénom" Editable Sortable></DataGridColumn>
         <DataGridDateColumn Field="@nameof(PersonneDto.DateNaissance)" Caption="Date de naissance" Editable Displayable="false">

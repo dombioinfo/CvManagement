@@ -15,19 +15,25 @@ namespace BlazorBase.Pages
         [Inject]
         protected PersonneService PersonneService { get; set; } = default!;
         [Inject]
+        private ListeItemService ListeItemService { get; set; } = default!;
+        [Inject]
         public IModalService ModalService { get; set; } = default!;
         [Inject]
         public IMessageService MessageService { get; set; } = default!;
         private IEnumerable<PersonneDto> Items { get; set; } = default!;
         private PersonneDto? SelectedRow;
         private int TotalItems;
+        public List<ListeItemDto> Civilites { get; set; } = default!;
+        public long SelectedCiviliteListValue { get; set; } = default!;
         bool ShowContextMenu = false;
         PersonneDto? ContextMenuPersonne;
         Point ContextMenuPos;
 
         protected override async Task OnInitializedAsync()
         {
+            Civilites = await ListeItemService.GetListeItemsByListeTypeAsync("CIVILITE");
             Items = await PersonneService.GetPersonnesAsync();
+
             await base.OnInitializedAsync();
         }
 
@@ -62,14 +68,16 @@ namespace BlazorBase.Pages
 
         private async Task<int> OnRowInserted(SavedRowItem<PersonneDto, Dictionary<string, object>> e)
         {
-            int personneId = await PersonneService.CreatePersonneAsync(e.Item);
+            int personneId = await PersonneService.CreatePersonneAsync(e.NewItem);
+            e.NewItem.Id = personneId;
             StateHasChanged();
+        
             return personneId;
         }
 
         private async Task OnRowUpdated(SavedRowItem<PersonneDto, Dictionary<string, object>> e)
         {
-            int id = await PersonneService.UpdatePersonneAsync(e.Item.Id, e.Item);
+            int id = await PersonneService.UpdatePersonneAsync(e.NewItem.Id, e.NewItem);
         }
 
         public async Task OnRowRemoving(CancellableRowChange<PersonneDto> e)

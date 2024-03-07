@@ -55,10 +55,19 @@ namespace BlazorBase.Service
             {
                 Id = 0,
                 DateCandidature = candidatureDto.DateCandidature,
+                DateEntretien = candidatureDto.DateEntretien ?? default,
+                DateEntree = candidatureDto.DateEntree ?? default,
+                DateSortie = candidatureDto.DateSortie ?? default,
+                ModaliteOrientation = candidatureDto.ModaliteOrientation,
+                PrescripteurLibelle = candidatureDto.PrescripteurLibelle,
+                PrescripteurNom = candidatureDto.PrescripteurNom,
+                SourceCandidature = candidatureDto.SourceCandidature,
+                MotifRefus = candidatureDto.MotifRefus,
                 Annotation = candidatureDto.Annotation,
                 PersonneId = candidatureDto.PersonneId,
                 MetierId = candidatureDto.MetierId,
                 StatutId = candidatureDto.StatutId,
+                ResultatEntretienId = candidatureDto.ResultatEntretienId,
                 Actif = true
             };
             return await this.CreateGenericObjectAsync("Candidature/create-with-data", candidature);
@@ -70,10 +79,19 @@ namespace BlazorBase.Service
             {
                 Id = candidatureId,
                 DateCandidature = candidatureDto.DateCandidature,
+                DateEntretien = candidatureDto.DateEntretien ?? default,
+                DateEntree = candidatureDto.DateEntree ?? default,
+                DateSortie = candidatureDto.DateSortie ?? default,
+                ModaliteOrientation = candidatureDto.ModaliteOrientation,
+                PrescripteurLibelle = candidatureDto.PrescripteurLibelle,
+                PrescripteurNom = candidatureDto.PrescripteurNom,
+                SourceCandidature = candidatureDto.SourceCandidature,
+                MotifRefus = candidatureDto.MotifRefus,
                 Annotation = candidatureDto.Annotation,
                 PersonneId = candidatureDto.PersonneId,
                 MetierId = candidatureDto.MetierId,
-                StatutId = candidatureDto.StatutId
+                StatutId = candidatureDto.StatutId,
+                ResultatEntretienId = candidatureDto.ResultatEntretienId
             };
             return await this.UpdateGenericObjectAsync(candidatureId, candidature);
         }
